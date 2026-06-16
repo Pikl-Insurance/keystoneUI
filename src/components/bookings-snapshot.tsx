@@ -1,8 +1,10 @@
+import { useState } from "react"
 import {
   CalendarCheck,
   CreditCard,
   Gauge,
   Info,
+  LayoutList,
   Percent,
   TrendingUp,
   type LucideIcon,
@@ -10,11 +12,20 @@ import {
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+
 
 type BookingMetric = {
   label: string
@@ -26,41 +37,73 @@ type BookingMetric = {
 const bookingMetrics: BookingMetric[] = [
   {
     label: "Total bookings",
-    value: "563,016",
+    value: "124,500",
     icon: CalendarCheck,
     description: "Total number of bookings across all selected partners and brands.",
   },
   {
     label: "CAL sales",
-    value: "14,008",
+    value: "3,210",
     icon: TrendingUp,
     description: "Sales completed through the CAL payment method for the selected period.",
   },
   {
     label: "CAL take-up %",
-    value: "2.5%",
+    value: "3.8%",
     icon: Percent,
     description: "Percentage of eligible bookings that converted to CAL sales.",
   },
   {
     label: "DDL sales",
-    value: "2",
+    value: "48",
     icon: CreditCard,
     description: "Sales completed through direct debit (DDL) for the selected period.",
   },
   {
     label: "DDL take-up %",
-    value: "0.0%",
+    value: "1.5%",
     icon: Gauge,
     description: "Percentage of eligible bookings that converted to DDL sales.",
   },
 ]
 
+const partnerRows = [
+  { brand: "Partner Alpha", ccy: "GBP", bookings: "42,310", cal: "1,104 2.6%", ddl: "12 0.0%", color: "bg-blue-500" },
+  { brand: "Partner Beta", ccy: "GBP", bookings: "38,750", cal: "892 2.3%", ddl: "8 0.0%", color: "bg-cyan-500" },
+  { brand: "Partner Gamma (DK)", ccy: "EUR", bookings: "9,420", cal: "310 3.3%", ddl: "0 0.0%", color: "bg-amber-500" },
+  { brand: "Partner Gamma (EUR)", ccy: "EUR", bookings: "7,880", cal: "0 0.0%", ddl: "0 0.0%", color: "bg-violet-500" },
+  { brand: "Partner Delta (EUR)", ccy: "EUR", bookings: "5,640", cal: "0 0.0%", ddl: "0 0.0%", color: "bg-rose-500" },
+  { brand: "Partner Epsilon", ccy: "GBP", bookings: "4,200", cal: "0 0.0%", ddl: "0 0.0%", color: "bg-lime-500" },
+  { brand: "Partner Zeta (DK)", ccy: "EUR", bookings: "11,800", cal: "620 5.3%", ddl: "18 0.2%", color: "bg-pink-500" },
+  { brand: "Partner Zeta (EUR)", ccy: "EUR", bookings: "4,500", cal: "284 6.3%", ddl: "10 0.2%", color: "bg-orange-500" },
+]
+
 export function BookingsSnapshot() {
+  const [showBreakdown, setShowBreakdown] = useState(false)
+
   return (
     <TooltipProvider>
       <section>
-        <h2 className="mb-3 text-xs font-semibold tracking-wide uppercase">Bookings</h2>
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="text-xs font-semibold tracking-wide uppercase">Bookings</h2>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                type="button"
+                onClick={() => setShowBreakdown((prev) => !prev)}
+                aria-label={showBreakdown ? "Hide partner breakdown" : "Show partner breakdown"}
+                className={`rounded-md p-1.5 transition-colors hover:bg-accent ${showBreakdown ? "text-foreground" : "text-muted-foreground"}`}
+              >
+                <LayoutList className="size-4" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>
+              {showBreakdown
+                ? "Hide partner breakdown"
+                : "View bookings broken down by partner — includes CAL and DDL figures per brand"}
+            </TooltipContent>
+          </Tooltip>
+        </div>
 
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-5">
           {bookingMetrics.map(({ label, value, icon: Icon, description }) => (
@@ -93,6 +136,42 @@ export function BookingsSnapshot() {
             </Card>
           ))}
         </div>
+
+        {showBreakdown && (
+          <div className="mt-4 overflow-hidden rounded-xl border border-border bg-card shadow-xs">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Brand</TableHead>
+                  <TableHead>CCY</TableHead>
+                  <TableHead className="text-right">Bookings</TableHead>
+                  <TableHead className="text-right">CAL</TableHead>
+                  <TableHead className="text-right">DDL</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {partnerRows.map((row) => (
+                  <TableRow key={row.brand}>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <span className={`size-2 rounded-full ${row.color}`} />
+                        <span>{row.brand}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">{row.ccy}</TableCell>
+                    <TableCell className="text-right tabular-nums">{row.bookings}</TableCell>
+                    <TableCell className="text-right tabular-nums text-emerald-600 dark:text-emerald-400">
+                      {row.cal}
+                    </TableCell>
+                    <TableCell className="text-right tabular-nums text-amber-600 dark:text-amber-400">
+                      {row.ddl}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        )}
       </section>
     </TooltipProvider>
   )

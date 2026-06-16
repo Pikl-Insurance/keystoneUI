@@ -1,6 +1,15 @@
-import { Clock, Info, Timer } from "lucide-react"
+import { useState } from "react"
+import { Clock, Info, LayoutList, Timer } from "lucide-react"
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 import {
   Tooltip,
   TooltipContent,
@@ -29,8 +38,8 @@ const timingCards: TimingCard[] = [
     icon: Clock,
     description: "Average number of days between booking date and stay start date.",
     columns: [
-      { currency: "GBP", flag: "uk", value: "110.4 days", cal: "CAL 156.3 days" },
-      { currency: "EUR", flag: "eu", value: "122.9 days", cal: "CAL 163.8 days" },
+      { currency: "GBP", flag: "uk", value: "94.2 days", cal: "CAL 118.7 days" },
+      { currency: "EUR", flag: "eu", value: "108.5 days", cal: "CAL 134.1 days" },
     ],
   },
   {
@@ -39,6 +48,17 @@ const timingCards: TimingCard[] = [
     description: "Average number of days between cancellation date and stay start date.",
     emptyNote: "Days from cancellation to stay start",
   },
+]
+
+const timingRows = [
+  { brand: "Partner Alpha", ccy: "GBP", avgLead: "92.4 days", calAvgLead: "118.7 days", color: "bg-blue-500" },
+  { brand: "Partner Beta", ccy: "GBP", avgLead: "86.1 days", calAvgLead: "—", color: "bg-cyan-500" },
+  { brand: "Partner Gamma (DK)", ccy: "EUR", avgLead: "101.3 days", calAvgLead: "142.0 days", color: "bg-amber-500" },
+  { brand: "Partner Gamma (EUR)", ccy: "EUR", avgLead: "115.6 days", calAvgLead: "—", color: "bg-violet-500" },
+  { brand: "Partner Delta (EUR)", ccy: "EUR", avgLead: "128.4 days", calAvgLead: "—", color: "bg-rose-500" },
+  { brand: "Partner Epsilon", ccy: "GBP", avgLead: "134.2 days", calAvgLead: "—", color: "bg-lime-500" },
+  { brand: "Partner Zeta (DK)", ccy: "EUR", avgLead: "109.8 days", calAvgLead: "138.5 days", color: "bg-pink-500" },
+  { brand: "Partner Zeta (EUR)", ccy: "EUR", avgLead: "97.3 days", calAvgLead: "124.9 days", color: "bg-orange-500" },
 ]
 
 function FlagBadge({ type }: { type: "uk" | "eu" }) {
@@ -52,10 +72,31 @@ function FlagBadge({ type }: { type: "uk" | "eu" }) {
 }
 
 export function TimingSnapshot() {
+  const [showBreakdown, setShowBreakdown] = useState(false)
+
   return (
     <TooltipProvider>
       <section>
-        <h2 className="mb-3 text-xs font-semibold tracking-wide uppercase">Timing</h2>
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="text-xs font-semibold tracking-wide uppercase">Timing</h2>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                type="button"
+                onClick={() => setShowBreakdown((prev) => !prev)}
+                aria-label={showBreakdown ? "Hide timing breakdown" : "Show timing breakdown"}
+                className={`rounded-md p-1.5 transition-colors hover:bg-accent ${showBreakdown ? "text-foreground" : "text-muted-foreground"}`}
+              >
+                <LayoutList className="size-4" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>
+              {showBreakdown
+                ? "Hide partner breakdown"
+                : "View avg booking lead time per partner — includes CAL avg lead days by brand"}
+            </TooltipContent>
+          </Tooltip>
+        </div>
 
         <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
           {timingCards.map(({ label, icon: Icon, description, columns, emptyNote }) => (
@@ -113,6 +154,38 @@ export function TimingSnapshot() {
             </Card>
           ))}
         </div>
+
+        {showBreakdown && (
+          <div className="mt-4 overflow-hidden rounded-xl border border-border bg-card shadow-xs">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Brand</TableHead>
+                  <TableHead>CCY</TableHead>
+                  <TableHead className="text-right">Avg lead</TableHead>
+                  <TableHead className="text-right">CAL avg lead</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {timingRows.map((row) => (
+                  <TableRow key={row.brand}>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <span className={`size-2 rounded-full ${row.color}`} />
+                        <span>{row.brand}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">{row.ccy}</TableCell>
+                    <TableCell className="text-right tabular-nums">{row.avgLead}</TableCell>
+                    <TableCell className="text-right tabular-nums text-emerald-600 dark:text-emerald-400">
+                      {row.calAvgLead}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        )}
       </section>
     </TooltipProvider>
   )

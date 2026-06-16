@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { BarChart3, CalendarDays, ChevronLeft, ChevronRight, Filter, Play, SlidersHorizontal, Tag } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
@@ -36,9 +36,10 @@ const metricOptions = [
 type FilterSidebarProps = {
   open: boolean
   onToggle: () => void
+  onRun: () => void
 }
 
-export function FilterSidebar({ open, onToggle }: FilterSidebarProps) {
+export function FilterSidebar({ open, onToggle, onRun }: FilterSidebarProps) {
   const [partner, setPartner] = useState("all-partners")
   const [brand, setBrand] = useState("all-brands")
   const [dateRange, setDateRange] = useState("year-to-month-end")
@@ -58,6 +59,26 @@ export function FilterSidebar({ open, onToggle }: FilterSidebarProps) {
         {open ? <ChevronRight className="size-4" /> : <ChevronLeft className="size-4" />}
       </button>
 
+      {!open && (
+        <div className="flex flex-col items-center gap-3 pt-5">
+          <span title="Partner"><Filter className="size-4 text-muted-foreground" /></span>
+          <span title="Brand"><Tag className="size-4 text-muted-foreground" /></span>
+          <span title="Date range"><CalendarDays className="size-4 text-muted-foreground" /></span>
+          <span title="Year / Month"><SlidersHorizontal className="size-4 text-muted-foreground" /></span>
+          <Separator className="w-6" />
+          <span title="Metrics"><BarChart3 className="size-4 text-muted-foreground" /></span>
+          <Separator className="w-6" />
+          <button
+            type="button"
+            onClick={onRun}
+            title="Run report"
+            className="flex size-8 items-center justify-center rounded-md bg-primary text-primary-foreground transition-colors hover:bg-primary/90"
+          >
+            <Play className="size-3.5" />
+          </button>
+        </div>
+      )}
+
       <div className="flex-1 space-y-6 overflow-y-auto px-6 py-6 data-[hidden=true]:hidden" data-hidden={!open}>
         <div>
           <h2 className="text-sm font-semibold">Filters</h2>
@@ -66,7 +87,7 @@ export function FilterSidebar({ open, onToggle }: FilterSidebarProps) {
           </p>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1">
           <Label htmlFor="partner-filter">Partner</Label>
           <Select value={partner} onValueChange={setPartner}>
             <SelectTrigger id="partner-filter">
@@ -81,7 +102,7 @@ export function FilterSidebar({ open, onToggle }: FilterSidebarProps) {
           </Select>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1">
           <Label htmlFor="brand-filter">Brand</Label>
           <Select value={brand} onValueChange={setBrand}>
             <SelectTrigger id="brand-filter">
@@ -96,7 +117,7 @@ export function FilterSidebar({ open, onToggle }: FilterSidebarProps) {
           </Select>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1">
           <Label htmlFor="date-range-filter">Date range</Label>
           <Select value={dateRange} onValueChange={setDateRange}>
             <SelectTrigger id="date-range-filter">
@@ -111,7 +132,7 @@ export function FilterSidebar({ open, onToggle }: FilterSidebarProps) {
         </div>
 
         <div className="grid grid-cols-2 gap-3">
-          <div className="space-y-2">
+          <div className="space-y-1">
             <Label htmlFor="year-filter">Year</Label>
             <Select value={year} onValueChange={setYear}>
               <SelectTrigger id="year-filter">
@@ -125,7 +146,7 @@ export function FilterSidebar({ open, onToggle }: FilterSidebarProps) {
             </Select>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-1">
             <Label htmlFor="month-filter">Month</Label>
             <Select value={month} onValueChange={setMonth}>
               <SelectTrigger id="month-filter">
@@ -144,7 +165,7 @@ export function FilterSidebar({ open, onToggle }: FilterSidebarProps) {
 
         <Separator />
 
-        <div className="space-y-2">
+        <div className="space-y-1">
           <h2 className="text-sm font-semibold">Metrics</h2>
           <div className="flex flex-col gap-2">
             {metricOptions.map(({ label, value }) => (
@@ -161,7 +182,7 @@ export function FilterSidebar({ open, onToggle }: FilterSidebarProps) {
           </div>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1">
           <h2 id="sort-filter-heading" className="text-sm font-semibold">
             Sort by
           </h2>
@@ -181,7 +202,7 @@ export function FilterSidebar({ open, onToggle }: FilterSidebarProps) {
       </div>
 
       <div className="border-t border-border p-6 data-[hidden=true]:hidden" data-hidden={!open}>
-        <Button className="w-full">Run</Button>
+        <Button className="w-full" onClick={onRun}>Run</Button>
       </div>
     </aside>
   )

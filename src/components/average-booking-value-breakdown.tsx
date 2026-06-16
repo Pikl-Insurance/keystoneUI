@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { ChevronDown, ChevronUp } from "lucide-react"
+import { LayoutList } from "lucide-react"
 
 import {
   Table,
@@ -21,78 +21,14 @@ type AbvRow = {
 }
 
 const rows: AbvRow[] = [
-  {
-    brand: "Cottages.com",
-    ccy: "GBP",
-    abv: "£676",
-    calAbv: "£755",
-    abvIncFee: "£718",
-    calPricePct: "7.7%",
-    color: "bg-blue-500",
-  },
-  {
-    brand: "Hoseasons",
-    ccy: "",
-    abv: "£507",
-    calAbv: "—",
-    abvIncFee: "£501",
-    calPricePct: "—",
-    color: "bg-cyan-500",
-  },
-  {
-    brand: "Dansommer (DK)",
-    ccy: "EUR",
-    abv: "€1,205",
-    calAbv: "€3,168",
-    abvIncFee: "€1,173",
-    calPricePct: "10.0%",
-    color: "bg-amber-500",
-  },
-  {
-    brand: "Dansommer (EUR)",
-    ccy: "",
-    abv: "€1,402",
-    calAbv: "—",
-    abvIncFee: "€1,396",
-    calPricePct: "—",
-    color: "bg-violet-500",
-  },
-  {
-    brand: "Fincallorca (EUR)",
-    ccy: "",
-    abv: "€3,422",
-    calAbv: "—",
-    abvIncFee: "€3,391",
-    calPricePct: "—",
-    color: "bg-rose-500",
-  },
-  {
-    brand: "JamesVillas",
-    ccy: "",
-    abv: "£3,672",
-    calAbv: "—",
-    abvIncFee: "£3,622",
-    calPricePct: "—",
-    color: "bg-lime-500",
-  },
-  {
-    brand: "Novasol (DK)",
-    ccy: "",
-    abv: "€1,102",
-    calAbv: "€1,007",
-    abvIncFee: "€1,071",
-    calPricePct: "10.1%",
-    color: "bg-pink-500",
-  },
-  {
-    brand: "Novasol (EUR)",
-    ccy: "",
-    abv: "€1,204",
-    calAbv: "€1,084",
-    abvIncFee: "€1,194",
-    calPricePct: "10.1%",
-    color: "bg-orange-500",
-  },
+  { brand: "Partner Alpha", ccy: "GBP", abv: "£742", calAbv: "£890", abvIncFee: "£768", calPricePct: "7.2%", color: "bg-blue-500" },
+  { brand: "Partner Beta", ccy: "GBP", abv: "£615", calAbv: "—", abvIncFee: "£638", calPricePct: "—", color: "bg-cyan-500" },
+  { brand: "Partner Gamma (DK)", ccy: "EUR", abv: "€1,180", calAbv: "€1,340", abvIncFee: "€1,210", calPricePct: "9.4%", color: "bg-amber-500" },
+  { brand: "Partner Gamma (EUR)", ccy: "EUR", abv: "€1,320", calAbv: "—", abvIncFee: "€1,365", calPricePct: "—", color: "bg-violet-500" },
+  { brand: "Partner Delta (EUR)", ccy: "EUR", abv: "€2,850", calAbv: "—", abvIncFee: "€2,920", calPricePct: "—", color: "bg-rose-500" },
+  { brand: "Partner Epsilon", ccy: "GBP", abv: "£3,100", calAbv: "—", abvIncFee: "£3,180", calPricePct: "—", color: "bg-lime-500" },
+  { brand: "Partner Zeta (DK)", ccy: "EUR", abv: "€1,050", calAbv: "€1,210", abvIncFee: "€1,085", calPricePct: "9.8%", color: "bg-pink-500" },
+  { brand: "Partner Zeta (EUR)", ccy: "EUR", abv: "€1,140", calAbv: "€1,255", abvIncFee: "€1,175", calPricePct: "9.9%", color: "bg-orange-500" },
 ]
 
 export function AverageBookingValueBreakdown() {
@@ -105,13 +41,10 @@ export function AverageBookingValueBreakdown() {
         <button
           type="button"
           onClick={() => setOpen((prev) => !prev)}
-          className="flex items-center gap-1 text-sm leading-none text-muted-foreground transition-colors hover:text-foreground"
+          aria-label={open ? "Hide ABV breakdown" : "Show ABV breakdown"}
+          className={`rounded-md p-1.5 transition-colors hover:bg-accent ${open ? "text-foreground" : "text-muted-foreground"}`}
         >
-          {open ? (
-            <>Hide details <ChevronUp className="size-3.5" /></>
-          ) : (
-            <>View details <ChevronDown className="size-3.5" /></>
-          )}
+          <LayoutList className="size-4" />
         </button>
       </div>
 

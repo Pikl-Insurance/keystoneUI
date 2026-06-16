@@ -14,13 +14,16 @@ import {
 } from "lucide-react"
 
 import { FilterSidebar } from "@/components/filter-sidebar"
-import { AverageBookingValueBreakdown } from "@/components/average-booking-value-breakdown"
 import { AverageBookingValueSnapshot } from "@/components/average-booking-value-snapshot"
 import { BookingsSnapshot } from "@/components/bookings-snapshot"
 import { CalFinancials } from "@/components/cal-financials"
-import { PartnerBreakdown } from "@/components/partner-breakdown"
-import { TimingBreakdown } from "@/components/timing-breakdown"
+import { SectionNav } from "@/components/section-nav"
 import { TimingSnapshot } from "@/components/timing-snapshot"
+import { AbvPerDayChart } from "@/components/charts/abv-per-day-chart"
+import { BookingsMadePerDayChart } from "@/components/charts/bookings-made-per-day-chart"
+import { BookingsVsStaysChart } from "@/components/charts/bookings-vs-stays-chart"
+import { CalDdlTakeupChart } from "@/components/charts/cal-ddl-takeup-chart"
+import { LeadTimeChart } from "@/components/charts/lead-time-chart"
 import { Button } from "@/components/ui/button"
 import {
   Breadcrumb,
@@ -43,6 +46,7 @@ function App() {
   const [isDark, setIsDark] = useState(false)
   const [leftSidebarOpen, setLeftSidebarOpen] = useState(true)
   const [rightSidebarOpen, setRightSidebarOpen] = useState(true)
+  const [hasRun, setHasRun] = useState(false)
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", isDark)
@@ -53,7 +57,7 @@ function App() {
       <div
         className={cn(
           "grid h-full transition-[grid-template-columns] duration-200",
-          leftSidebarOpen ? "grid-cols-[230px_1fr]" : "grid-cols-[20px_1fr]"
+          leftSidebarOpen ? "grid-cols-[230px_1fr]" : "grid-cols-[52px_1fr]"
         )}
       >
         <aside className="relative flex h-full flex-col border-r border-border bg-card">
@@ -70,33 +74,63 @@ function App() {
             )}
           </button>
 
-          <div className={cn("px-6 pb-6", !leftSidebarOpen && "hidden")}>
-            <div className="flex h-16 shrink-0 items-center gap-2 border-b border-border">
-              <div className="grid size-8 place-items-center rounded-md bg-primary text-primary-foreground">
+          {leftSidebarOpen ? (
+            <div className="flex flex-1 flex-col overflow-hidden">
+              <div className="px-6">
+                <div className="flex h-16 shrink-0 items-center gap-2 border-b border-border">
+                  <div className="grid size-8 place-items-center rounded-md bg-primary text-primary-foreground">
+                    <Mountain className="size-4" />
+                  </div>
+                  <span className="text-lg font-semibold">Keystone</span>
+                </div>
+                <nav className="mt-6 space-y-2">
+                  {navItems.map(({ label, icon: Icon, active }) => (
+                    <a
+                      key={label}
+                      href="#"
+                      aria-current={active ? "page" : undefined}
+                      className={cn(
+                        "flex items-center gap-3 rounded-md px-4 py-3 text-sm font-medium transition-colors",
+                        active
+                          ? "bg-accent text-accent-foreground"
+                          : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                      )}
+                    >
+                      <Icon className="size-4" />
+                      {label}
+                    </a>
+                  ))}
+                </nav>
+              </div>
+              {hasRun && (
+                <div className="mt-auto">
+                  <SectionNav />
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center pt-5 gap-1">
+              <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground mb-4">
                 <Mountain className="size-4" />
               </div>
-              <span className="text-lg font-semibold">Keystone</span>
-            </div>
-
-            <nav className="mt-6 space-y-2">
               {navItems.map(({ label, icon: Icon, active }) => (
                 <a
                   key={label}
                   href="#"
                   aria-current={active ? "page" : undefined}
+                  title={label}
                   className={cn(
-                    "flex items-center gap-3 rounded-md px-4 py-3 text-sm font-medium transition-colors",
+                    "flex size-9 items-center justify-center rounded-md transition-colors",
                     active
                       ? "bg-accent text-accent-foreground"
                       : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                   )}
                 >
                   <Icon className="size-4" />
-                  {label}
                 </a>
               ))}
-            </nav>
-          </div>
+            </div>
+          )}
         </aside>
 
         <div className="flex h-full min-w-0 flex-col overflow-hidden">
@@ -135,13 +169,13 @@ function App() {
           <div
             className={cn(
               "grid min-h-0 flex-1 transition-[grid-template-columns] duration-200",
-              rightSidebarOpen ? "grid-cols-[1fr_320px]" : "grid-cols-[1fr_20px]"
+              rightSidebarOpen ? "grid-cols-[1fr_320px]" : "grid-cols-[1fr_52px]"
             )}
           >
             <section className="min-w-0 overflow-y-auto bg-canvas px-20 py-12 xl:px-24 xl:py-14">
               <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
                 <div>
-                  <h1 className="text-2xl font-semibold tracking-tight">
+                  <h1 className="text-xl font-semibold tracking-tight">
                     Sales, cancellation &amp; re-let metrics
                   </h1>
                   <p className="mt-1 text-sm text-muted-foreground">
@@ -150,44 +184,79 @@ function App() {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
-                  <Button variant="outline">
-                    <Calendar className="size-4" />
+                  <Button variant="outline" className="text-xs">
+                    <Calendar className="size-3.5" />
                     Schedule report
                   </Button>
-                  <Button variant="outline">
-                    <ArrowUpRight className="size-4" />
+                  <Button variant="outline" className="text-xs">
+                    <ArrowUpRight className="size-3.5" />
                     Compare
                   </Button>
-                  <Button>
-                    <Download className="size-4" />
+                  <Button className="text-xs">
+                    <Download className="size-3.5" />
                     Export
                   </Button>
                 </div>
               </div>
 
-              <div className="space-y-6 rounded-2xl border border-border/80 bg-muted/30 p-6">
-                <BookingsSnapshot />
-                <PartnerBreakdown />
-              </div>
+              {!hasRun ? (
+                <div className="flex flex-col items-center justify-center gap-4 rounded-2xl border border-dashed border-border bg-muted/20 py-16 text-center">
+                  <div className="grid size-12 place-items-center rounded-xl bg-muted text-muted-foreground">
+                    <BarChart3 className="size-6" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">No data to display</p>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      Select your filters in the panel on the right, then press <strong>Run</strong> to load the report.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div id="section-bookings" className="scroll-mt-6 space-y-6 rounded-2xl border border-border/80 bg-muted/30 p-6">
+                    <BookingsSnapshot />
+                  </div>
 
-              <div className="mt-8 space-y-6 rounded-2xl border border-border/80 bg-muted/30 p-6">
-                <AverageBookingValueSnapshot />
-                <AverageBookingValueBreakdown />
-              </div>
+                  <div id="section-abv" className="mt-8 scroll-mt-6 space-y-6 rounded-2xl border border-border/80 bg-muted/30 p-6">
+                    <AverageBookingValueSnapshot />
+                  </div>
 
-              <div className="mt-8 space-y-6 rounded-2xl border border-border/80 bg-muted/30 p-6">
-                <CalFinancials />
-              </div>
+                  <div id="section-cal" className="mt-8 scroll-mt-6 space-y-6 rounded-2xl border border-border/80 bg-muted/30 p-6">
+                    <CalFinancials />
+                  </div>
 
-              <div className="mt-8 space-y-6 rounded-2xl border border-border/80 bg-muted/30 p-6">
-                <TimingSnapshot />
-                <TimingBreakdown />
-              </div>
+                  <div id="section-timing" className="mt-8 scroll-mt-6 space-y-6 rounded-2xl border border-border/80 bg-muted/30 p-6">
+                    <TimingSnapshot />
+                  </div>
+
+                  <div id="section-bookings-vs-stays" className="mt-8 scroll-mt-6 rounded-2xl border border-border/80 bg-muted/30 p-6">
+                    <BookingsVsStaysChart />
+                  </div>
+
+                  <div id="section-abv-per-day" className="mt-8 scroll-mt-6 rounded-2xl border border-border/80 bg-muted/30 p-6">
+                    <AbvPerDayChart />
+                  </div>
+
+                  <div id="section-lead-time" className="mt-8 scroll-mt-6 rounded-2xl border border-border/80 bg-muted/30 p-6">
+                    <LeadTimeChart />
+                  </div>
+
+                  <div id="section-bookings-per-day" className="mt-8 scroll-mt-6 rounded-2xl border border-border/80 bg-muted/30 p-6">
+                    <BookingsMadePerDayChart />
+                  </div>
+
+                  <div id="section-cal-ddl-takeup" className="mt-8 scroll-mt-6 rounded-2xl border border-border/80 bg-muted/30 p-6">
+                    <CalDdlTakeupChart />
+                  </div>
+                </>
+              )}
+
             </section>
 
             <FilterSidebar
               open={rightSidebarOpen}
               onToggle={() => setRightSidebarOpen((prev) => !prev)}
+              onRun={() => setHasRun(true)}
             />
           </div>
         </div>

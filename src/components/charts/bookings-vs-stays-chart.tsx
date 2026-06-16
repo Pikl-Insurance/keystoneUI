@@ -1,0 +1,72 @@
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts"
+
+import { buildDailyBookingsData } from "@/lib/chart-data"
+
+const data = buildDailyBookingsData()
+
+const TICK_STYLE = { fontSize: 11, fill: "var(--color-muted-foreground)" }
+const EVERY_NTH = 13
+
+export function BookingsVsStaysChart() {
+  return (
+    <section>
+      <h2 className="mb-4 text-xs font-semibold tracking-wide uppercase">
+        Bookings made vs stays starting per day
+      </h2>
+      <div className="rounded-xl border border-border bg-card p-4 shadow-xs">
+        <ResponsiveContainer width="100%" height={260}>
+          <LineChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
+            <XAxis
+              dataKey="date"
+              tick={TICK_STYLE}
+              interval={EVERY_NTH}
+              tickLine={false}
+              axisLine={false}
+            />
+            <YAxis tick={TICK_STYLE} tickLine={false} axisLine={false} width={48} />
+            <Tooltip
+              contentStyle={{
+                fontSize: 12,
+                background: "var(--color-card)",
+                border: "1px solid var(--color-border)",
+                borderRadius: 8,
+              }}
+            />
+            <Legend
+              iconType="plainline"
+              wrapperStyle={{ fontSize: 12, paddingTop: 12 }}
+            />
+            <Line
+              type="monotone"
+              dataKey="made"
+              name="Made"
+              stroke="#3b82f6"
+              strokeWidth={1.5}
+              dot={false}
+              activeDot={{ r: 4 }}
+            />
+            <Line
+              type="monotone"
+              dataKey="starting"
+              name="Starting"
+              stroke="#a855f7"
+              strokeWidth={1.5}
+              dot={false}
+              activeDot={{ r: 4 }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    </section>
+  )
+}

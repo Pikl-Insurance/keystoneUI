@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { ChevronDown, ChevronUp } from "lucide-react"
+import { LayoutList } from "lucide-react"
 
 import {
   Table,
@@ -20,14 +20,14 @@ type PartnerRow = {
 }
 
 const rows: PartnerRow[] = [
-  { brand: "Cottages.com", ccy: "GBP", bookings: "173,694", cal: "3,237 1.9%", ddl: "0 0.0%", color: "bg-blue-500" },
-  { brand: "Hoseasons", ccy: "", bookings: "195,900", cal: "0 0.0%", ddl: "0 0.0%", color: "bg-cyan-500" },
-  { brand: "Dansommer (DK)", ccy: "EUR", bookings: "383", cal: "1 0.3%", ddl: "0 0.0%", color: "bg-amber-500" },
-  { brand: "Dansommer (EUR)", ccy: "", bookings: "569", cal: "0 0.0%", ddl: "0 0.0%", color: "bg-violet-500" },
-  { brand: "Fincallorca (EUR)", ccy: "", bookings: "626", cal: "0 0.0%", ddl: "0 0.0%", color: "bg-rose-500" },
-  { brand: "JamesVillas", ccy: "", bookings: "563", cal: "0 0.0%", ddl: "0 0.0%", color: "bg-lime-500" },
-  { brand: "Novasol (DK)", ccy: "", bookings: "51,369", cal: "4,102 8.0%", ddl: "2 0.0%", color: "bg-pink-500" },
-  { brand: "Novasol (EUR)", ccy: "", bookings: "139,932", cal: "6,668 4.8%", ddl: "0 0.0%", color: "bg-orange-500" },
+  { brand: "Partner Alpha", ccy: "GBP", bookings: "42,310", cal: "1,104 2.6%", ddl: "12 0.0%", color: "bg-blue-500" },
+  { brand: "Partner Beta", ccy: "GBP", bookings: "38,750", cal: "892 2.3%", ddl: "8 0.0%", color: "bg-cyan-500" },
+  { brand: "Partner Gamma (DK)", ccy: "EUR", bookings: "9,420", cal: "310 3.3%", ddl: "0 0.0%", color: "bg-amber-500" },
+  { brand: "Partner Gamma (EUR)", ccy: "EUR", bookings: "7,880", cal: "0 0.0%", ddl: "0 0.0%", color: "bg-violet-500" },
+  { brand: "Partner Delta (EUR)", ccy: "EUR", bookings: "5,640", cal: "0 0.0%", ddl: "0 0.0%", color: "bg-rose-500" },
+  { brand: "Partner Epsilon", ccy: "GBP", bookings: "4,200", cal: "0 0.0%", ddl: "0 0.0%", color: "bg-lime-500" },
+  { brand: "Partner Zeta (DK)", ccy: "EUR", bookings: "11,800", cal: "620 5.3%", ddl: "18 0.2%", color: "bg-pink-500" },
+  { brand: "Partner Zeta (EUR)", ccy: "EUR", bookings: "4,500", cal: "284 6.3%", ddl: "10 0.2%", color: "bg-orange-500" },
 ]
 
 export function PartnerBreakdown() {
@@ -40,13 +40,10 @@ export function PartnerBreakdown() {
         <button
           type="button"
           onClick={() => setOpen((prev) => !prev)}
-          className="flex items-center gap-1 text-sm leading-none text-muted-foreground transition-colors hover:text-foreground"
+          aria-label={open ? "Hide partner breakdown" : "Show partner breakdown"}
+          className={`rounded-md p-1.5 transition-colors hover:bg-accent ${open ? "text-foreground" : "text-muted-foreground"}`}
         >
-          {open ? (
-            <>Hide details <ChevronUp className="size-3.5" /></>
-          ) : (
-            <>View details <ChevronDown className="size-3.5" /></>
-          )}
+          <LayoutList className="size-4" />
         </button>
       </div>
 
