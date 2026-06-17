@@ -1,8 +1,10 @@
 import { useState } from "react"
 import {
+  Ban,
   CalendarCheck,
   Download,
   Home,
+  PoundSterling,
   Zap,
   Tags,
   Users,
@@ -17,6 +19,7 @@ import {
   BOOKING_ENGINE_PARTNERS,
   BOOKING_ENGINE_SUMMARY,
   formatCount,
+  formatCurrency,
 } from "@/lib/booking-engine-data"
 import { MOCK_PROPERTY } from "@/lib/property-data"
 
@@ -36,6 +39,16 @@ const summaryItems: { label: string; value: string; icon: LucideIcon }[] = [
     label: "Total properties",
     value: formatCount(BOOKING_ENGINE_SUMMARY.totalProperties),
     icon: Home,
+  },
+  {
+    label: "Cancellations",
+    value: formatCount(BOOKING_ENGINE_SUMMARY.totalCancellations),
+    icon: Ban,
+  },
+  {
+    label: "Revenue",
+    value: formatCurrency(BOOKING_ENGINE_SUMMARY.totalRevenue, "GBP"),
+    icon: PoundSterling,
   },
 ]
 
@@ -75,7 +88,7 @@ export function BookingEnginePage() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
         {summaryItems.map(({ label, value, icon: Icon }) => (
           <Card key={label}>
             <CardHeader className="items-center">

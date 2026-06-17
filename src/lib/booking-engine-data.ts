@@ -201,6 +201,8 @@ export const BOOKING_ENGINE_SUMMARY = {
     (sum, partner) => sum + partner.activity.properties,
     0
   ),
+  totalCancellations: 73_236,
+  totalRevenue: 284_560_000,
 }
 
 export function formatCount(value: number) {

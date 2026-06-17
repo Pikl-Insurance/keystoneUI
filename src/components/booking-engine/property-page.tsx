@@ -10,10 +10,13 @@ import {
 } from "lucide-react"
 
 import { PropertyBookingsTable } from "@/components/booking-engine/property-bookings-table"
+import { PropertyDetailsPanel } from "@/components/booking-engine/property-details"
+import { PropertyInsights } from "@/components/booking-engine/property-insights"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { type Property } from "@/lib/property-data"
+import { WILLOWCROFT_HOUSE_DETAILS } from "@/lib/property-details-data"
 
 type PropertyPageProps = {
   property: Property
@@ -79,25 +82,31 @@ export function PropertyPage({ property, onBack }: PropertyPageProps) {
   return (
     <div className="space-y-8">
       <div>
-        <button
-          type="button"
-          onClick={onBack}
-          className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <ArrowLeft className="size-3.5" />
-          Back to partners
-        </button>
+        <div className="mb-3 flex items-center justify-between gap-4">
+          <nav className="text-xs text-muted-foreground">
+            <span>Booking engine</span>
+            <span className="mx-2">/</span>
+            <span>Properties</span>
+            <span className="mx-2">/</span>
+            <span className="text-foreground">{property.id}</span>
+          </nav>
 
-        <nav className="mb-3 text-xs text-muted-foreground">
-          <span>Booking engine</span>
-          <span className="mx-2">/</span>
-          <span>Properties</span>
-          <span className="mx-2">/</span>
-          <span className="text-foreground">{property.id}</span>
-        </nav>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={onBack}
+            className="shrink-0 text-xs"
+          >
+            <ArrowLeft className="size-3.5" />
+            Back to properties
+          </Button>
+        </div>
 
         <h1 className="text-[22px] font-semibold tracking-tight">{property.name}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{property.id}</p>
+        <p className="mt-1 text-sm text-muted-foreground">
+          {property.postcode}, {property.county}
+        </p>
       </div>
 
       <div className="grid gap-3 lg:grid-cols-2">
@@ -106,11 +115,11 @@ export function PropertyPage({ property, onBack }: PropertyPageProps) {
             <img
               src={property.imageUrl}
               alt={`${property.name} exterior`}
-              className="aspect-[4/3] w-full object-cover"
+              className="aspect-[3/2] w-full object-cover object-[center_42%]"
             />
           </div>
 
-          <div className="relative aspect-[4/3] overflow-hidden rounded-xl border border-border bg-[#f3f6f9] dark:bg-muted/20">
+          <div className="relative aspect-[3/2] overflow-hidden rounded-xl border border-border bg-[#f3f6f9] dark:bg-muted/20">
             <div
               aria-hidden
               className="absolute inset-0 bg-[linear-gradient(to_right,rgb(36_55_72/0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgb(36_55_72/0.06)_1px,transparent_1px)] bg-size-[28px_28px]"
@@ -135,58 +144,69 @@ export function PropertyPage({ property, onBack }: PropertyPageProps) {
       </div>
 
       <div className="space-y-4">
-        <Tabs defaultValue="bookings">
+        <Tabs defaultValue="bookings" className="gap-5">
           <TabsList className="bg-[var(--brand-grey-blue)] dark:bg-muted">
             <TabsTrigger value="bookings">Bookings ({property.bookingCount})</TabsTrigger>
             <TabsTrigger value="insights">Insights</TabsTrigger>
+            <TabsTrigger value="details">Property details</TabsTrigger>
           </TabsList>
-        </Tabs>
 
-        <div className="flex items-center gap-2">
-          <Button
-            variant={listView === "list" ? "default" : "ghost"}
-            size="sm"
-            className="h-8 text-xs"
-            onClick={() => setListView("list")}
-          >
-            List
-          </Button>
-          <Button
-            variant={listView === "timeline" ? "default" : "ghost"}
-            size="sm"
-            className="h-8 text-xs"
-            onClick={() => setListView("timeline")}
-          >
-            Timeline
-          </Button>
-        </div>
-
-        {listView === "list" ? (
-          <>
-            <PropertyBookingsTable bookings={property.bookings} />
-            <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-muted-foreground">
-              <p>
-                Showing 1–{property.bookings.length} of {property.bookings.length}
-              </p>
-              <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" className="h-8 text-xs" disabled>
-                  ← Prev
-                </Button>
-                <span className="text-xs">Page 1 of 1</span>
-                <Button variant="outline" size="sm" className="h-8 text-xs" disabled>
-                  Next →
-                </Button>
-              </div>
+          <TabsContent value="bookings" className="space-y-5">
+            <div className="flex items-center gap-2">
+              <Button
+                variant={listView === "list" ? "default" : "ghost"}
+                size="sm"
+                className="h-8 text-xs"
+                onClick={() => setListView("list")}
+              >
+                List
+              </Button>
+              <Button
+                variant={listView === "timeline" ? "default" : "ghost"}
+                size="sm"
+                className="h-8 text-xs"
+                onClick={() => setListView("timeline")}
+              >
+                Timeline
+              </Button>
             </div>
-          </>
-        ) : (
-          <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-border bg-muted/10 py-14 text-center">
-            <p className="text-sm font-medium">Timeline view</p>
-            <p className="text-sm text-muted-foreground">
-              Booking timeline will be available in a future release.
-            </p>
-          </div>
-        )}
+
+            {listView === "list" ? (
+              <>
+                <PropertyBookingsTable bookings={property.bookings} />
+                <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-muted-foreground">
+                  <p>
+                    Showing 1–{property.bookings.length} of {property.bookings.length}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <Button variant="outline" size="sm" className="h-8 text-xs" disabled>
+                      ← Prev
+                    </Button>
+                    <span className="text-xs">Page 1 of 1</span>
+                    <Button variant="outline" size="sm" className="h-8 text-xs" disabled>
+                      Next →
+                    </Button>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-border bg-muted/10 py-14 text-center">
+                <p className="text-sm font-medium">Timeline view</p>
+                <p className="text-sm text-muted-foreground">
+                  Booking timeline will be available in a future release.
+                </p>
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="insights">
+            <PropertyInsights />
+          </TabsContent>
+
+          <TabsContent value="details">
+            <PropertyDetailsPanel details={WILLOWCROFT_HOUSE_DETAILS} />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   )

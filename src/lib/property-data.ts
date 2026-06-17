@@ -13,6 +13,8 @@ export type PropertyBooking = {
 export type Property = {
   id: string
   name: string
+  postcode: string
+  county: string
   partner: string
   brand: string
   location: string
@@ -25,7 +27,9 @@ export type Property = {
 
 export const MOCK_PROPERTY: Property = {
   id: "BH2384",
-  name: "Rose Cottage",
+  name: "Willowcroft House",
+  postcode: "LA22 0EU",
+  county: "Cumbria",
   partner: "Partner A",
   brand: "Brand A",
   location: "Ambleside",
