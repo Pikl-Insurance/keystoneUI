@@ -127,7 +127,7 @@ export function PropertyPage({ property, onBack }: PropertyPageProps) {
             <div className="absolute inset-0 flex items-center justify-center p-6">
               <div className="flex flex-col items-center gap-2 text-center text-muted-foreground">
                 <div className="grid size-10 place-items-center rounded-full bg-background shadow-xs">
-                  <MapPin className="size-5 text-emerald-600" />
+                  <MapPin className="size-5 text-primary" />
                 </div>
                 <p className="text-sm font-medium text-foreground">{property.location}</p>
                 <p className="text-xs">{property.country}</p>

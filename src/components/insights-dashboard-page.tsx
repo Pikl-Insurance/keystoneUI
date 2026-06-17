@@ -171,7 +171,7 @@ export function InsightsDashboardPage({ filters }: InsightsDashboardPageProps) {
                 <TableCell className="px-5 py-3 text-right text-sm tabular-nums">
                   {row.bookings}
                 </TableCell>
-                <TableCell className="px-5 py-3 text-right text-sm tabular-nums text-emerald-600 dark:text-emerald-400">
+                <TableCell className="px-5 py-3 text-right text-sm tabular-nums text-primary dark:text-blue-400">
                   {row.cal}
                 </TableCell>
                 <TableCell className="px-5 py-3 text-right text-sm tabular-nums text-amber-600 dark:text-amber-400">

@@ -193,7 +193,7 @@ export function AverageBookingValueSnapshot({ filters }: { filters: ActiveFilter
                           </span>
                         </div>
                         <p className="text-xl font-medium tracking-tight">{column.value}</p>
-                        <p className="mt-1 text-[11px] font-normal text-emerald-600 dark:text-emerald-400">
+                        <p className="mt-1 text-[11px] font-normal text-primary dark:text-blue-400">
                           {column.cal}
                         </p>
                       </div>
@@ -260,9 +260,9 @@ export function AverageBookingValueSnapshot({ filters }: { filters: ActiveFilter
                     </TableCell>
                     <TableCell className="text-muted-foreground">{row.ccy}</TableCell>
                     <TableCell className="text-right tabular-nums">{row.abv}</TableCell>
-                    <TableCell className="text-right tabular-nums text-emerald-600 dark:text-emerald-400">{row.calAbv}</TableCell>
+                    <TableCell className="text-right tabular-nums text-primary dark:text-blue-400">{row.calAbv}</TableCell>
                     <TableCell className="text-right tabular-nums">{row.abvIncFee}</TableCell>
-                    <TableCell className="text-right tabular-nums text-emerald-600 dark:text-emerald-400">{row.calPricePct}</TableCell>
+                    <TableCell className="text-right tabular-nums text-primary dark:text-blue-400">{row.calPricePct}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

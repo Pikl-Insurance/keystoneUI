@@ -188,7 +188,7 @@ export function TimingSnapshot({ filters }: { filters: ActiveFilters }) {
                             </span>
                           </div>
                           <p className="text-xl font-medium tracking-tight">{col.value}</p>
-                          <p className="mt-1 text-[11px] font-normal text-emerald-600 dark:text-emerald-400">
+                          <p className="mt-1 text-[11px] font-normal text-primary dark:text-blue-400">
                             {col.cal}
                           </p>
                         </div>
@@ -228,7 +228,7 @@ export function TimingSnapshot({ filters }: { filters: ActiveFilters }) {
                     </TableCell>
                     <TableCell className="text-muted-foreground">{row.ccy}</TableCell>
                     <TableCell className="text-right tabular-nums">{row.avgLead}</TableCell>
-                    <TableCell className="text-right tabular-nums text-emerald-600 dark:text-emerald-400">
+                    <TableCell className="text-right tabular-nums text-primary dark:text-blue-400">
                       {row.calAvgLead}
                     </TableCell>
                   </TableRow>

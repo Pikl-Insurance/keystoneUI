@@ -13,7 +13,7 @@ function ButterflyRow({ metric }: { metric: CompareMetric }) {
       <p
         className={cn(
           "absolute top-1/2 right-5 -translate-y-1/2 text-right text-sm font-medium tabular-nums",
-          metric.deltaTone === "positive" && "text-emerald-700 dark:text-emerald-400",
+          metric.deltaTone === "positive" && "text-primary dark:text-blue-400",
           metric.deltaTone === "negative" && "text-rose-600 dark:text-rose-400",
           metric.deltaTone === "neutral" && "text-muted-foreground"
         )}
@@ -29,7 +29,7 @@ function ButterflyRow({ metric }: { metric: CompareMetric }) {
             <div className="flex justify-end">
               <div className="h-2 w-full rounded-full bg-muted">
                 <div
-                  className="ml-auto h-2 rounded-full bg-emerald-700 dark:bg-emerald-600"
+                  className="ml-auto h-2 rounded-full bg-primary dark:bg-blue-600"
                   style={{ width: leftWidth }}
                 />
               </div>

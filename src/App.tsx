@@ -258,7 +258,7 @@ function App() {
                   >
                     <span className="relative flex size-6 shrink-0 items-center justify-center rounded-full bg-[var(--brand-dark-blue)] text-[10px] font-semibold text-[var(--brand-light-blue)]">
                       CG
-                      <span className="absolute -right-0.5 -bottom-0.5 size-2 rounded-full border-2 border-background bg-emerald-500" />
+                      <span className="absolute -right-0.5 -bottom-0.5 size-2 rounded-full border-2 border-background bg-primary" />
                     </span>
                     <span className="text-sm font-medium">Courtney</span>
                   </Button>
@@ -322,7 +322,7 @@ function App() {
               <div className="mb-8 flex flex-wrap items-start justify-between gap-4">
                 <div>
                   {insightsView !== "compare" && (
-                    <div className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/60 px-2.5 py-1">
+                    <div className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-2.5 py-1">
                       {insightsView === "dashboard" ? (
                         <LayoutDashboard className="size-3.5 text-muted-foreground" />
                       ) : (
