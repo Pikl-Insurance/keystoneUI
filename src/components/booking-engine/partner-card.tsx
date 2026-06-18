@@ -96,7 +96,7 @@ export function PartnerCard({ partner, expanded, onToggle, onViewProperty }: Par
                   ].map((stat) => (
                     <div
                       key={stat.label}
-                      className="rounded-lg border border-border bg-card px-3.5 py-3 dark:bg-canvas"
+                      className="rounded-lg border border-border bg-canvas px-3.5 py-3 dark:bg-canvas"
                     >
                       <dt className="text-[10px] font-semibold tracking-wide text-muted-foreground uppercase">
                         {stat.label}

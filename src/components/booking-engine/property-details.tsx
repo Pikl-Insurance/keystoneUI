@@ -48,10 +48,10 @@ function OverviewCard({ field }: { field: PropertyOverviewField }) {
   const Icon = OVERVIEW_ICONS[field.label] ?? Home
 
   return (
-    <Card className="flex h-full flex-col shadow-none">
-      <CardHeader className="items-center p-3 pb-2">
+    <Card className="flex h-full flex-col overflow-hidden bg-card shadow-xs">
+      <CardHeader className="items-center border-b border-border/60 bg-muted/25 p-3 pb-2">
         <div className="flex items-center gap-2">
-          <div className="grid size-6 shrink-0 place-items-center rounded-md bg-muted text-muted-foreground">
+          <div className="grid size-6 shrink-0 place-items-center rounded-md bg-canvas text-muted-foreground dark:bg-muted">
             <Icon className="size-3" />
           </div>
           <p className="text-[10px] font-medium tracking-wide text-muted-foreground uppercase">
@@ -59,7 +59,7 @@ function OverviewCard({ field }: { field: PropertyOverviewField }) {
           </p>
         </div>
       </CardHeader>
-      <CardContent className="flex flex-1 flex-col p-3 pt-0">
+      <CardContent className="flex flex-1 flex-col bg-card p-3 pt-0 dark:bg-muted/10">
         <p className="text-base font-medium tracking-tight">{field.value}</p>
       </CardContent>
     </Card>

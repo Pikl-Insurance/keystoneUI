@@ -216,10 +216,10 @@ export function PropertyPage({ property, onBack }: PropertyPageProps) {
 
 function SnapshotCard({ label, value, subtext, icon: Icon }: SnapshotCard) {
   return (
-    <Card className="flex h-full flex-col overflow-hidden shadow-none">
-      <CardHeader className="items-center border-b border-border/60 bg-muted/55 p-3 pb-2 dark:border-border dark:bg-muted/25">
+    <Card className="flex h-full flex-col overflow-hidden bg-card shadow-xs">
+      <CardHeader className="items-center border-b border-border/60 bg-muted/25 p-3 pb-2">
         <div className="flex items-center gap-2">
-          <div className="grid size-6 shrink-0 place-items-center rounded-md bg-background/80 text-muted-foreground dark:bg-muted">
+          <div className="grid size-6 shrink-0 place-items-center rounded-md bg-canvas text-muted-foreground dark:bg-muted">
             <Icon className="size-3" />
           </div>
           <p className="text-[10px] font-medium tracking-wide text-muted-foreground uppercase">
@@ -227,7 +227,7 @@ function SnapshotCard({ label, value, subtext, icon: Icon }: SnapshotCard) {
           </p>
         </div>
       </CardHeader>
-      <CardContent className="flex flex-1 flex-col bg-muted/35 p-3 pt-3 dark:bg-muted/10">
+      <CardContent className="flex flex-1 flex-col bg-card p-3 pt-3 dark:bg-muted/10">
         <p className="text-base font-medium tracking-tight">{value}</p>
         <p className="mt-1 min-h-4 text-[11px] text-muted-foreground">{subtext ?? "\u00a0"}</p>
       </CardContent>

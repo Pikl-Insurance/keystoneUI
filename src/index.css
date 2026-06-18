@@ -15,8 +15,8 @@
   --foreground: var(--brand-dark-blue);
   --card: #ffffff;
   --card-foreground: var(--brand-dark-blue);
-  --canvas: #f8fafc;
-  --field: #ffffff;
+  --canvas: #eef2f6;
+  --field: #eef2f6;
 
   /* Actions */
   --primary: var(--brand-dark-blue);

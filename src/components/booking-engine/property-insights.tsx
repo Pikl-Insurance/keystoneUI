@@ -134,10 +134,10 @@ function InsightMetricCard({
   icon: LucideIcon
 }) {
   return (
-    <Card className="flex h-full flex-col shadow-none">
-      <CardHeader className="items-center p-3 pb-2">
+    <Card className="flex h-full flex-col overflow-hidden bg-card shadow-xs">
+      <CardHeader className="items-center border-b border-border/60 bg-muted/25 p-3 pb-2">
         <div className="flex items-center gap-2">
-          <div className="grid size-6 shrink-0 place-items-center rounded-md bg-muted text-muted-foreground">
+          <div className="grid size-6 shrink-0 place-items-center rounded-md bg-canvas text-muted-foreground dark:bg-muted">
             <Icon className="size-3" />
           </div>
           <p className="text-[10px] font-medium tracking-wide text-muted-foreground uppercase">
@@ -145,7 +145,7 @@ function InsightMetricCard({
           </p>
         </div>
       </CardHeader>
-      <CardContent className="flex flex-1 flex-col p-3 pt-0">
+      <CardContent className="flex flex-1 flex-col bg-card p-3 pt-0 dark:bg-muted/10">
         <p className="text-base font-medium tracking-tight">{metric.value}</p>
         <p className="mt-1 min-h-4 text-[11px] text-muted-foreground">{metric.subtext ?? "\u00a0"}</p>
       </CardContent>
@@ -171,13 +171,13 @@ const RANK_TROPHY_COLORS: Record<number, string> = {
 function BookingSourceCard({ source, rank }: { source: BookingSourceItem; rank: number }) {
   if (source.isWebTraffic) {
     return (
-      <Card className="flex h-full flex-col shadow-none">
-        <CardHeader className="items-center p-3 pb-2">
+      <Card className="flex h-full flex-col overflow-hidden bg-card shadow-xs">
+        <CardHeader className="items-center border-b border-border/60 bg-muted/25 p-3 pb-2">
           <p className="text-[10px] font-medium tracking-wide text-muted-foreground uppercase">
             Booking stream
           </p>
         </CardHeader>
-        <CardContent className="flex flex-1 flex-col p-3 pt-0">
+        <CardContent className="flex flex-1 flex-col bg-card p-3 pt-0 dark:bg-muted/10">
           <p className="text-base font-medium tracking-tight">{source.label}</p>
           <p className="mt-1 min-h-4 text-[11px] text-muted-foreground">
             {source.value} visits · vs other · {source.vsOther ?? 0}
@@ -188,8 +188,8 @@ function BookingSourceCard({ source, rank }: { source: BookingSourceItem; rank: 
   }
 
   return (
-    <Card className="flex h-full flex-col shadow-none">
-      <CardHeader className="items-center p-3 pb-2">
+    <Card className="flex h-full flex-col overflow-hidden bg-card shadow-xs">
+      <CardHeader className="items-center border-b border-border/60 bg-muted/25 p-3 pb-2">
         <div className="flex items-center gap-1.5">
           {rank <= 3 && (
             <Trophy className={`size-3.5 ${RANK_TROPHY_COLORS[rank]}`} />
@@ -199,7 +199,7 @@ function BookingSourceCard({ source, rank }: { source: BookingSourceItem; rank: 
           </p>
         </div>
       </CardHeader>
-      <CardContent className="flex flex-1 flex-col p-3 pt-0">
+      <CardContent className="flex flex-1 flex-col bg-card p-3 pt-0 dark:bg-muted/10">
         <p className="text-base font-medium tracking-tight">{source.label}</p>
         <p className="mt-1 min-h-4 text-[11px] text-muted-foreground">
           {source.value} bookings · {source.type}

@@ -75,7 +75,7 @@ type DashboardSlide = {
 
 function DashboardKpiCard({ label, value, subtext, icon: Icon, description }: KpiCard) {
   return (
-    <Card className="shadow-none">
+    <Card className="bg-card shadow-xs">
       <CardContent className="relative p-3">
         <Tooltip>
           <TooltipTrigger asChild>
@@ -187,7 +187,7 @@ function DashboardCarousel({
           ))}
         </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto" data-snapshot-scroll>
+        <div className="min-h-0 flex-1 overflow-y-auto bg-[var(--panel-bg)]" data-snapshot-scroll>
           <div className="px-5 pt-12 pb-6">
             <div className="mb-5">
               <h3 className="text-sm font-semibold">{current.heading}</h3>
