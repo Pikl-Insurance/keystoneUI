@@ -6,7 +6,6 @@ import {
   ChevronRight,
   Clock,
   CreditCard,
-  DollarSign,
   FileText,
   Gauge,
   Info,
@@ -188,7 +187,7 @@ function DashboardCarousel({
         </div>
 
         <div className="min-h-0 flex-1 overflow-y-auto bg-[var(--panel-bg)]" data-snapshot-scroll>
-          <div className="px-5 pt-12 pb-6">
+          <div className="px-5 pt-8 pb-6">
             <div className="mb-5">
               <h3 className="text-sm font-semibold">{current.heading}</h3>
               <p className="mt-1 max-w-2xl text-xs leading-relaxed text-muted-foreground">
@@ -308,31 +307,31 @@ export function InsightsDashboardPage({ filters, hasRun, onRun }: InsightsDashbo
     {
       label: "Total payable",
       value: calFin.totalPayable,
-      icon: DollarSign,
+      icon: PoundSterling,
       description: "Total amount payable to partners in GBP for the selected period.",
     },
     {
       label: "IPT",
       value: calFin.ipt,
-      icon: DollarSign,
+      icon: PoundSterling,
       description: "Insurance premium tax amount in GBP for the selected period.",
     },
     {
       label: "PISL comm",
       value: calFin.pislComm,
-      icon: DollarSign,
+      icon: PoundSterling,
       description: "PISL commission amount in GBP for the selected period.",
     },
     {
       label: "Capacity net",
       value: calFin.capacityNet,
-      icon: DollarSign,
+      icon: PoundSterling,
       description: "Net capacity value in GBP after deductions for the selected period.",
     },
     {
       label: "PISL payable",
       value: calFin.pislPayable,
-      icon: DollarSign,
+      icon: PoundSterling,
       description: "Total PISL amount payable in GBP for the selected period.",
     },
     {

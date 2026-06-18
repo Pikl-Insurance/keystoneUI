@@ -1,4 +1,4 @@
-import { DollarSign, Info, type LucideIcon } from "lucide-react"
+import { Info, PoundSterling, type LucideIcon } from "lucide-react"
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { ReportSection } from "@/components/report-section"
@@ -24,43 +24,43 @@ export function CalFinancials({ filters }: { filters: ActiveFilters }) {
     {
       label: "Total payable (GBP)",
       value: profile.totalPayable,
-      icon: DollarSign,
+      icon: PoundSterling,
       description: "Total amount payable to partners in GBP for the selected period.",
     },
     {
       label: "IPT (GBP)",
       value: profile.ipt,
-      icon: DollarSign,
+      icon: PoundSterling,
       description: "Insurance premium tax amount in GBP for the selected period.",
     },
     {
       label: "PISL comm (GBP)",
       value: profile.pislComm,
-      icon: DollarSign,
+      icon: PoundSterling,
       description: "PISL commission amount in GBP for the selected period.",
     },
     {
       label: "Capacity net (GBP)",
       value: profile.capacityNet,
-      icon: DollarSign,
+      icon: PoundSterling,
       description: "Net capacity value in GBP after deductions for the selected period.",
     },
     {
       label: "PISL amount payable (GBP)",
       value: profile.pislPayable,
-      icon: DollarSign,
+      icon: PoundSterling,
       description: "Total PISL amount payable in GBP for the selected period.",
     },
     {
       label: "Premium inc. IPT (GBP)",
       value: profile.premiumInc,
-      icon: DollarSign,
+      icon: PoundSterling,
       description: "Total premium including insurance premium tax in GBP.",
     },
     {
       label: "GWP (GBP)",
       value: profile.gwp,
-      icon: DollarSign,
+      icon: PoundSterling,
       description: "Gross written premium in GBP for the selected period.",
       note: "Gross written premium",
     },
