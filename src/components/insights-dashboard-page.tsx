@@ -8,6 +8,7 @@ import {
   DollarSign,
   FileText,
   Gauge,
+  Info,
   Percent,
   PoundSterling,
   Timer,
@@ -25,6 +26,12 @@ import { LeadTimeChart } from "@/components/charts/lead-time-chart"
 import { DashboardFilterBar } from "@/components/dashboard-filter-bar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import {
   Table,
   TableBody,
@@ -53,6 +60,7 @@ type KpiCard = {
   value: string
   subtext?: string
   icon: LucideIcon
+  description: string
 }
 
 type DashboardSlide = {
@@ -63,10 +71,22 @@ type DashboardSlide = {
   content: ReactNode
 }
 
-function DashboardKpiCard({ label, value, subtext, icon: Icon }: KpiCard) {
+function DashboardKpiCard({ label, value, subtext, icon: Icon, description }: KpiCard) {
   return (
     <Card className="shadow-none">
-      <CardContent className="p-3">
+      <CardContent className="relative p-3">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              type="button"
+              className="absolute top-3 right-3 shrink-0 text-muted-foreground transition-colors hover:text-foreground"
+              aria-label={`More information about ${label}`}
+            >
+              <Info className="size-3.5" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent>{description}</TooltipContent>
+        </Tooltip>
         <div className="grid size-7 place-items-center rounded-md bg-muted text-muted-foreground">
           <Icon className="size-3.5" />
         </div>
@@ -82,11 +102,13 @@ function DashboardKpiCard({ label, value, subtext, icon: Icon }: KpiCard) {
 
 function KpiGrid({ kpis, columns }: { kpis: KpiCard[]; columns: string }) {
   return (
-    <div className={cn("grid gap-3", columns)}>
-      {kpis.map((kpi) => (
-        <DashboardKpiCard key={kpi.label} {...kpi} />
-      ))}
-    </div>
+    <TooltipProvider>
+      <div className={cn("grid gap-3", columns)}>
+        {kpis.map((kpi) => (
+          <DashboardKpiCard key={kpi.label} {...kpi} />
+        ))}
+      </div>
+    </TooltipProvider>
   )
 }
 
@@ -135,14 +157,14 @@ function DashboardCarousel({ slides }: { slides: DashboardSlide[] }) {
         </Button>
       </div>
 
-      <div className="flex shrink-0 gap-1 overflow-x-auto border-b border-border px-3 py-2">
+      <div className="flex shrink-0 gap-1.5 overflow-x-auto border-b border-border px-4 py-3">
         {slides.map((slide, slideIndex) => (
           <button
             key={slide.id}
             type="button"
             onClick={() => setIndex(slideIndex)}
             className={cn(
-              "shrink-0 rounded-full px-3 py-1.5 text-[11px] font-medium transition-colors",
+              "shrink-0 rounded-full px-4 py-2 text-[11px] font-medium transition-colors",
               slideIndex === index
                 ? "bg-primary text-primary-foreground"
                 : "bg-muted text-muted-foreground hover:bg-muted/80"
@@ -183,11 +205,36 @@ export function InsightsDashboardPage({ filters, hasRun, onRun }: InsightsDashbo
   const partnerRows = getPartnerRows(filters)
 
   const bookingKpis: KpiCard[] = [
-    { label: "Total bookings", value: booking.total, icon: CalendarCheck },
-    { label: "CAL sales", value: booking.calSales, icon: TrendingUp },
-    { label: "CAL take-up %", value: booking.calPct, icon: Percent },
-    { label: "DDL sales", value: booking.ddlSales, icon: CreditCard },
-    { label: "DDL take-up %", value: booking.ddlPct, icon: Gauge },
+    {
+      label: "Total bookings",
+      value: booking.total,
+      icon: CalendarCheck,
+      description: "Total number of bookings across all selected partners and brands.",
+    },
+    {
+      label: "CAL sales",
+      value: booking.calSales,
+      icon: TrendingUp,
+      description: "Sales completed through the CAL payment method for the selected period.",
+    },
+    {
+      label: "CAL take-up %",
+      value: booking.calPct,
+      icon: Percent,
+      description: "Percentage of eligible bookings that converted to CAL sales.",
+    },
+    {
+      label: "DDL sales",
+      value: booking.ddlSales,
+      icon: CreditCard,
+      description: "Sales completed through direct debit (DDL) for the selected period.",
+    },
+    {
+      label: "DDL take-up %",
+      value: booking.ddlPct,
+      icon: Gauge,
+      description: "Percentage of eligible bookings that converted to DDL sales.",
+    },
   ]
 
   const abvKpis: KpiCard[] = [
@@ -196,41 +243,82 @@ export function InsightsDashboardPage({ filters, hasRun, onRun }: InsightsDashbo
       value: abv.gbpAbv,
       subtext: abv.gbpCal,
       icon: Wallet,
+      description: "Average booking value excluding the booking fee, in GBP.",
     },
     {
       label: "ABV (excl. fee) EUR",
       value: abv.eurAbv,
       subtext: abv.eurCal,
       icon: Wallet,
+      description: "Average booking value excluding the booking fee, in EUR.",
     },
     {
       label: "ABV inc. fee GBP",
       value: abv.gbpAbvFee,
       subtext: abv.gbpCalFee,
       icon: FileText,
+      description: "Average booking value including the booking fee, in GBP.",
     },
     {
       label: "ABV inc. fee EUR",
       value: abv.eurAbvFee,
       subtext: abv.eurCalFee,
       icon: FileText,
+      description: "Average booking value including the booking fee, in EUR.",
     },
     {
       label: "CAL customer price",
       value: abv.calPct,
       subtext: "% of ABV inc. booking fee",
       icon: Percent,
+      description: "Share of customer price against ABV including booking fee.",
     },
   ]
 
   const calFinancialKpis: KpiCard[] = [
-    { label: "Total payable", value: calFin.totalPayable, icon: DollarSign },
-    { label: "IPT", value: calFin.ipt, icon: DollarSign },
-    { label: "PISL comm", value: calFin.pislComm, icon: DollarSign },
-    { label: "Capacity net", value: calFin.capacityNet, icon: DollarSign },
-    { label: "PISL payable", value: calFin.pislPayable, icon: DollarSign },
-    { label: "Premium inc. IPT", value: calFin.premiumInc, icon: PoundSterling },
-    { label: "GWP", value: calFin.gwp, subtext: "Gross written premium", icon: PoundSterling },
+    {
+      label: "Total payable",
+      value: calFin.totalPayable,
+      icon: DollarSign,
+      description: "Total amount payable to partners in GBP for the selected period.",
+    },
+    {
+      label: "IPT",
+      value: calFin.ipt,
+      icon: DollarSign,
+      description: "Insurance premium tax amount in GBP for the selected period.",
+    },
+    {
+      label: "PISL comm",
+      value: calFin.pislComm,
+      icon: DollarSign,
+      description: "PISL commission amount in GBP for the selected period.",
+    },
+    {
+      label: "Capacity net",
+      value: calFin.capacityNet,
+      icon: DollarSign,
+      description: "Net capacity value in GBP after deductions for the selected period.",
+    },
+    {
+      label: "PISL payable",
+      value: calFin.pislPayable,
+      icon: DollarSign,
+      description: "Total PISL amount payable in GBP for the selected period.",
+    },
+    {
+      label: "Premium inc. IPT",
+      value: calFin.premiumInc,
+      icon: PoundSterling,
+      description: "Total premium including insurance premium tax in GBP.",
+    },
+    {
+      label: "GWP",
+      value: calFin.gwp,
+      subtext: "Gross written premium",
+      icon: PoundSterling,
+      description: "Gross written premium in GBP for the selected period.",
+    },
   ]
 
   const timingKpis: KpiCard[] = [
@@ -239,18 +327,21 @@ export function InsightsDashboardPage({ filters, hasRun, onRun }: InsightsDashbo
       value: timing.gbpDays,
       subtext: timing.gbpCal,
       icon: Clock,
+      description: "Average number of days between booking date and stay start date, in GBP.",
     },
     {
       label: "Avg booking to stay EUR",
       value: timing.eurDays,
       subtext: timing.eurCal,
       icon: Clock,
+      description: "Average number of days between booking date and stay start date, in EUR.",
     },
     {
       label: "Avg cancel to stay",
       value: "—",
       subtext: "Days from cancellation to stay start",
       icon: Timer,
+      description: "Average number of days between cancellation date and stay start date.",
     },
   ]
 
@@ -384,7 +475,7 @@ export function InsightsDashboardPage({ filters, hasRun, onRun }: InsightsDashbo
         ].map((chip) => (
           <span
             key={chip}
-            className="rounded-full border border-border bg-card px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground"
+            className="rounded-full border border-border bg-card px-4 py-1.5 text-[11px] font-medium text-muted-foreground"
           >
             {chip}
           </span>
