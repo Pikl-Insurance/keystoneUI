@@ -96,7 +96,7 @@ export function ComparePage() {
               {formatCompareDateRange(comparisonApplied)}
             </p>
           </div>
-          <span className="w-1 shrink-0 rounded-full bg-blue-600" />
+          <span className="w-1 shrink-0 rounded-full bg-muted-foreground dark:bg-blue-600" />
         </div>
       </div>
 

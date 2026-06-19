@@ -3,7 +3,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Brand palette */
+  /* Brand palette (dark mode + accents) */
   --brand-pink: #ee2a7b;
   --brand-dark-blue: #243748;
   --brand-light-blue: #f1fdfe;
@@ -12,39 +12,39 @@
 
   /* Surfaces */
   --background: #ffffff;
-  --foreground: var(--brand-dark-blue);
+  --foreground: #18181b;
   --card: #ffffff;
-  --card-foreground: var(--brand-dark-blue);
-  --canvas: #eef2f6;
-  --field: #eef2f6;
+  --card-foreground: #18181b;
+  --canvas: #f4f4f5;
+  --field: #f4f4f5;
 
   /* Actions */
-  --primary: var(--brand-dark-blue);
+  --primary: #27272a;
   --primary-foreground: #ffffff;
 
   /* UI chrome */
-  --muted: #eef2f6;
-  --muted-foreground: #5a6d7d;
-  --accent: #e4ebf2;
-  --accent-foreground: var(--brand-dark-blue);
-  --border: #d5e0ea;
-  --input: #d5e0ea;
-  --ring: var(--brand-pink);
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --accent: #f4f4f5;
+  --accent-foreground: #18181b;
+  --border: #e4e4e7;
+  --input: #e4e4e7;
+  --ring: #a1a1aa;
   --popover: #ffffff;
-  --popover-foreground: var(--brand-dark-blue);
+  --popover-foreground: #18181b;
   --destructive: #dc2626;
 
-  /* Ambient gradients */
+  /* Ambient */
   --gradient-from: #ffffff;
-  --gradient-mid: #fafbfc;
+  --gradient-mid: #fafafa;
   --gradient-to: #ffffff;
-  --glow-pink: rgb(238 42 123 / 0.05);
-  --glow-green: rgb(162 255 227 / 0.04);
-  --glow-blue: rgb(247 250 252 / 0.6);
-  --panel-bg: var(--brand-grey-blue);
-  --panel-border: rgb(36 55 72 / 0.08);
-  --tooltip: var(--brand-dark-blue);
-  --tooltip-foreground: #f8fbfc;
+  --glow-pink: transparent;
+  --glow-green: transparent;
+  --glow-blue: transparent;
+  --panel-bg: #fafafa;
+  --panel-border: rgb(0 0 0 / 0.06);
+  --tooltip: #27272a;
+  --tooltip-foreground: #fafafa;
 }
 
 .dark {

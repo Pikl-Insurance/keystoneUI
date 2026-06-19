@@ -39,7 +39,7 @@ function ButterflyRow({ metric }: { metric: CompareMetric }) {
             <div className="flex justify-start">
               <div className="h-2 w-full rounded-full bg-muted">
                 <div
-                  className="h-2 rounded-full bg-blue-700 dark:bg-blue-600"
+                  className="h-2 rounded-full bg-muted-foreground dark:bg-blue-600"
                   style={{ width: rightWidth }}
                 />
               </div>

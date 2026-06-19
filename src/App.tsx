@@ -98,8 +98,8 @@ function App() {
   return (
     <div className="relative h-screen overflow-hidden bg-background text-foreground">
 
-      {/* ── Ambient brand glows ── */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+      {/* ── Ambient brand glows (dark mode only) ── */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 z-0 hidden overflow-hidden dark:block">
         <div className="absolute -right-40 -top-40 h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle_at_center,var(--glow-pink)_0%,transparent_68%)]" />
         <div className="absolute -bottom-40 left-[20%] h-[480px] w-[520px] rounded-full bg-[radial-gradient(circle_at_center,var(--glow-green)_0%,transparent_68%)]" />
         <div className="absolute top-[35%] right-[38%] h-[360px] w-[360px] rounded-full bg-[radial-gradient(circle_at_center,var(--glow-blue)_0%,transparent_72%)]" />
@@ -274,9 +274,9 @@ function App() {
                     className="h-9 gap-2 rounded-full px-3"
                     aria-label="User menu"
                   >
-                    <span className="relative flex size-6 shrink-0 items-center justify-center rounded-full bg-[var(--brand-dark-blue)] text-[10px] font-semibold text-[var(--brand-light-blue)]">
+                    <span className="relative flex size-6 shrink-0 items-center justify-center rounded-full bg-foreground text-[10px] font-semibold text-background">
                       CG
-                      <span className="absolute -right-0.5 -bottom-0.5 size-2 rounded-full border-0 bg-[var(--brand-green)] dark:border-2 dark:border-background" />
+                      <span className="absolute -right-0.5 -bottom-0.5 size-2 rounded-full border-0 bg-muted-foreground dark:border-2 dark:border-background dark:bg-[var(--brand-green)]" />
                     </span>
                     <span className="text-sm font-medium">Courtney</span>
                   </Button>
