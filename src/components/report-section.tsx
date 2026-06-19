@@ -24,7 +24,7 @@ export function ReportSection({
   const snapshotRef = useRef<HTMLElement>(null)
 
   return (
-    <section ref={snapshotRef} className="min-w-0">
+    <section ref={snapshotRef} className="flex h-full min-w-0 flex-col">
       <div
         className={cn(
           "flex items-center justify-between gap-3",
@@ -41,7 +41,7 @@ export function ReportSection({
           />
         </div>
       </div>
-      {children}
+      <div className="flex flex-1 flex-col">{children}</div>
     </section>
   )
 }

@@ -11,6 +11,7 @@ import {
 import { SortedChartTooltip } from "@/components/charts/sorted-chart-tooltip"
 import { ReportSection } from "@/components/report-section"
 import { type ActiveFilters, buildBookingsMadePerDayData } from "@/lib/chart-data"
+import { CHART_HEIGHT } from "@/lib/chart-styles"
 
 const TICK_STYLE = { fontSize: 11, fill: "var(--color-muted-foreground)" }
 
@@ -23,8 +24,14 @@ export function BookingsMadePerDayChart({ filters, compact }: BookingsMadePerDay
   const data = buildBookingsMadePerDayData(filters)
 
   const chart = (
-    <div className={compact ? "min-w-0 p-0" : "min-w-0 rounded-xl border border-border bg-card p-4 shadow-xs"}>
-      <ResponsiveContainer width="100%" height={compact ? 260 : 240}>
+    <div
+      className={
+        compact
+          ? "min-w-0 p-0"
+          : "flex min-h-0 flex-1 flex-col rounded-xl border border-border bg-card p-4 shadow-xs"
+      }
+    >
+      <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
         <BarChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }} barSize={4}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
           <XAxis
@@ -49,7 +56,7 @@ export function BookingsMadePerDayChart({ filters, compact }: BookingsMadePerDay
   )
 
   if (compact) {
-    return <section>{chart}</section>
+    return <section className="flex h-full min-w-0 flex-col">{chart}</section>
   }
 
   return (

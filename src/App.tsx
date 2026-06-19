@@ -13,6 +13,7 @@ import {
   LogOut,
   MoonStar,
   PanelRightClose,
+  PanelRightOpen,
   Settings2,
   Sun,
 } from "lucide-react"
@@ -21,7 +22,6 @@ import { BookingEnginePage } from "@/components/booking-engine-page"
 import { ComparePage } from "@/components/compare-page"
 import { ComponentsPage } from "@/components/components-page"
 import { FilterSidebar } from "@/components/filter-sidebar"
-import { FiltersReopenTab } from "@/components/filters-reopen-tab"
 import { InsightsReportPage } from "@/components/insights-report-page"
 import { LoginPage } from "@/components/login-page"
 import { SectionNav } from "@/components/section-nav"
@@ -80,8 +80,6 @@ function App() {
     document.documentElement.classList.toggle("dark", isDark)
   }, [isDark])
 
-  const isInsightsReport =
-    activeSection === "insights" && insightsView === "insights" && hasRun
   const showFiltersSidebar =
     activeSection === "insights" &&
     insightsView !== "compare" &&
@@ -321,15 +319,11 @@ function App() {
               showFiltersSidebar ? "grid-cols-[1fr_300px]" : "grid-cols-1"
             )}
           >
-            {!showFiltersSidebar && isInsightsReport ? (
-              <FiltersReopenTab onClick={() => setFiltersSidebarOpen(true)} />
-            ) : null}
             {/* Center stage */}
             <div className="min-h-0 min-w-0 overflow-hidden">
               <section
                 className={cn(
-                  "h-full overflow-y-auto px-20 py-12 xl:px-24 xl:py-14",
-                  isInsightsReport && !showFiltersSidebar && "pr-14"
+                  "h-full overflow-y-auto px-20 py-12 xl:px-24 xl:py-14"
                 )}
               >
               {activeSection === "booking-engine" ? (
@@ -365,14 +359,23 @@ function App() {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
-                  {insightsView === "insights" && hasRun && filtersSidebarOpen ? (
+                  {insightsView === "insights" && hasRun ? (
                     <Button
                       variant="outline"
                       className="text-xs"
-                      onClick={() => setFiltersSidebarOpen(false)}
+                      onClick={() => setFiltersSidebarOpen((open) => !open)}
                     >
-                      <PanelRightClose className="size-3.5" />
-                      Hide filters
+                      {filtersSidebarOpen ? (
+                        <>
+                          <PanelRightClose className="size-3.5" />
+                          Hide filters
+                        </>
+                      ) : (
+                        <>
+                          <PanelRightOpen className="size-3.5" />
+                          Show filters
+                        </>
+                      )}
                     </Button>
                   ) : null}
                   <Button variant="outline" className="text-xs">

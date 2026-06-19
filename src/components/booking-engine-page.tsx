@@ -6,8 +6,8 @@ import { PropertiesListPage } from "@/components/booking-engine/properties-list-
 import { PropertyPage } from "@/components/booking-engine/property-page"
 import { Button } from "@/components/ui/button"
 import { TooltipProvider } from "@/components/ui/tooltip"
-import { HeadlineDataWidget } from "@/components/widgets/headline-data-widget"
 import { DualDataWidget } from "@/components/dual-data-widget"
+import { HeadlineDataWidget } from "@/components/widgets/headline-data-widget"
 import {
   BOOKING_ENGINE_PARTNERS,
   BOOKING_ENGINE_SUMMARY,
@@ -78,6 +78,18 @@ export function BookingEnginePage() {
           <div className="grid grid-cols-1 items-stretch gap-4 @md:grid-cols-2">
             <DualDataWidget
               datasetA={{
+                title: "Partners",
+                value: formatCount(BOOKING_ENGINE_SUMMARY.partners),
+                clarification: "Connected to engine",
+              }}
+              datasetB={{
+                title: "Active brands",
+                value: formatCount(BOOKING_ENGINE_SUMMARY.activeBrands),
+                clarification: "Across all partners",
+              }}
+            />
+            <DualDataWidget
+              datasetA={{
                 title: "Sales",
                 value: formatCount(BOOKING_ENGINE_SUMMARY.totalBookings),
                 clarification: "Total bookings",
@@ -88,26 +100,15 @@ export function BookingEnginePage() {
                 clarification: "On platform",
               }}
             />
+          </div>
+
+          <div className="grid grid-cols-1 items-stretch gap-4 @md:grid-cols-2">
             <HeadlineDataWidget
               title="Revenue"
               value={formatCurrency(BOOKING_ENGINE_SUMMARY.totalRevenue, "GBP")}
               label="GBP · all partners"
               helpText="Combined revenue across all partners and brands."
               valueClassName={FIGURE_30PX_CLASS}
-            />
-          </div>
-          <div className="grid grid-cols-1 items-stretch gap-4 @md:grid-cols-2">
-            <DualDataWidget
-              datasetA={{
-                title: "Partners",
-                value: formatCount(BOOKING_ENGINE_SUMMARY.partners),
-                clarification: "Connected to engine",
-              }}
-              datasetB={{
-                title: "Active brands",
-                value: formatCount(BOOKING_ENGINE_SUMMARY.activeBrands),
-                clarification: "Across all partners",
-              }}
             />
             <DualDataWidget
               datasetA={{

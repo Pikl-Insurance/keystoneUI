@@ -14,6 +14,7 @@ import { SortedChartTooltip } from "@/components/charts/sorted-chart-tooltip"
 import { useHiddenChartSeries } from "@/components/charts/use-hidden-chart-series"
 import { ReportSection } from "@/components/report-section"
 import { type ActiveFilters, buildCalDdlTakeupData } from "@/lib/chart-data"
+import { CHART_HEIGHT } from "@/lib/chart-styles"
 
 const SERIES = [
   { key: "CAL % (total)", color: "#10b981" },
@@ -37,8 +38,14 @@ export function CalDdlTakeupChart({ filters, compact }: CalDdlTakeupChartProps) 
   const { hiddenKeys, toggleSeries, isHidden } = useHiddenChartSeries(SERIES_KEYS)
 
   const chart = (
-    <div className={compact ? "min-w-0 p-0" : "min-w-0 rounded-xl border border-border bg-card p-4 shadow-xs"}>
-      <ResponsiveContainer width="100%" height={compact ? 280 : 260}>
+    <div
+      className={
+        compact
+          ? "min-w-0 p-0"
+          : "flex min-h-0 flex-1 flex-col rounded-xl border border-border bg-card p-4 shadow-xs"
+      }
+    >
+      <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
         <LineChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
           <XAxis
@@ -83,7 +90,7 @@ export function CalDdlTakeupChart({ filters, compact }: CalDdlTakeupChartProps) 
   )
 
   if (compact) {
-    return <section>{chart}</section>
+    return <section className="flex h-full min-w-0 flex-col">{chart}</section>
   }
 
   return (
