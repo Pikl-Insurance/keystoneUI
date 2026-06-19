@@ -13,13 +13,24 @@ export type DualDataWidgetProps = {
   datasetA: DualDataDataset
   datasetB: DualDataDataset
   helpText?: string
+  valueClassName?: string
 }
 
-function DatasetColumn({ title, value, clarification }: DualDataDataset) {
+function DatasetColumn({
+  title,
+  value,
+  clarification,
+  valueClassName,
+}: DualDataDataset & { valueClassName?: string }) {
   return (
     <div className="min-w-0">
       <p className="truncate text-sm font-semibold text-muted-foreground">{title}</p>
-      <p className="mt-2 text-2xl font-bold tracking-tight tabular-nums text-foreground @sm:text-3xl">
+      <p
+        className={cn(
+          "mt-2 font-bold tracking-tight tabular-nums text-foreground",
+          valueClassName ?? "text-2xl @sm:text-3xl"
+        )}
+      >
         {value}
       </p>
       <p className="mt-1.5 truncate text-xs italic text-muted-foreground @sm:text-sm">
@@ -34,6 +45,7 @@ export function DualDataWidget({
   datasetA,
   datasetB,
   helpText,
+  valueClassName,
 }: DualDataWidgetProps) {
   return (
     <Card className="@container flex h-full min-w-0 flex-col bg-card shadow-xs">
@@ -47,11 +59,11 @@ export function DualDataWidget({
       <CardContent className={cn("flex flex-1 flex-col justify-center pb-5", !primaryTitle && "pt-5")}>
         <div className="flex min-w-0 items-stretch">
           <div className="min-w-0 flex-1 pr-3 @sm:pr-6">
-            <DatasetColumn {...datasetA} />
+            <DatasetColumn {...datasetA} valueClassName={valueClassName} />
           </div>
           <div aria-hidden className="w-px shrink-0 self-stretch bg-border" />
           <div className="min-w-0 flex-1 pl-3 @sm:pl-6">
-            <DatasetColumn {...datasetB} />
+            <DatasetColumn {...datasetB} valueClassName={valueClassName} />
           </div>
         </div>
       </CardContent>

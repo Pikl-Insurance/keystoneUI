@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { DataSnapshotWidget } from "@/components/widgets/data-snapshot-widget"
 import { HeadlineDataWidget } from "@/components/widgets/headline-data-widget"
+import { FIGURE_20PX_CLASS } from "@/lib/figure-styles"
 import { type Property } from "@/lib/property-data"
 import { WILLOWCROFT_HOUSE_DETAILS } from "@/lib/property-details-data"
 
@@ -60,9 +61,9 @@ export function PropertyPage({ property, onBack }: PropertyPageProps) {
           </p>
         </div>
 
-        <div className="grid gap-4 lg:grid-cols-2 lg:items-stretch">
-          <div className="flex h-full min-h-0 flex-col gap-3 sm:flex-row">
-            <div className="relative min-h-48 flex-1 overflow-hidden rounded-xl border border-border bg-muted/45 sm:min-h-0 dark:bg-muted/20">
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 items-stretch gap-3 lg:grid-cols-3">
+            <div className="relative aspect-[16/10] min-h-48 w-full overflow-hidden rounded-xl border border-border bg-muted/45 lg:aspect-auto lg:min-h-0 lg:h-full dark:bg-muted/20">
               <img
                 src={property.imageUrl}
                 alt={`${property.name} exterior`}
@@ -70,7 +71,7 @@ export function PropertyPage({ property, onBack }: PropertyPageProps) {
               />
             </div>
 
-            <div className="relative min-h-48 flex-1 overflow-hidden rounded-xl border border-border bg-muted/45 sm:min-h-0 dark:bg-muted/20">
+            <div className="relative aspect-[16/10] min-h-48 w-full overflow-hidden rounded-xl border border-border bg-muted/45 lg:aspect-auto lg:min-h-0 lg:h-full dark:bg-muted/20">
               <div
                 aria-hidden
                 className="absolute inset-0 bg-[linear-gradient(to_right,rgb(0_0_0/0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgb(0_0_0/0.06)_1px,transparent_1px)] bg-size-[28px_28px] dark:bg-[linear-gradient(to_right,rgb(255_255_255/0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgb(255_255_255/0.06)_1px,transparent_1px)]"
@@ -87,16 +88,27 @@ export function PropertyPage({ property, onBack }: PropertyPageProps) {
                 </div>
               </div>
             </div>
+
+            <DataSnapshotWidget
+              className="h-full"
+              title="Overview"
+              rows={WILLOWCROFT_HOUSE_DETAILS.overview.map((field) => ({
+                label: field.label,
+                value: field.value,
+              }))}
+            />
           </div>
 
-          <div className="@container flex min-w-0 flex-col gap-4">
+          <div className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2">
             <HeadlineDataWidget
               title="Bookings"
               value={String(property.bookingCount)}
               label="Total bookings"
+              valueClassName={FIGURE_20PX_CLASS}
             />
             <DualDataWidget
               primaryTitle="Stay profile"
+              valueClassName={FIGURE_20PX_CLASS}
               datasetA={{
                 title: "Avg nights",
                 value: avgNightsBooked,
@@ -108,14 +120,34 @@ export function PropertyPage({ property, onBack }: PropertyPageProps) {
                 clarification: "All time",
               }}
             />
-            <DataSnapshotWidget
-              title="At a glance"
-              rows={[
-                { label: "Partner", value: property.partner },
-                { label: "Brand", value: property.brand },
-                { label: "Location", value: `${property.postcode}, ${property.county}` },
-                { label: "Max occupancy", value: property.maxOccupancy },
-              ]}
+          </div>
+
+          <div className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2">
+            <DualDataWidget
+              valueClassName={FIGURE_20PX_CLASS}
+              datasetA={{
+                title: "Partner",
+                value: property.partner,
+                clarification: "Booking partner",
+              }}
+              datasetB={{
+                title: "Brand",
+                value: property.brand,
+                clarification: "Property brand",
+              }}
+            />
+            <DualDataWidget
+              valueClassName={FIGURE_20PX_CLASS}
+              datasetA={{
+                title: "Location",
+                value: property.postcode,
+                clarification: `${property.county}, ${property.country}`,
+              }}
+              datasetB={{
+                title: "Max occupancy",
+                value: property.maxOccupancy,
+                clarification: "Guests",
+              }}
             />
           </div>
         </div>

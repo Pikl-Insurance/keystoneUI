@@ -14,6 +14,7 @@ import {
   formatCount,
   formatCurrency,
 } from "@/lib/booking-engine-data"
+import { FIGURE_30PX_CLASS } from "@/lib/figure-styles"
 import { MOCK_PROPERTY } from "@/lib/property-data"
 import { getPropertiesForPartner } from "@/lib/properties-list-data"
 
@@ -92,7 +93,7 @@ export function BookingEnginePage() {
               value={formatCurrency(BOOKING_ENGINE_SUMMARY.totalRevenue, "GBP")}
               label="GBP · all partners"
               helpText="Combined revenue across all partners and brands."
-              valueClassName="text-[30px] leading-none"
+              valueClassName={FIGURE_30PX_CLASS}
             />
           </div>
           <div className="grid grid-cols-1 items-stretch gap-4 @md:grid-cols-2">

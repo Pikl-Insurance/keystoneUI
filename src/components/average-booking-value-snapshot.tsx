@@ -21,7 +21,6 @@ import {
 import { type ActiveFilters, getAbvProfile } from "@/lib/chart-data"
 import {
   INSIGHTS_WIDGET_HELP_TEXT,
-  INSIGHTS_WIDGET_SUBHEADING,
 } from "@/lib/insights-widget-labels"
 
 const BASE_ABV_ROWS = [
@@ -118,7 +117,7 @@ export function AverageBookingValueSnapshot({ filters }: { filters: ActiveFilter
         <div className="@container min-w-0">
           <div className="grid grid-cols-1 gap-4 @md:grid-cols-2 @4xl:grid-cols-3">
           <DualDataWidget
-            primaryTitle={INSIGHTS_WIDGET_SUBHEADING}
+            primaryTitle="ABV (excl. booking fee)"
             datasetA={{
               title: "GBP",
               value: profile.gbpAbv,
@@ -132,7 +131,7 @@ export function AverageBookingValueSnapshot({ filters }: { filters: ActiveFilter
             helpText={INSIGHTS_WIDGET_HELP_TEXT}
           />
           <DualDataWidget
-            primaryTitle={INSIGHTS_WIDGET_SUBHEADING}
+            primaryTitle="ABV inc. booking fee"
             datasetA={{
               title: "GBP",
               value: profile.gbpAbvFee,
@@ -147,7 +146,7 @@ export function AverageBookingValueSnapshot({ filters }: { filters: ActiveFilter
           />
           <div className="@md:col-span-2 @4xl:col-span-1">
           <HeadlineDataWidget
-            title={INSIGHTS_WIDGET_SUBHEADING}
+            title="CAL customer price"
             value={profile.calPct}
             label="% of ABV inc. booking fee"
             helpText={INSIGHTS_WIDGET_HELP_TEXT}

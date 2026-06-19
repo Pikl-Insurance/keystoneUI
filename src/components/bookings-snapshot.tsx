@@ -21,7 +21,6 @@ import {
 import { type ActiveFilters, getBookingProfile } from "@/lib/chart-data"
 import {
   INSIGHTS_WIDGET_HELP_TEXT,
-  INSIGHTS_WIDGET_SUBHEADING,
 } from "@/lib/insights-widget-labels"
 
 const BASE_PARTNER_ROWS = [
@@ -118,13 +117,13 @@ export function BookingsSnapshot({ filters }: { filters: ActiveFilters }) {
       <div className="@container min-w-0">
         <div className="grid grid-cols-1 gap-4 @4xl:grid-cols-[minmax(0,220px)_minmax(0,1fr)]">
           <HeadlineDataWidget
-            title={INSIGHTS_WIDGET_SUBHEADING}
+            title="Total bookings"
             value={profile.total}
             label="All selected partners and brands"
             helpText={INSIGHTS_WIDGET_HELP_TEXT}
           />
           <DualDataWidget
-            primaryTitle={INSIGHTS_WIDGET_SUBHEADING}
+            primaryTitle="Product split"
             datasetA={{
               title: "CAL",
               value: profile.calSales,

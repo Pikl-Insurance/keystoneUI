@@ -14,6 +14,7 @@ import { DualDataWidget } from "@/components/dual-data-widget"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { DataSnapshotWidget } from "@/components/widgets/data-snapshot-widget"
 import { HeadlineDataWidget } from "@/components/widgets/headline-data-widget"
+import { FIGURE_30PX_CLASS } from "@/lib/figure-styles"
 import {
   PROPERTY_INSIGHT_METRICS,
   PROPERTY_MONTHLY_TRENDS,
@@ -53,6 +54,7 @@ export function PropertyInsights() {
           <div className="grid grid-cols-1 gap-4 @md:grid-cols-2 @4xl:grid-cols-3">
             <DualDataWidget
               primaryTitle="Timing"
+              valueClassName={FIGURE_30PX_CLASS}
               datasetA={{
                 title: "Avg lead days",
                 value: leadDays.value,
@@ -68,11 +70,13 @@ export function PropertyInsights() {
               title="Avg cancel — from booking"
               value={cancelFromBooking.value}
               label={cancelFromBooking.subtext ?? ""}
+              valueClassName={FIGURE_30PX_CLASS}
             />
             <HeadlineDataWidget
               title="Avg booking value"
               value={avgBookingValue.value}
               label={avgBookingValue.subtext ?? ""}
+              valueClassName={FIGURE_30PX_CLASS}
             />
           </div>
         </div>
@@ -81,6 +85,7 @@ export function PropertyInsights() {
           <div className="grid grid-cols-1 gap-4 @md:grid-cols-2 @4xl:grid-cols-3">
             <DualDataWidget
               primaryTitle="Payment coverage"
+              valueClassName={FIGURE_30PX_CLASS}
               datasetA={{
                 title: "CAL coverage",
                 value: calCoverage.value,
@@ -94,6 +99,7 @@ export function PropertyInsights() {
             />
             <DualDataWidget
               primaryTitle="Stay profile"
+              valueClassName={FIGURE_30PX_CLASS}
               datasetA={{
                 title: "Avg nights",
                 value: avgNights.value,
@@ -109,6 +115,7 @@ export function PropertyInsights() {
               title="Occupancy (12M)"
               value={occupancy.value}
               label={occupancy.subtext ?? ""}
+              valueClassName={FIGURE_30PX_CLASS}
             />
           </div>
         </div>

@@ -12,7 +12,6 @@ import {
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { DataSnapshotWidget } from "@/components/widgets/data-snapshot-widget"
 import {
   type PropertyDetails,
   type PropertyFeatureId,
@@ -35,16 +34,6 @@ type PropertyDetailsProps = {
 export function PropertyDetailsPanel({ details }: PropertyDetailsProps) {
   return (
     <div className="space-y-5">
-      <div className="@container min-w-0">
-        <DataSnapshotWidget
-          title="Overview"
-          rows={details.overview.map((field) => ({
-            label: field.label,
-            value: field.value,
-          }))}
-        />
-      </div>
-
       <div className="grid gap-5 lg:grid-cols-3">
         <Card className="shadow-none lg:col-span-2">
           <CardContent className="p-5">

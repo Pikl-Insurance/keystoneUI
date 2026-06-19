@@ -21,7 +21,6 @@ import {
 import { type ActiveFilters, getTimingProfile } from "@/lib/chart-data"
 import {
   INSIGHTS_WIDGET_HELP_TEXT,
-  INSIGHTS_WIDGET_SUBHEADING,
 } from "@/lib/insights-widget-labels"
 
 const BASE_TIMING_ROWS = [
@@ -118,7 +117,7 @@ export function TimingSnapshot({ filters }: { filters: ActiveFilters }) {
         <div className="@container min-w-0">
           <div className="grid grid-cols-1 gap-4 @4xl:grid-cols-[minmax(0,1fr)_minmax(0,240px)]">
           <DualDataWidget
-            primaryTitle={INSIGHTS_WIDGET_SUBHEADING}
+            primaryTitle="Avg booking to stay"
             datasetA={{
               title: "GBP",
               value: profile.gbpDays,
@@ -132,7 +131,7 @@ export function TimingSnapshot({ filters }: { filters: ActiveFilters }) {
             helpText={INSIGHTS_WIDGET_HELP_TEXT}
           />
           <HeadlineDataWidget
-            title={INSIGHTS_WIDGET_SUBHEADING}
+            title="Avg cancellation to stay"
             value="—"
             label="Days from cancellation to stay start"
             helpText={INSIGHTS_WIDGET_HELP_TEXT}

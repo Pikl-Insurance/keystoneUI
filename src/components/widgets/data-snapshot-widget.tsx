@@ -14,6 +14,8 @@ export type DataSnapshotWidgetProps = {
   overviewHref?: string
   overviewLabel?: string
   className?: string
+  valueClassName?: string
+  compact?: boolean
 }
 
 export function DataSnapshotWidget({
@@ -22,6 +24,8 @@ export function DataSnapshotWidget({
   overviewHref,
   overviewLabel = "Link to Overview",
   className,
+  valueClassName,
+  compact = false,
 }: DataSnapshotWidgetProps) {
   return (
     <Card className={cn("min-w-0 bg-card shadow-xs", className)}>
@@ -42,10 +46,27 @@ export function DataSnapshotWidget({
         {rows.map((row) => (
           <div
             key={row.label}
-            className="flex items-center justify-between gap-4 border-t border-border px-5 py-3"
+            className={cn(
+              "flex items-center justify-between gap-4 border-t border-border",
+              compact ? "px-4 py-2" : "px-5 py-3"
+            )}
           >
-            <span className="text-sm italic text-muted-foreground">{row.label}</span>
-            <span className="text-sm font-semibold tabular-nums text-foreground">{row.value}</span>
+            <span
+              className={cn(
+                "italic text-muted-foreground",
+                compact ? "text-xs" : "text-sm"
+              )}
+            >
+              {row.label}
+            </span>
+            <span
+              className={cn(
+                "font-semibold tabular-nums text-foreground",
+                valueClassName ?? (compact ? "text-xs font-medium" : "text-sm")
+              )}
+            >
+              {row.value}
+            </span>
           </div>
         ))}
       </CardContent>
