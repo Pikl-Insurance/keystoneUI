@@ -42,9 +42,14 @@ export function DualDataWidget({
       </CardHeader>
 
       <CardContent className="pb-5">
-        <div className="grid grid-cols-2 gap-8">
-          <DatasetColumn {...datasetA} />
-          <DatasetColumn {...datasetB} />
+        <div className="flex items-stretch">
+          <div className="min-w-0 flex-1 pr-8">
+            <DatasetColumn {...datasetA} />
+          </div>
+          <div aria-hidden className="w-px shrink-0 self-stretch bg-border" />
+          <div className="min-w-0 flex-1 pl-8">
+            <DatasetColumn {...datasetB} />
+          </div>
         </div>
       </CardContent>
     </Card>
