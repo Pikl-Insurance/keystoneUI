@@ -99,7 +99,7 @@ export function PropertyPage({ property, onBack }: PropertyPageProps) {
             />
           </div>
 
-          <div className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <HeadlineDataWidget
               title="Bookings"
               value={String(property.bookingCount)}
@@ -120,9 +120,6 @@ export function PropertyPage({ property, onBack }: PropertyPageProps) {
                 clarification: "All time",
               }}
             />
-          </div>
-
-          <div className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2">
             <DualDataWidget
               valueClassName={FIGURE_20PX_CLASS}
               datasetA={{

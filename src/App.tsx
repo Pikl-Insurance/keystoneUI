@@ -18,7 +18,7 @@ import {
 
 import { BookingEnginePage } from "@/components/booking-engine-page"
 import { ComparePage } from "@/components/compare-page"
-import { ComponentsPage } from "@/components/components-page"
+import { DesignSystemView } from "@/components/components-page"
 import { FilterSidebar } from "@/components/filter-sidebar"
 import { InsightsReportPage } from "@/components/insights-report-page"
 import { LoginPage } from "@/components/login-page"
@@ -77,8 +77,9 @@ function App() {
     document.documentElement.classList.toggle("dark", isDark)
   }, [isDark])
 
-  const showFiltersSidebar =
-    activeSection === "insights" && insightsView !== "compare"
+  const showRightSidebar =
+    (activeSection === "insights" && insightsView !== "compare") ||
+    activeSection === "components"
 
   if (!isAuthenticated) {
     return <LoginPage onLogin={() => setIsAuthenticated(true)} />
@@ -311,111 +312,111 @@ function App() {
           <div
             className={cn(
               "relative grid min-h-0 flex-1 overflow-hidden",
-              showFiltersSidebar ? "grid-cols-[1fr_300px]" : "grid-cols-1"
+              showRightSidebar ? "grid-cols-[1fr_300px]" : "grid-cols-1"
             )}
           >
-            {/* Center stage */}
-            <div className="min-h-0 min-w-0 overflow-hidden">
-              <section
-                className={cn(
-                  "h-full overflow-y-auto px-20 py-12 xl:px-24 xl:py-14"
-                )}
-              >
-              {activeSection === "booking-engine" ? (
-                <BookingEnginePage />
-              ) : activeSection === "components" ? (
-                <ComponentsPage />
-              ) : activeSection === "admin" ? (
-                <div className="flex flex-col items-center justify-center gap-4 rounded-2xl border border-dashed border-border bg-muted/10 py-14 text-center">
-                  <div className="grid size-12 place-items-center rounded-xl bg-muted text-muted-foreground">
-                    <Settings2 className="size-6" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Admin</p>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      Admin tools will be available here soon.
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <>
-              <div className="mb-8 flex flex-wrap items-start justify-between gap-4">
-                <div>
-                  <h1 className="text-[22px] font-semibold tracking-tight">
-                    {insightsView === "compare"
-                      ? "Compare partners"
-                      : "Sales, cancellation & re-let metrics"}
-                  </h1>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {insightsView === "compare"
-                      ? "Set filters for a primary and comparison side, then run to review metrics side by side."
-                      : "Real-time across 3 partners"}
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-2">
-                  <Button variant="outline" className="text-xs">
-                    <Calendar className="size-3.5" />
-                    Schedule report
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="text-xs"
-                    onClick={() =>
-                      setInsightsView((view) =>
-                        view === "compare" ? "insights" : "compare"
-                      )
-                    }
-                  >
-                    {insightsView === "compare" ? (
-                      <>
-                        <ArrowLeftRight className="size-3.5" />
-                        Exit compare
-                      </>
+            {activeSection === "components" ? (
+              <DesignSystemView />
+            ) : (
+              <>
+                <div className="min-h-0 min-w-0 overflow-hidden">
+                  <section className="h-full overflow-y-auto px-20 py-12 xl:px-24 xl:py-14">
+                    {activeSection === "booking-engine" ? (
+                      <BookingEnginePage />
+                    ) : activeSection === "admin" ? (
+                      <div className="flex flex-col items-center justify-center gap-4 rounded-2xl border border-dashed border-border bg-muted/10 py-14 text-center">
+                        <div className="grid size-12 place-items-center rounded-xl bg-muted text-muted-foreground">
+                          <Settings2 className="size-6" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium">Admin</p>
+                          <p className="mt-1 text-sm text-muted-foreground">
+                            Admin tools will be available here soon.
+                          </p>
+                        </div>
+                      </div>
                     ) : (
                       <>
-                        <ArrowUpRight className="size-3.5" />
-                        Compare
+                        <div className="mb-8 flex flex-wrap items-start justify-between gap-4">
+                          <div>
+                            <h1 className="text-[22px] font-semibold tracking-tight">
+                              {insightsView === "compare"
+                                ? "Compare partners"
+                                : "Sales, cancellation & re-let metrics"}
+                            </h1>
+                            <p className="mt-1 text-sm text-muted-foreground">
+                              {insightsView === "compare"
+                                ? "Set filters for a primary and comparison side, then run to review metrics side by side."
+                                : "Real-time across 3 partners"}
+                            </p>
+                          </div>
+
+                          <div className="flex flex-wrap items-center gap-2">
+                            <Button variant="outline" className="text-xs">
+                              <Calendar className="size-3.5" />
+                              Schedule report
+                            </Button>
+                            <Button
+                              variant="outline"
+                              className="text-xs"
+                              onClick={() =>
+                                setInsightsView((view) =>
+                                  view === "compare" ? "insights" : "compare"
+                                )
+                              }
+                            >
+                              {insightsView === "compare" ? (
+                                <>
+                                  <ArrowLeftRight className="size-3.5" />
+                                  Exit compare
+                                </>
+                              ) : (
+                                <>
+                                  <ArrowUpRight className="size-3.5" />
+                                  Compare
+                                </>
+                              )}
+                            </Button>
+                            <Button className="text-xs">
+                              <Download className="size-3.5" />
+                              Export
+                            </Button>
+                          </div>
+                        </div>
+
+                        {insightsView === "compare" ? (
+                          <ComparePage />
+                        ) : !hasRun ? (
+                          <div className="flex flex-col items-center justify-center gap-4 rounded-2xl border border-dashed border-border bg-muted/10 py-14 text-center">
+                            <div className="grid size-12 place-items-center rounded-xl bg-muted text-muted-foreground">
+                              <BarChart3 className="size-6" />
+                            </div>
+                            <div>
+                              <p className="text-sm font-medium">No data to display</p>
+                              <p className="mt-1 text-sm text-muted-foreground">
+                                Select your filters in the panel on the right, then press{" "}
+                                <strong>Run</strong> to load the report.
+                              </p>
+                            </div>
+                          </div>
+                        ) : (
+                          <InsightsReportPage filters={activeFilters} wideLayout={false} />
+                        )}
                       </>
                     )}
-                  </Button>
-                  <Button className="text-xs">
-                    <Download className="size-3.5" />
-                    Export
-                  </Button>
+                  </section>
                 </div>
-              </div>
 
-              {insightsView === "compare" ? (
-                <ComparePage />
-              ) : !hasRun ? (
-                <div className="flex flex-col items-center justify-center gap-4 rounded-2xl border border-dashed border-border bg-muted/10 py-14 text-center">
-                  <div className="grid size-12 place-items-center rounded-xl bg-muted text-muted-foreground">
-                    <BarChart3 className="size-6" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">No data to display</p>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      Select your filters in the panel on the right, then press <strong>Run</strong> to load the report.
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <InsightsReportPage filters={activeFilters} wideLayout={false} />
-              )}
-                </>
-              )}
-              </section>
-            </div>
-
-            {showFiltersSidebar ? (
-              <FilterSidebar
-                onRun={(filters) => {
-                  setActiveFilters(filters)
-                  setHasRun(true)
-                }}
-              />
-            ) : null}
+                {showRightSidebar ? (
+                  <FilterSidebar
+                    onRun={(filters) => {
+                      setActiveFilters(filters)
+                      setHasRun(true)
+                    }}
+                  />
+                ) : null}
+              </>
+            )}
           </div>
 
           </div>{/* end rounded panel */}
