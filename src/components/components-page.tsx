@@ -146,25 +146,14 @@ export function ComponentsPage() {
   return (
     <TooltipProvider>
       <div className="mx-auto max-w-6xl pb-16">
-        <div className="mb-4 flex items-center gap-2 text-sm text-muted-foreground lg:hidden">
-          <Layers className="size-4" />
-          <span>Keystone design system</span>
-        </div>
-
         <div className="flex gap-10">
           <aside className="hidden w-56 shrink-0 lg:block">
-            <div className="sticky top-8 flex max-h-[calc(100vh-2rem)] flex-col gap-4">
-              <div className="shrink-0 space-y-4">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Layers className="size-4 shrink-0" />
-                  <span>Keystone design system</span>
-                </div>
-                <div className="flex h-9 items-center gap-2 text-sm font-medium">
-                  <BookOpen className="size-4 text-muted-foreground" />
-                  <span>On this page</span>
-                </div>
+            <div className="sticky top-8 flex max-h-[calc(100vh-2rem)] flex-col">
+              <div className="flex h-9 shrink-0 items-center gap-2 text-sm font-medium">
+                <BookOpen className="size-4 text-muted-foreground" />
+                <span>On this page</span>
               </div>
-              <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pr-2 [-ms-overflow-style:none] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-border">
+              <div className="mt-4 min-h-0 flex-1 overflow-y-auto overscroll-contain pr-2 [-ms-overflow-style:none] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-border">
                 <TableOfContents activeId={activeId} onNavigate={scrollToSection} />
               </div>
             </div>
@@ -172,6 +161,10 @@ export function ComponentsPage() {
 
           <div className="min-w-0 flex-1 space-y-10">
             <header className="space-y-4 border-b border-border pb-8">
+              <div className="flex h-9 items-center gap-2 text-sm text-muted-foreground">
+                <Layers className="size-4 shrink-0" />
+                <span>Keystone design system</span>
+              </div>
               <h1 className="text-3xl font-semibold tracking-tight leading-9">Components</h1>
               <p className="max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
                 A living library of every Keystone component — stored, documented, and refined here.
