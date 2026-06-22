@@ -18,10 +18,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { metricCardGridClass } from "@/lib/card-layout"
 import { type ActiveFilters, getBookingProfile } from "@/lib/chart-data"
 import {
   INSIGHTS_WIDGET_HELP_TEXT,
 } from "@/lib/insights-widget-labels"
+import { cn } from "@/lib/utils"
 
 const BASE_PARTNER_ROWS = [
   { brand: "Partner Alpha", ccy: "GBP", color: "bg-blue-500" },
@@ -115,7 +117,7 @@ export function BookingsSnapshot({ filters }: { filters: ActiveFilters }) {
         }
       >
       <div className="@container flex min-h-0 min-w-0 flex-1 flex-col">
-        <div className="grid grid-cols-1 items-stretch gap-4 @4xl:grid-cols-[minmax(0,220px)_minmax(0,1fr)]">
+        <div className={cn(metricCardGridClass, "grid-cols-1 @4xl:grid-cols-[minmax(0,220px)_minmax(0,1fr)]")}>
           <HeadlineDataWidget
             title="Total bookings"
             value={profile.total}

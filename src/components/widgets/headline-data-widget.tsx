@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { FIGURE_24PX_CLASS } from "@/lib/figure-styles"
 import { cn } from "@/lib/utils"
 import { WidgetHelpButton } from "@/components/widgets/widget-help-button"
 
@@ -26,12 +27,12 @@ export function HeadlineDataWidget({
         <WidgetHelpButton title={title} helpText={helpText} />
       </CardHeader>
 
-      <CardContent className="flex flex-1 flex-col pb-5">
+      <CardContent className="flex flex-1 flex-col gap-3 pb-5 pt-1">
         <div className="flex flex-1 items-center">
           <p
             className={cn(
               "font-bold tracking-tight tabular-nums text-foreground",
-              valueClassName ?? "text-3xl @sm:text-4xl"
+              valueClassName ?? FIGURE_24PX_CLASS
             )}
           >
             {value}

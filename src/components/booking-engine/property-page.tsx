@@ -11,8 +11,10 @@ import { TooltipProvider } from "@/components/ui/tooltip"
 import { DataSnapshotWidget } from "@/components/widgets/data-snapshot-widget"
 import { HeadlineDataWidget } from "@/components/widgets/headline-data-widget"
 import { FIGURE_20PX_CLASS } from "@/lib/figure-styles"
+import { metricCardGridClass } from "@/lib/card-layout"
 import { type Property } from "@/lib/property-data"
 import { WILLOWCROFT_HOUSE_DETAILS } from "@/lib/property-details-data"
+import { cn } from "@/lib/utils"
 
 type PropertyPageProps = {
   property: Property
@@ -62,7 +64,7 @@ export function PropertyPage({ property, onBack }: PropertyPageProps) {
         </div>
 
         <div className="space-y-4">
-          <div className="grid grid-cols-1 items-stretch gap-3 lg:grid-cols-3">
+          <div className={cn(metricCardGridClass, "grid-cols-1 lg:grid-cols-3")}>
             <div className="relative aspect-[16/10] min-h-48 w-full overflow-hidden rounded-xl border border-border bg-muted/45 lg:aspect-auto lg:min-h-0 lg:h-full dark:bg-muted/20">
               <img
                 src={property.imageUrl}
@@ -99,7 +101,7 @@ export function PropertyPage({ property, onBack }: PropertyPageProps) {
             />
           </div>
 
-          <div className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div className={cn(metricCardGridClass, "grid-cols-1 sm:grid-cols-2 xl:grid-cols-4")}>
             <HeadlineDataWidget
               title="Bookings"
               value={String(property.bookingCount)}

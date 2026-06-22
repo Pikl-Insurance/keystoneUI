@@ -2,8 +2,10 @@ import { ReportSection } from "@/components/report-section"
 import { DataSnapshotWidget } from "@/components/widgets/data-snapshot-widget"
 import { HeadlineDataWidget } from "@/components/widgets/headline-data-widget"
 import { TooltipProvider } from "@/components/ui/tooltip"
+import { metricCardGridClass } from "@/lib/card-layout"
 import { type ActiveFilters, getCalFinProfile } from "@/lib/chart-data"
 import { INSIGHTS_WIDGET_HELP_TEXT } from "@/lib/insights-widget-labels"
+import { cn } from "@/lib/utils"
 
 export function CalFinancials({ filters }: { filters: ActiveFilters }) {
   const profile = getCalFinProfile(filters)
@@ -25,7 +27,7 @@ export function CalFinancials({ filters }: { filters: ActiveFilters }) {
         filters={filters}
       >
         <div className="@container min-w-0">
-          <div className="grid grid-cols-1 gap-4 @4xl:grid-cols-[minmax(0,260px)_minmax(0,1fr)]">
+          <div className={cn(metricCardGridClass, "grid-cols-1 @4xl:grid-cols-[minmax(0,260px)_minmax(0,1fr)]")}>
           <HeadlineDataWidget
             title="Total payable"
             value={profile.totalPayable}

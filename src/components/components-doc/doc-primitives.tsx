@@ -93,21 +93,36 @@ export function CodeBlock({ code }: { code: string }) {
   )
 }
 
-export function PreviewFrame({ children, wide }: { children: ReactNode; wide?: boolean }) {
+export function PreviewFrame({
+  children,
+  wide,
+  inset,
+}: {
+  children: ReactNode
+  wide?: boolean
+  inset?: boolean
+}) {
   return (
     <div
       className={cn(
-        "rounded-lg border border-border bg-muted/20 p-6",
+        "overflow-hidden rounded-lg border border-border bg-muted/20",
         wide ? "w-full" : "max-w-2xl"
       )}
     >
-      {children}
+      <div
+        className={cn(
+          "grid gap-6 p-6",
+          inset && "[&>*]:max-w-md"
+        )}
+      >
+        {children}
+      </div>
     </div>
   )
 }
 
 export function ComponentDocBlock({ entry }: { entry: ComponentCatalogEntry }) {
-  const { wide } = getPreviewLayout(entry.id)
+  const { wide, inset } = getPreviewLayout(entry.id)
 
   return (
     <article id={entry.id} className="scroll-mt-24 space-y-6 border-b border-border pb-12 last:border-b-0">
@@ -127,7 +142,7 @@ export function ComponentDocBlock({ entry }: { entry: ComponentCatalogEntry }) {
             <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
               Preview
             </p>
-            <PreviewFrame wide={wide}>
+            <PreviewFrame wide={wide} inset={inset}>
               <ComponentPreview id={entry.id} />
             </PreviewFrame>
           </div>

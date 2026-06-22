@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { FIGURE_24PX_CLASS } from "@/lib/figure-styles"
 import { cn } from "@/lib/utils"
 import { WidgetHelpButton } from "@/components/widgets/widget-help-button"
 
@@ -29,7 +30,7 @@ function DatasetColumn({
       <p
         className={cn(
           "mt-2 font-bold tracking-tight tabular-nums text-foreground",
-          valueClassName ?? "text-2xl @sm:text-3xl"
+          valueClassName ?? FIGURE_24PX_CLASS
         )}
       >
         {value}

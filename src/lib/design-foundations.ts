@@ -216,11 +216,11 @@ export const typographyScale: TypographyScaleEntry[] = [
     usage: "Meta text, table hints, and footnotes.",
   },
   {
-    name: "Figure 30px",
+    name: "Figure 24px",
     sample: "£1.2m",
-    className: "text-[30px] font-bold leading-none",
-    specs: "30px / bold",
-    usage: "Large revenue and headline metrics.",
+    className: "text-[24px] font-bold leading-none",
+    specs: "24px / bold",
+    usage: "Large revenue and headline metrics on cards.",
   },
   {
     name: "Figure 20px",

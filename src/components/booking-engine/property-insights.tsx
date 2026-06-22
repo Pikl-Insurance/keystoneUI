@@ -14,12 +14,14 @@ import { DualDataWidget } from "@/components/dual-data-widget"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { DataSnapshotWidget } from "@/components/widgets/data-snapshot-widget"
 import { HeadlineDataWidget } from "@/components/widgets/headline-data-widget"
+import { metricCardGridClass } from "@/lib/card-layout"
 import { FIGURE_20PX_CLASS } from "@/lib/figure-styles"
 import {
   PROPERTY_INSIGHT_METRICS,
   PROPERTY_MONTHLY_TRENDS,
   PROPERTY_RANKED_BOOKING_SOURCES,
 } from "@/lib/property-insights-data"
+import { cn } from "@/lib/utils"
 
 const TICK_STYLE = { fontSize: 11, fill: "var(--color-muted-foreground)" }
 
@@ -51,7 +53,7 @@ export function PropertyInsights() {
     <TooltipProvider>
       <div className="space-y-4">
         <div className="@container min-w-0">
-          <div className="grid grid-cols-1 gap-4 @md:grid-cols-2 @4xl:grid-cols-3">
+          <div className={cn(metricCardGridClass, "grid-cols-1 @md:grid-cols-2 @4xl:grid-cols-3")}>
             <DualDataWidget
               primaryTitle="Timing"
               valueClassName={FIGURE_20PX_CLASS}
@@ -82,7 +84,7 @@ export function PropertyInsights() {
         </div>
 
         <div className="@container min-w-0">
-          <div className="grid grid-cols-1 gap-4 @md:grid-cols-2 @4xl:grid-cols-3">
+          <div className={cn(metricCardGridClass, "grid-cols-1 @md:grid-cols-2 @4xl:grid-cols-3")}>
             <DualDataWidget
               primaryTitle="Payment coverage"
               valueClassName={FIGURE_20PX_CLASS}
@@ -121,7 +123,7 @@ export function PropertyInsights() {
         </div>
 
         <div className="@container min-w-0">
-          <div className="grid grid-cols-1 gap-4 @md:grid-cols-2">
+          <div className={cn(metricCardGridClass, "grid-cols-1 @md:grid-cols-2")}>
             <DataSnapshotWidget
               title="Engagement"
               rows={[

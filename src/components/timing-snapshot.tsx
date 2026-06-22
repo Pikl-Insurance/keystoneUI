@@ -18,10 +18,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { metricCardGridClass } from "@/lib/card-layout"
 import { type ActiveFilters, getTimingProfile } from "@/lib/chart-data"
 import {
   INSIGHTS_WIDGET_HELP_TEXT,
 } from "@/lib/insights-widget-labels"
+import { cn } from "@/lib/utils"
 
 const BASE_TIMING_ROWS = [
   { brand: "Partner Alpha",       ccy: "GBP", color: "bg-blue-500"   },
@@ -115,7 +117,7 @@ export function TimingSnapshot({ filters }: { filters: ActiveFilters }) {
         }
       >
         <div className="@container min-w-0">
-          <div className="grid grid-cols-1 gap-4 @4xl:grid-cols-[minmax(0,1fr)_minmax(0,240px)]">
+          <div className={cn(metricCardGridClass, "grid-cols-1 @4xl:grid-cols-[minmax(0,1fr)_minmax(0,240px)]")}>
           <DualDataWidget
             primaryTitle="Avg booking to stay"
             datasetA={{

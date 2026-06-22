@@ -5,8 +5,10 @@ import { DualDataWidget } from "@/components/dual-data-widget"
 import { Button } from "@/components/ui/button"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { HeadlineDataWidget } from "@/components/widgets/headline-data-widget"
+import { metricCardGridClass } from "@/lib/card-layout"
 import { formatCount, type Partner } from "@/lib/booking-engine-data"
 import { type PropertyListItem } from "@/lib/properties-list-data"
+import { cn } from "@/lib/utils"
 
 type PropertiesListPageProps = {
   partner: Partner
@@ -51,7 +53,7 @@ export function PropertiesListPage({
         </div>
 
         <div className="@container min-w-0">
-          <div className="grid grid-cols-1 gap-4 @md:grid-cols-[minmax(0,220px)_minmax(0,1fr)]">
+          <div className={cn(metricCardGridClass, "grid-cols-1 @md:grid-cols-[minmax(0,220px)_minmax(0,1fr)]")}>
             <HeadlineDataWidget
               title="Properties"
               value={formatCount(partner.activity.properties)}

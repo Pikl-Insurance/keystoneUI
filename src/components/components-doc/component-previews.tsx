@@ -76,7 +76,7 @@ import {
   DEFAULT_COMPARE_SIDE,
   type CompareSideFilters,
 } from "@/lib/compare-data"
-import { FIGURE_30PX_CLASS } from "@/lib/figure-styles"
+import { FIGURE_24PX_CLASS } from "@/lib/figure-styles"
 import { MOCK_PROPERTY } from "@/lib/property-data"
 import { getPropertiesForPartner } from "@/lib/properties-list-data"
 
@@ -181,7 +181,7 @@ export function ComponentPreview({ id }: { id: string }) {
           value="128,450"
           label="All selected partners and brands"
           helpText="Supporting context for this headline metric."
-          valueClassName={FIGURE_30PX_CLASS}
+          valueClassName={FIGURE_24PX_CLASS}
         />
       )
     case "dual-data-widget":
@@ -495,5 +495,14 @@ export function getPreviewLayout(id: string) {
     "login-page",
   ]
 
-  return { wide: wide.includes(id) }
+  const inset = [
+    "headline-data-widget",
+    "dual-data-widget",
+    "breakdown-data-widget",
+    "data-snapshot-widget",
+    "dual-data-list-widget",
+    "partner-volume-widget",
+  ]
+
+  return { wide: wide.includes(id), inset: inset.includes(id) }
 }

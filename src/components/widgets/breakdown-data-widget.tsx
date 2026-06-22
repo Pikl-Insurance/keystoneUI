@@ -1,4 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card"
+import { FIGURE_24PX_CLASS } from "@/lib/figure-styles"
+import { cn } from "@/lib/utils"
 import { WidgetHelpButton } from "@/components/widgets/widget-help-button"
 
 export type BreakdownSubdata = {
@@ -39,7 +41,7 @@ export function BreakdownDataWidget({
       <CardContent className="grid gap-6 p-5 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
         <div className="min-w-0 text-center sm:text-left">
           <h3 className="text-sm font-semibold text-muted-foreground">{title}</h3>
-          <p className="mt-3 text-4xl font-bold tracking-tight tabular-nums text-foreground">
+          <p className={cn("mt-3 font-bold tracking-tight tabular-nums text-foreground", FIGURE_24PX_CLASS)}>
             {primaryValue}
           </p>
           <p className="mt-2 text-sm italic text-muted-foreground">{primaryLabel}</p>

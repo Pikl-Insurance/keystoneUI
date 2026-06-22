@@ -274,7 +274,7 @@ function DesignSystemPageContent({
 /* index.html */
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" />
 
-import { FIGURE_20PX_CLASS, FIGURE_30PX_CLASS } from "@/lib/figure-styles"`}
+import { FIGURE_20PX_CLASS, FIGURE_24PX_CLASS } from "@/lib/figure-styles"`}
             />
           </section>
 
@@ -297,7 +297,7 @@ import { FIGURE_20PX_CLASS, FIGURE_30PX_CLASS } from "@/lib/figure-styles"`}
             />
 
             <CodeBlock
-              code={`import { FIGURE_20PX_CLASS, FIGURE_30PX_CLASS } from "@/lib/figure-styles"
+              code={`import { FIGURE_20PX_CLASS, FIGURE_24PX_CLASS } from "@/lib/figure-styles"
 import { CHART_HEIGHT } from "@/lib/chart-styles"
 
 <HeadlineDataWidget valueClassName={FIGURE_20PX_CLASS} ... />

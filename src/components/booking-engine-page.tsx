@@ -8,15 +8,17 @@ import { Button } from "@/components/ui/button"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { DualDataWidget } from "@/components/dual-data-widget"
 import { HeadlineDataWidget } from "@/components/widgets/headline-data-widget"
+import { metricCardGridClass, metricCardStackClass } from "@/lib/card-layout"
 import {
   BOOKING_ENGINE_PARTNERS,
   BOOKING_ENGINE_SUMMARY,
   formatCount,
   formatCurrency,
 } from "@/lib/booking-engine-data"
-import { FIGURE_30PX_CLASS } from "@/lib/figure-styles"
+import { FIGURE_24PX_CLASS } from "@/lib/figure-styles"
 import { MOCK_PROPERTY } from "@/lib/property-data"
 import { getPropertiesForPartner } from "@/lib/properties-list-data"
+import { cn } from "@/lib/utils"
 
 export function BookingEnginePage() {
   const [expandedPartnerId, setExpandedPartnerId] = useState<string>("partner-a")
@@ -75,8 +77,8 @@ export function BookingEnginePage() {
         </div>
 
         <div className="@container min-w-0">
-          <div className="grid grid-cols-1 items-stretch gap-4 @md:grid-cols-2">
-            <div className="flex min-h-0 flex-col gap-4">
+          <div className={cn(metricCardGridClass, "grid-cols-1 @md:grid-cols-2")}>
+            <div className={cn(metricCardStackClass, "min-h-0")}>
               <DualDataWidget
                 className="min-h-0 flex-1"
                 datasetA={{
@@ -104,14 +106,14 @@ export function BookingEnginePage() {
                 }}
               />
             </div>
-            <div className="flex min-h-0 flex-col gap-4">
+            <div className={cn(metricCardStackClass, "min-h-0")}>
               <HeadlineDataWidget
                 className="min-h-0 flex-1"
                 title="Revenue"
                 value={formatCurrency(BOOKING_ENGINE_SUMMARY.totalRevenue, "GBP")}
                 label="GBP · all partners"
                 helpText="Combined revenue across all partners and brands."
-                valueClassName={FIGURE_30PX_CLASS}
+                valueClassName={FIGURE_24PX_CLASS}
               />
               <DualDataWidget
                 className="min-h-0 flex-1"

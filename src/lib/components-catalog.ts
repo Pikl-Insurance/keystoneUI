@@ -90,21 +90,22 @@ export const componentsCatalog: ComponentCatalogEntry[] = [
       { name: "value", type: "string", required: true, description: "Primary figure. Pre-format numbers and currency." },
       { name: "label", type: "string", required: true, description: "Supporting context below the value (italic)." },
       { name: "helpText", type: "string", description: "Tooltip content for the help button." },
-      { name: "valueClassName", type: "string", description: "Override value typography. See FIGURE_30PX_CLASS / FIGURE_20PX_CLASS." },
+      { name: "valueClassName", type: "string", description: "Override value typography. See FIGURE_24PX_CLASS / FIGURE_20PX_CLASS." },
       { name: "className", type: "string", description: "Additional classes on the Card root (e.g. flex-1 for grid stretch)." },
     ],
     usageExample: `import { HeadlineDataWidget } from "@/components/widgets/headline-data-widget"
-import { FIGURE_30PX_CLASS } from "@/lib/figure-styles"
+import { FIGURE_24PX_CLASS } from "@/lib/figure-styles"
 
 <HeadlineDataWidget
   title="Revenue"
   value="£284,560,000"
   label="GBP · all partners"
   helpText="Combined revenue across all partners and brands."
-  valueClassName={FIGURE_30PX_CLASS}
+  valueClassName={FIGURE_24PX_CLASS}
 />`,
     notes: [
       "Card uses h-full — pair with items-stretch grids for equal-height layouts.",
+      "Default value size is FIGURE_24PX_CLASS (24px).",
       "Wrap in TooltipProvider when using helpText.",
     ],
   },
@@ -143,7 +144,7 @@ import { FIGURE_30PX_CLASS } from "@/lib/figure-styles"
   helpText="Supporting context for this headline metric."
 />`,
     notes: [
-      "Uses @container for responsive value sizing (text-2xl → text-3xl).",
+      "Default value size is FIGURE_24PX_CLASS (24px). Pass FIGURE_20PX_CLASS for compact card layouts.",
       "DualDataDataset type is exported from the same module.",
     ],
   },
@@ -470,7 +471,7 @@ const { hiddenKeys, toggleSeries, isHidden } = useHiddenChartSeries(SERIES_KEYS)
 ]
 
 export const figureStyleTokens = [
-  { name: "FIGURE_30PX_CLASS", value: "text-[30px] leading-none", usage: "Booking engine revenue, large headline figures" },
+  { name: "FIGURE_24PX_CLASS", value: "text-[24px] leading-none", usage: "Booking engine revenue, large headline figures" },
   { name: "FIGURE_20PX_CLASS", value: "text-[20px] leading-none", usage: "Property page and Insights card figures" },
   { name: "CHART_HEIGHT", value: "320", usage: "Shared ResponsiveContainer height for Insights charts" },
 ]
