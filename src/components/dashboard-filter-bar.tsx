@@ -198,24 +198,6 @@ export function DashboardFilterBar({ filters, onRun }: DashboardFilterBarProps) 
             </SelectContent>
           </Select>
         </div>
-
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="dash-sort" className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
-            Sort by
-          </Label>
-          <Select value={sortBy} onValueChange={setSortBy}>
-            <SelectTrigger id="dash-sort" className="h-9 w-full">
-              <SelectValue placeholder="Sort by" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="revenue-desc">Revenue (high to low)</SelectItem>
-              <SelectItem value="revenue-asc">Revenue (low to high)</SelectItem>
-              <SelectItem value="partner-name">Partner name</SelectItem>
-              <SelectItem value="date-desc">Date (newest first)</SelectItem>
-              <SelectItem value="date-asc">Date (oldest first)</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
       </div>
 
       <div className="shrink-0 border-t border-border px-4 py-4">
