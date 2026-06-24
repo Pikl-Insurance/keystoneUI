@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "tailwindcss-animate";
 @import "@keystone/ui/styles/tokens.css";
 
 @source "../../../../packages/ui/src/**/*.{ts,tsx}";

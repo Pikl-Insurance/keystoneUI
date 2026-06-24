@@ -91,12 +91,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     <div className="relative h-screen overflow-hidden bg-background text-foreground">
       <div
         className={cn(
-          "relative z-10 grid h-full",
+          "relative z-10 grid h-full transition-[grid-template-columns] duration-300 ease-out",
           leftSidebarOpen ? "grid-cols-[230px_1fr]" : "grid-cols-[52px_1fr]",
         )}
       >
         {/* Left sidebar */}
-        <aside className="relative flex h-full min-h-0 flex-col overflow-visible">
+        <aside className="relative flex h-full min-h-0 flex-col overflow-hidden">
           <TooltipProvider>
             {leftSidebarOpen ? (
               <div className="flex min-h-0 flex-1 flex-col overflow-visible">
@@ -229,7 +229,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
         {/* Main column — wrapped panel */}
         <div className="flex h-full min-h-0 min-w-0 flex-col p-3 pl-0">
-          <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-[var(--panel-border)] bg-[var(--panel-bg)] shadow-[0_1px_0_rgb(255_255_255_/_0.4)_inset] backdrop-blur-md dark:shadow-none">
+          <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-[var(--panel-border)] bg-[var(--panel-bg)] shadow-[0_1px_0_rgb(255_255_255_/_0.4)_inset] backdrop-blur-md dark:shadow-none animate-in fade-in duration-300">
             {/* Top nav */}
             <header className="relative flex h-14 shrink-0 items-center justify-between px-5">
               <Breadcrumb>
