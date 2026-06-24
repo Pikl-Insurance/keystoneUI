@@ -73,10 +73,17 @@ export function buildDailyBookingsData(filters: ActiveFilters, days = 174) {
   }))
 }
 
+export const CHART_PARTNER_SERIES = [
+  "Total",
+  "Partner Alpha",
+  "Partner Beta",
+  "Partner Gamma",
+] as const
+
 export function buildAbvPerDayData(filters: ActiveFilters, days = 174) {
   const seed = profileSeed(filters)
   const { base, amp, period } = getProfile(filters)
-  const partners = ["ABV (total)", "Partner Alpha", "Partner Beta", "Partner Gamma (DK)", "Partner Gamma (EUR)", "Partner Delta", "Partner Epsilon", "Partner Zeta (DK)"]
+  const partners = [...CHART_PARTNER_SERIES]
   return Array.from({ length: days }, (_, i) => {
     const row: Record<string, string | number> = { date: dateLabel(i) }
     partners.forEach((p, pi) => {
@@ -89,7 +96,7 @@ export function buildAbvPerDayData(filters: ActiveFilters, days = 174) {
 export function buildLeadTimeData(filters: ActiveFilters, days = 174) {
   const seed = profileSeed(filters)
   const { base, amp, period } = getProfile(filters)
-  const series = ["Lead (total)", "Partner Alpha", "Partner Beta", "Partner Gamma (DK)", "Partner Gamma (EUR)", "Partner Delta", "Partner Epsilon", "Partner Zeta (DK)"]
+  const series = [...CHART_PARTNER_SERIES]
   return Array.from({ length: days }, (_, i) => {
     const row: Record<string, string | number> = { date: dateLabel(i) }
     series.forEach((s, si) => {
@@ -111,7 +118,13 @@ export function buildBookingsMadePerDayData(filters: ActiveFilters, days = 174) 
 export function buildCalDdlTakeupData(filters: ActiveFilters, days = 174) {
   const seed = profileSeed(filters)
   const { base, amp, period } = getProfile(filters)
-  const series = ["CAL % (total)", "Partner Alpha CAL %", "Partner Beta CAL %", "DDL % (total)", "Partner Alpha DDL %"]
+  const series = [
+    "CAL % (total)",
+    "Partner Alpha CAL %",
+    "Partner Beta CAL %",
+    "Partner Gamma CAL %",
+    "DDL % (total)",
+  ]
   return Array.from({ length: days }, (_, i) => {
     const row: Record<string, string | number> = { date: dateLabel(i) }
     series.forEach((s, si) => {

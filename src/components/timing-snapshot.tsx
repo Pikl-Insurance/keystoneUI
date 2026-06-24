@@ -121,14 +121,14 @@ export function TimingSnapshot({ filters }: { filters: ActiveFilters }) {
           <DualDataWidget
             primaryTitle="Avg booking to stay"
             datasetA={{
-              title: "GBP",
+              title: "All bookings",
               value: profile.gbpDays,
-              clarification: profile.gbpCal,
+              clarification: "GBP partners",
             }}
             datasetB={{
-              title: "EUR",
-              value: profile.eurDays,
-              clarification: profile.eurCal,
+              title: "CAL bookings",
+              value: profile.gbpCal.replace(/^CAL /, ""),
+              clarification: "CAL attach only",
             }}
             helpText={INSIGHTS_WIDGET_HELP_TEXT}
           />

@@ -15,7 +15,7 @@ export const componentsCatalogExtra: ComponentCatalogEntry[] = [
     ],
     usageExample: `import { FilterSidebar } from "@/components/filter-sidebar"
 
-<FilterSidebar onRun={(filters) => setActiveFilters(filters)} />`,
+<FilterSidebar filters={activeFilters} onRun={setActiveFilters} />`,
     notes: ["Fixed 300px column in App shell grid. Uses ShadCN Select and Button."],
   },
   {

@@ -17,14 +17,10 @@ import { type ActiveFilters, buildAbvPerDayData } from "@/lib/chart-data"
 import { CHART_HEIGHT } from "@/lib/chart-styles"
 
 const SERIES = [
-  { key: "ABV (total)", color: "#3b82f6" },
+  { key: "Total", color: "#3b82f6" },
   { key: "Partner Alpha", color: "#f97316" },
   { key: "Partner Beta", color: "#06b6d4" },
-  { key: "Partner Gamma (DK)", color: "#eab308" },
-  { key: "Partner Gamma (EUR)", color: "#f59e0b" },
-  { key: "Partner Delta", color: "#10b981" },
-  { key: "Partner Epsilon", color: "#ef4444" },
-  { key: "Partner Zeta (DK)", color: "#8b5cf6" },
+  { key: "Partner Gamma", color: "#eab308" },
 ]
 
 const SERIES_KEYS = SERIES.map(({ key }) => key)

@@ -17,14 +17,10 @@ import { type ActiveFilters, buildLeadTimeData } from "@/lib/chart-data"
 import { CHART_HEIGHT } from "@/lib/chart-styles"
 
 const SERIES = [
-  { key: "Lead (total)", color: "#10b981" },
+  { key: "Total", color: "#10b981" },
   { key: "Partner Alpha", color: "#3b82f6" },
   { key: "Partner Beta", color: "#06b6d4" },
-  { key: "Partner Gamma (DK)", color: "#f97316" },
-  { key: "Partner Gamma (EUR)", color: "#eab308" },
-  { key: "Partner Delta", color: "#ef4444" },
-  { key: "Partner Epsilon", color: "#8b5cf6" },
-  { key: "Partner Zeta (DK)", color: "#ec4899" },
+  { key: "Partner Gamma", color: "#f97316" },
 ]
 
 const SERIES_KEYS = SERIES.map(({ key }) => key)

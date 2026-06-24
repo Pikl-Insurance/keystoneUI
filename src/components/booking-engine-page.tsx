@@ -66,7 +66,7 @@ export function BookingEnginePage() {
             <h1 className="text-[22px] font-semibold tracking-tight">Partners &amp; policies</h1>
             <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
               Configure partner connections, manage brands, and review active policy rates across the
-              booking engine.
+              policy admin system.
             </p>
           </div>
 

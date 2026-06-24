@@ -31,7 +31,7 @@ export function PropertiesListPage({
         <div>
           <div className="mb-3 flex items-center justify-between gap-4">
             <nav className="text-xs text-muted-foreground">
-              <span>Booking engine</span>
+              <span>Policy admin system</span>
               <span className="mx-2">/</span>
               <span className="text-foreground">Properties</span>
             </nav>

@@ -267,7 +267,7 @@ export function ComponentPreview({ id }: { id: string }) {
     case "filter-sidebar":
       return (
         <PreviewShell className="h-[540px] w-full max-w-[300px] bg-background">
-          <FilterSidebar onRun={() => undefined} />
+          <FilterSidebar filters={DEFAULT_FILTERS} onRun={() => undefined} />
         </PreviewShell>
       )
     case "dashboard-filter-bar":
@@ -447,7 +447,7 @@ export function ComponentPreview({ id }: { id: string }) {
       return (
         <Breadcrumb>
           <BreadcrumbList>
-            <BreadcrumbItem>Booking engine</BreadcrumbItem>
+            <BreadcrumbItem>Policy admin system</BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbPage>Properties</BreadcrumbPage>

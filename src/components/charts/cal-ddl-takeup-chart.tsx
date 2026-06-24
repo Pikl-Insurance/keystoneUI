@@ -20,8 +20,8 @@ const SERIES = [
   { key: "CAL % (total)", color: "#10b981" },
   { key: "Partner Alpha CAL %", color: "#3b82f6" },
   { key: "Partner Beta CAL %", color: "#06b6d4" },
+  { key: "Partner Gamma CAL %", color: "#f97316" },
   { key: "DDL % (total)", color: "#ef4444" },
-  { key: "Partner Alpha DDL %", color: "#f97316" },
 ]
 
 const SERIES_KEYS = SERIES.map(({ key }) => key)

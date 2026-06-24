@@ -6,6 +6,12 @@ export type ComponentPropDoc = {
   description: string
 }
 
+export type ComponentCodeSnippet = {
+  id: string
+  label: string
+  code: string
+}
+
 export type ComponentCatalogEntry = {
   id: string
   name: string
@@ -16,6 +22,7 @@ export type ComponentCatalogEntry = {
   filePath: string
   props: ComponentPropDoc[]
   usageExample: string
+  codeSnippets?: ComponentCodeSnippet[]
   notes?: string[]
 }
 

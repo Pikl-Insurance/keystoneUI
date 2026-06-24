@@ -128,28 +128,28 @@ export function AverageBookingValueSnapshot({ filters }: { filters: ActiveFilter
               <DualDataWidget
                 primaryTitle="ABV (excl. booking fee)"
                 datasetA={{
-                  title: "GBP",
+                  title: "Average",
                   value: profile.gbpAbv,
-                  clarification: profile.gbpCal,
+                  clarification: "GBP · all selected",
                 }}
                 datasetB={{
-                  title: "EUR",
-                  value: profile.eurAbv,
-                  clarification: profile.eurCal,
+                  title: "CAL ABV",
+                  value: profile.gbpCal.replace(/^CAL /, ""),
+                  clarification: "When CAL is attached",
                 }}
                 helpText={INSIGHTS_WIDGET_HELP_TEXT}
               />
               <DualDataWidget
                 primaryTitle="ABV inc. booking fee"
                 datasetA={{
-                  title: "GBP",
+                  title: "Average",
                   value: profile.gbpAbvFee,
-                  clarification: profile.gbpCalFee,
+                  clarification: "GBP · all selected",
                 }}
                 datasetB={{
-                  title: "EUR",
-                  value: profile.eurAbvFee,
-                  clarification: profile.eurCalFee,
+                  title: "CAL ABV",
+                  value: profile.gbpCalFee.replace(/^CAL /, ""),
+                  clarification: "When CAL is attached",
                 }}
                 helpText={INSIGHTS_WIDGET_HELP_TEXT}
               />

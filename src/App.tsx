@@ -1,13 +1,9 @@
 import { useEffect, useState } from "react"
 import {
-  ArrowUpRight,
   BarChart3,
-  Calendar,
   ChevronsLeft,
   ChevronsRight,
-  Download,
   SquareChartGantt,
-  ArrowLeftRight,
   Palette,
   Zap,
   LogOut,
@@ -17,7 +13,6 @@ import {
 } from "lucide-react"
 
 import { BookingEnginePage } from "@/components/booking-engine-page"
-import { ComparePage } from "@/components/compare-page"
 import { DesignSystemView } from "@/components/components-page"
 import { FilterSidebar } from "@/components/filter-sidebar"
 import { InsightsReportPage } from "@/components/insights-report-page"
@@ -51,26 +46,22 @@ import { cn } from "@/lib/utils"
 import { type ActiveFilters, DEFAULT_FILTERS } from "@/lib/chart-data"
 
 const navItems = [
-  { id: "booking-engine" as const, label: "Booking engine", icon: Zap },
+  { id: "booking-engine" as const, label: "Policy admin system", icon: Zap },
   { id: "insights" as const, label: "Insights", icon: BarChart3 },
   { id: "admin" as const, label: "Admin", icon: Settings2 },
 ]
 
 type ActiveSection = (typeof navItems)[number]["id"] | "components"
-type InsightsView = "insights" | "compare"
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(true)
   const [isDark, setIsDark] = useState(false)
   const [leftSidebarOpen, setLeftSidebarOpen] = useState(true)
   const [activeSection, setActiveSection] = useState<ActiveSection>("booking-engine")
-  const [insightsView, setInsightsView] = useState<InsightsView>("insights")
-  const [hasRun, setHasRun] = useState(false)
   const [activeFilters, setActiveFilters] = useState<ActiveFilters>(DEFAULT_FILTERS)
 
   function handleLogout() {
     setIsAuthenticated(false)
-    setHasRun(false)
   }
 
   useEffect(() => {
@@ -78,8 +69,7 @@ function App() {
   }, [isDark])
 
   const showRightSidebar =
-    (activeSection === "insights" && insightsView !== "compare") ||
-    activeSection === "components"
+    activeSection === "insights" || activeSection === "components"
 
   if (!isAuthenticated) {
     return <LoginPage onLogin={() => setIsAuthenticated(true)} />
@@ -152,7 +142,7 @@ function App() {
                   <Palette className="size-4 shrink-0" />
                   Design system
                 </Button>
-                {activeSection === "insights" && insightsView === "insights" && hasRun && <SectionNav />}
+                {activeSection === "insights" && <SectionNav />}
                 <Button
                   variant="outline"
                   className="w-full justify-center gap-2 bg-card"
@@ -216,7 +206,7 @@ function App() {
                   </TooltipTrigger>
                   <TooltipContent>Design system</TooltipContent>
                 </Tooltip>
-                {activeSection === "insights" && insightsView === "insights" && hasRun && <SectionNav collapsed />}
+                {activeSection === "insights" && <SectionNav collapsed />}
                 <button
                   type="button"
                   title="Log out"
@@ -247,13 +237,11 @@ function App() {
                 <BreadcrumbItem>
                   <BreadcrumbPage>
                     {activeSection === "booking-engine"
-                      ? "Booking engine"
+                      ? "Policy admin system"
                       : activeSection === "components"
                         ? "Design system"
                         : activeSection === "admin"
                           ? "Admin"
-                          : insightsView === "compare"
-                          ? "Compare"
                           : "Insights"}
                   </BreadcrumbPage>
                 </BreadcrumbItem>
@@ -294,7 +282,7 @@ function App() {
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={handleLogout}>
-                    <ArrowUpRight className="size-4" />
+                    <LogOut className="size-4" />
                     Log out
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -337,71 +325,16 @@ function App() {
                       </div>
                     ) : (
                       <>
-                        <div className="mb-8 flex flex-wrap items-start justify-between gap-4">
-                          <div>
-                            <h1 className="text-[22px] font-semibold tracking-tight">
-                              {insightsView === "compare"
-                                ? "Compare partners"
-                                : "Sales, cancellation & re-let metrics"}
-                            </h1>
-                            <p className="mt-1 text-sm text-muted-foreground">
-                              {insightsView === "compare"
-                                ? "Set filters for a primary and comparison side, then run to review metrics side by side."
-                                : "Real-time across 3 partners"}
-                            </p>
-                          </div>
-
-                          <div className="flex flex-wrap items-center gap-2">
-                            <Button variant="outline" className="text-xs">
-                              <Calendar className="size-3.5" />
-                              Schedule report
-                            </Button>
-                            <Button
-                              variant="outline"
-                              className="text-xs"
-                              onClick={() =>
-                                setInsightsView((view) =>
-                                  view === "compare" ? "insights" : "compare"
-                                )
-                              }
-                            >
-                              {insightsView === "compare" ? (
-                                <>
-                                  <ArrowLeftRight className="size-3.5" />
-                                  Exit compare
-                                </>
-                              ) : (
-                                <>
-                                  <ArrowUpRight className="size-3.5" />
-                                  Compare
-                                </>
-                              )}
-                            </Button>
-                            <Button className="text-xs">
-                              <Download className="size-3.5" />
-                              Export
-                            </Button>
-                          </div>
+                        <div className="mb-8">
+                          <h1 className="text-[22px] font-semibold tracking-tight">
+                            Sales, cancellation & re-let metrics
+                          </h1>
+                          <p className="mt-1 text-sm text-muted-foreground">
+                            Real-time across 3 partners
+                          </p>
                         </div>
 
-                        {insightsView === "compare" ? (
-                          <ComparePage />
-                        ) : !hasRun ? (
-                          <div className="flex flex-col items-center justify-center gap-4 rounded-2xl border border-dashed border-border bg-muted/10 py-14 text-center">
-                            <div className="grid size-12 place-items-center rounded-xl bg-muted text-muted-foreground">
-                              <BarChart3 className="size-6" />
-                            </div>
-                            <div>
-                              <p className="text-sm font-medium">No data to display</p>
-                              <p className="mt-1 text-sm text-muted-foreground">
-                                Select your filters in the panel on the right, then press{" "}
-                                <strong>Run</strong> to load the report.
-                              </p>
-                            </div>
-                          </div>
-                        ) : (
-                          <InsightsReportPage filters={activeFilters} wideLayout={false} />
-                        )}
+                        <InsightsReportPage filters={activeFilters} wideLayout={false} />
                       </>
                     )}
                   </section>
@@ -409,10 +342,8 @@ function App() {
 
                 {showRightSidebar ? (
                   <FilterSidebar
-                    onRun={(filters) => {
-                      setActiveFilters(filters)
-                      setHasRun(true)
-                    }}
+                    filters={activeFilters}
+                    onRun={setActiveFilters}
                   />
                 ) : null}
               </>

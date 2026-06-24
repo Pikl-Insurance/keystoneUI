@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Ban, RefreshCw, TrendingUp } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -35,20 +35,46 @@ const metricOptions = [
 ] as const
 
 type FilterSidebarProps = {
+  filters: ActiveFilters
   onRun: (filters: ActiveFilters) => void
 }
 
-export function FilterSidebar({ onRun }: FilterSidebarProps) {
-  const [partner, setPartner] = useState("all-partners")
-  const [brand, setBrand] = useState("all-brands")
-  const [dateRange, setDateRange] = useState("year-to-month-end")
-  const [year, setYear] = useState("2026")
-  const [month, setMonth] = useState("June")
-  const [metric, setMetric] = useState<(typeof metricOptions)[number]["value"]>("sales")
-  const [sortBy, setSortBy] = useState("revenue-desc")
+export function FilterSidebar({ filters, onRun }: FilterSidebarProps) {
+  const [partner, setPartner] = useState(filters.partner)
+  const [brand, setBrand] = useState(filters.brand)
+  const [dateRange, setDateRange] = useState(filters.dateRange)
+  const [year, setYear] = useState(filters.year)
+  const [month, setMonth] = useState(filters.month)
+  const [metric, setMetric] = useState(filters.metric)
+
+  const showBrand = partner !== "all-partners"
+
+  useEffect(() => {
+    setPartner(filters.partner)
+    setBrand(filters.brand)
+    setDateRange(filters.dateRange)
+    setYear(filters.year)
+    setMonth(filters.month)
+    setMetric(filters.metric)
+  }, [filters])
+
+  function handlePartnerChange(value: string) {
+    setPartner(value)
+    if (value === "all-partners") {
+      setBrand("all-brands")
+    }
+  }
 
   function handleRun() {
-    onRun({ partner, brand, dateRange, year, month, metric, sortBy })
+    onRun({
+      partner,
+      brand: partner === "all-partners" ? "all-brands" : brand,
+      dateRange,
+      year,
+      month,
+      metric,
+      sortBy: filters.sortBy,
+    })
   }
 
   return (
@@ -59,14 +85,14 @@ export function FilterSidebar({ onRun }: FilterSidebarProps) {
         <div>
           <h2 className="text-sm font-semibold">Filters</h2>
           <p className="mt-1 text-xs text-muted-foreground">
-            Refine metrics by partner, brand, and period.
+            Refine metrics by partner, brand, and period. Press Run to apply changes.
           </p>
         </div>
 
         <div className="flex flex-col gap-2">
           <Label htmlFor="partner-filter">Partner</Label>
           <div>
-            <Select value={partner} onValueChange={setPartner}>
+            <Select value={partner} onValueChange={handlePartnerChange}>
               <SelectTrigger id="partner-filter">
                 <SelectValue placeholder="Select partner" />
               </SelectTrigger>
@@ -80,22 +106,24 @@ export function FilterSidebar({ onRun }: FilterSidebarProps) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="brand-filter">Brand</Label>
-          <div>
-            <Select value={brand} onValueChange={setBrand}>
-              <SelectTrigger id="brand-filter">
-                <SelectValue placeholder="Select brand" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all-brands">All brands</SelectItem>
-                <SelectItem value="brand-a">Brand Alpha</SelectItem>
-                <SelectItem value="brand-b">Brand Beta</SelectItem>
-                <SelectItem value="brand-c">Brand Gamma</SelectItem>
-              </SelectContent>
-            </Select>
+        {showBrand ? (
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="brand-filter">Brand</Label>
+            <div>
+              <Select value={brand} onValueChange={setBrand}>
+                <SelectTrigger id="brand-filter">
+                  <SelectValue placeholder="Select brand" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all-brands">All brands</SelectItem>
+                  <SelectItem value="brand-a">Brand Alpha</SelectItem>
+                  <SelectItem value="brand-b">Brand Beta</SelectItem>
+                  <SelectItem value="brand-c">Brand Gamma</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
-        </div>
+        ) : null}
 
         <div className="flex flex-col gap-2">
           <Label htmlFor="date-range-filter">Date range</Label>
@@ -168,33 +196,15 @@ export function FilterSidebar({ onRun }: FilterSidebarProps) {
             ))}
           </div>
         </div>
-
-        <div className="flex flex-col gap-2">
-          <h2 id="sort-filter-heading" className="text-sm font-semibold">
-            Sort by
-          </h2>
-          <div>
-            <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger id="sort-filter" aria-labelledby="sort-filter-heading">
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="revenue-desc">Revenue (high to low)</SelectItem>
-                <SelectItem value="revenue-asc">Revenue (low to high)</SelectItem>
-                <SelectItem value="partner-name">Partner name</SelectItem>
-                <SelectItem value="date-desc">Date (newest first)</SelectItem>
-                <SelectItem value="date-asc">Date (oldest first)</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
       </div>
 
       <div className="shrink-0">
         <div className="relative px-6 pb-6">
           <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-border" />
           <div className="pt-4">
-            <Button className="w-full" onClick={handleRun}>Run</Button>
+            <Button className="w-full" onClick={handleRun}>
+              Run
+            </Button>
           </div>
         </div>
       </div>

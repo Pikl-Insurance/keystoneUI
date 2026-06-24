@@ -12,6 +12,7 @@ import {
   figureStyleTokens,
 } from "@/lib/components-catalog"
 import { componentsCatalogExtra } from "@/lib/components-catalog-extra"
+import { getComponentCodeSnippets } from "@/lib/component-code-snippets"
 import {
   colorPaletteTokens,
   typographyScale,
@@ -51,6 +52,7 @@ function useDesignSystemPage(scrollRoot: HTMLElement | null) {
       entry.filePath,
       entry.category,
       ...entry.props.map((prop) => `${prop.name} ${prop.description}`),
+      ...getComponentCodeSnippets(entry).map((snippet) => `${snippet.label} ${snippet.code}`),
     ]
       .join(" ")
       .toLowerCase()
