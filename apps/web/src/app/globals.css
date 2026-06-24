@@ -1,0 +1,23 @@
+@import "tailwindcss";
+@import "@keystone/ui/styles/tokens.css";
+
+@source "../../../../packages/ui/src/**/*.{ts,tsx}";
+
+html,
+body {
+  font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--foreground);
+  background: linear-gradient(
+    165deg,
+    var(--gradient-from) 0%,
+    var(--gradient-mid) 42%,
+    var(--gradient-to) 100%
+  );
+}

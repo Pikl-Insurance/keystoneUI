@@ -1,0 +1,17 @@
+{
+  "plugins": ["react", "typescript", "unicorn", "import"],
+  "settings": {
+    "react": {
+      "runtime": "automatic",
+      "version": "19.0"
+    }
+  },
+  "rules": {
+    "no-unused-vars": "error",
+    "no-console": "warn",
+    "react/jsx-key": "error",
+    "react/jsx-no-duplicate-props": "error",
+    "react/no-children-prop": "error",
+    "import/no-default-export": "off"
+  }
+}

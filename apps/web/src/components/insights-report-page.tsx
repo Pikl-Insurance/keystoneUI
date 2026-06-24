@@ -1,0 +1,163 @@
+import { AverageBookingValueSnapshot } from "@/components/average-booking-value-snapshot";
+import { BookingsSnapshot } from "@/components/bookings-snapshot";
+import { AbvPerDayChart } from "@keystone/ui/charts/abv-per-day-chart";
+import { BookingsMadePerDayChart } from "@keystone/ui/charts/bookings-made-per-day-chart";
+import { BookingsVsStaysChart } from "@keystone/ui/charts/bookings-vs-stays-chart";
+import { CalDdlTakeupChart } from "@keystone/ui/charts/cal-ddl-takeup-chart";
+import { LeadTimeChart } from "@keystone/ui/charts/lead-time-chart";
+import { CalFinancials } from "@/components/cal-financials";
+import { TimingSnapshot } from "@/components/timing-snapshot";
+import { cn } from "@keystone/ui/lib/utils";
+import type { ActiveFilters } from "@keystone/ui/lib/chart-data";
+
+type InsightsReportPageProps = {
+  filters: ActiveFilters;
+  wideLayout: boolean;
+};
+
+function SectionDivider() {
+  return <div aria-hidden className="h-px w-full bg-border" />;
+}
+
+export function InsightsReportPage({
+  filters,
+  wideLayout,
+}: InsightsReportPageProps) {
+  const sectionClass = cn("scroll-mt-6", wideLayout ? "py-4" : "py-8");
+
+  if (wideLayout) {
+    return (
+      <div className="grid grid-cols-1 items-stretch gap-x-8 gap-y-6 xl:grid-cols-2">
+        <div
+          id="section-bookings"
+          className={cn(sectionClass, "flex min-w-0 flex-col")}
+        >
+          <BookingsSnapshot filters={filters} />
+        </div>
+        <div
+          id="section-abv"
+          className={cn(sectionClass, "flex min-w-0 flex-col")}
+        >
+          <AverageBookingValueSnapshot filters={filters} />
+        </div>
+        <div
+          id="section-cal"
+          className={cn(sectionClass, "flex min-w-0 flex-col")}
+        >
+          <CalFinancials filters={filters} />
+        </div>
+        <div
+          id="section-timing"
+          className={cn(sectionClass, "flex min-w-0 flex-col")}
+        >
+          <TimingSnapshot filters={filters} />
+        </div>
+        <div
+          id="section-bookings-vs-stays"
+          className={cn(sectionClass, "flex min-w-0 flex-col")}
+        >
+          <BookingsVsStaysChart filters={filters} />
+        </div>
+        <div
+          id="section-abv-per-day"
+          className={cn(sectionClass, "flex min-w-0 flex-col")}
+        >
+          <AbvPerDayChart filters={filters} />
+        </div>
+        <div
+          id="section-lead-time"
+          className={cn(sectionClass, "flex min-w-0 flex-col")}
+        >
+          <LeadTimeChart filters={filters} />
+        </div>
+        <div
+          id="section-bookings-per-day"
+          className={cn(sectionClass, "flex min-w-0 flex-col")}
+        >
+          <BookingsMadePerDayChart filters={filters} />
+        </div>
+        <div
+          id="section-cal-ddl-takeup"
+          className={cn(sectionClass, "flex min-w-0 flex-col xl:col-span-2")}
+        >
+          <CalDdlTakeupChart filters={filters} />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <div
+        id="section-bookings"
+        className={cn(sectionClass, "flex min-w-0 flex-col")}
+      >
+        <BookingsSnapshot filters={filters} />
+      </div>
+      <SectionDivider />
+
+      <div
+        id="section-abv"
+        className={cn(sectionClass, "flex min-w-0 flex-col")}
+      >
+        <AverageBookingValueSnapshot filters={filters} />
+      </div>
+      <SectionDivider />
+
+      <div
+        id="section-cal"
+        className={cn(sectionClass, "flex min-w-0 flex-col")}
+      >
+        <CalFinancials filters={filters} />
+      </div>
+      <SectionDivider />
+
+      <div
+        id="section-timing"
+        className={cn(sectionClass, "flex min-w-0 flex-col")}
+      >
+        <TimingSnapshot filters={filters} />
+      </div>
+      <SectionDivider />
+
+      <div
+        id="section-bookings-vs-stays"
+        className={cn(sectionClass, "flex min-w-0 flex-col")}
+      >
+        <BookingsVsStaysChart filters={filters} />
+      </div>
+      <SectionDivider />
+
+      <div
+        id="section-abv-per-day"
+        className={cn(sectionClass, "flex min-w-0 flex-col")}
+      >
+        <AbvPerDayChart filters={filters} />
+      </div>
+      <SectionDivider />
+
+      <div
+        id="section-lead-time"
+        className={cn(sectionClass, "flex min-w-0 flex-col")}
+      >
+        <LeadTimeChart filters={filters} />
+      </div>
+      <SectionDivider />
+
+      <div
+        id="section-bookings-per-day"
+        className={cn(sectionClass, "flex min-w-0 flex-col")}
+      >
+        <BookingsMadePerDayChart filters={filters} />
+      </div>
+      <SectionDivider />
+
+      <div
+        id="section-cal-ddl-takeup"
+        className={cn(sectionClass, "flex min-w-0 flex-col")}
+      >
+        <CalDdlTakeupChart filters={filters} />
+      </div>
+    </div>
+  );
+}

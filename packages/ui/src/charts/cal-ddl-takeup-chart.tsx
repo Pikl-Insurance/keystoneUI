@@ -1,0 +1,115 @@
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+
+import { InteractiveChartLegend } from "../charts/interactive-chart-legend";
+import { SortedChartTooltip } from "../charts/sorted-chart-tooltip";
+import { useHiddenChartSeries } from "../charts/use-hidden-chart-series";
+import { ReportSection } from "../widgets/report-section";
+import { type ActiveFilters, buildCalDdlTakeupData } from "../lib/chart-data";
+import { CHART_HEIGHT } from "../lib/chart-styles";
+
+const SERIES = [
+  { key: "CAL % (total)", color: "#10b981" },
+  { key: "Partner Alpha CAL %", color: "#3b82f6" },
+  { key: "Partner Beta CAL %", color: "#06b6d4" },
+  { key: "Partner Gamma CAL %", color: "#f97316" },
+  { key: "DDL % (total)", color: "#ef4444" },
+];
+
+const SERIES_KEYS = SERIES.map(({ key }) => key);
+
+const TICK_STYLE = { fontSize: 11, fill: "var(--color-muted-foreground)" };
+
+type CalDdlTakeupChartProps = {
+  filters: ActiveFilters;
+  compact?: boolean;
+};
+
+export function CalDdlTakeupChart({
+  filters,
+  compact,
+}: CalDdlTakeupChartProps) {
+  const data = buildCalDdlTakeupData(filters);
+  const { hiddenKeys, toggleSeries, isHidden } =
+    useHiddenChartSeries(SERIES_KEYS);
+
+  const chart = (
+    <div
+      className={
+        compact
+          ? "min-w-0 p-0"
+          : "flex min-h-0 flex-1 flex-col rounded-xl border border-border bg-card p-4 shadow-xs"
+      }
+    >
+      <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
+        <LineChart
+          data={data}
+          margin={{ top: 4, right: 8, left: 0, bottom: 0 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
+          <XAxis
+            dataKey="date"
+            tick={TICK_STYLE}
+            interval={13}
+            tickLine={false}
+            axisLine={false}
+          />
+          <YAxis
+            tick={TICK_STYLE}
+            tickLine={false}
+            axisLine={false}
+            width={40}
+            tickFormatter={(v) => `${v as number}%`}
+          />
+          <Tooltip
+            content={<SortedChartTooltip valueFormatter={(v) => `${v}%`} />}
+          />
+          <Legend
+            content={(props) => (
+              <InteractiveChartLegend
+                payload={props.payload}
+                hiddenKeys={hiddenKeys}
+                onToggleSeries={toggleSeries}
+              />
+            )}
+          />
+          {SERIES.map(({ key, color }) => (
+            <Line
+              key={key}
+              type="monotone"
+              dataKey={key}
+              hide={isHidden(key)}
+              stroke={color}
+              strokeWidth={1.5}
+              dot={false}
+              activeDot={{ r: 3 }}
+            />
+          ))}
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+
+  if (compact) {
+    return <section className="flex h-full min-w-0 flex-col">{chart}</section>;
+  }
+
+  return (
+    <ReportSection
+      title="CAL & DDL take-up % per day"
+      exportSlug="cal-ddl-takeup"
+      filters={filters}
+      headingClassName="mb-4"
+    >
+      {chart}
+    </ReportSection>
+  );
+}
