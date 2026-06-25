@@ -33,8 +33,10 @@ import {
   BOOKING_ENGINE_SUMMARY,
   formatCount,
   formatCurrency,
+  getBrandsTrendContext,
   getPartnerConnectionFooter,
   getPartnerTags,
+  getPartnerTrendContext,
   getTopPartnersBrandFooter,
   type Partner,
 } from "@/lib/booking-engine-data"
@@ -151,6 +153,8 @@ export function BookingEnginePage({ initialView = "partners" }: BookingEnginePag
               value={formatCount(BOOKING_ENGINE_SUMMARY.totalBookings)}
               icon={ShoppingCart}
               trendLabel="+12%"
+              trendContext="Up on last month"
+              chartCaption="Monthly sales volume · YTD"
               chartValues={PAS_BOOKINGS_CHART_STUB}
               chartLabels={PAS_YTD_MONTH_LABELS}
             />
@@ -159,6 +163,8 @@ export function BookingEnginePage({ initialView = "partners" }: BookingEnginePag
               value={formatCurrency(BOOKING_ENGINE_SUMMARY.totalRevenue, "GBP")}
               icon={Banknote}
               trendLabel="+5.4%"
+              trendContext="Ahead of YTD target"
+              chartCaption="Monthly revenue · YTD"
               chartValues={PAS_REVENUE_CHART_STUB}
               chartLabels={PAS_YTD_MONTH_LABELS}
             />
@@ -167,8 +173,10 @@ export function BookingEnginePage({ initialView = "partners" }: BookingEnginePag
               value={String(BOOKING_ENGINE_SUMMARY.partners)}
               icon={Network}
               trendLabel="+17%"
+              trendContext={getPartnerTrendContext()}
+              chartCaption="Partners on platform by month"
               chartValues={PAS_PARTNERS_CHART_STUB}
-              chartStyle="sparkline"
+              chartLabels={PAS_YTD_MONTH_LABELS}
               footer={getPartnerConnectionFooter()}
             />
             <PasSummaryMetricCard
@@ -176,8 +184,10 @@ export function BookingEnginePage({ initialView = "partners" }: BookingEnginePag
               value={String(BOOKING_ENGINE_SUMMARY.activeBrands)}
               icon={LayoutGrid}
               trendLabel="+8%"
+              trendContext={getBrandsTrendContext()}
+              chartCaption="Active brands by month"
               chartValues={PAS_BRANDS_CHART_STUB}
-              chartStyle="sparkline"
+              chartLabels={PAS_YTD_MONTH_LABELS}
               footer={getTopPartnersBrandFooter()}
             />
           </div>

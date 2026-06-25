@@ -477,6 +477,18 @@ export function getTopPartnersBrandFooter() {
     .join(" · ")
 }
 
+export function getPartnerTrendContext() {
+  const partnerCounts = [4, 5, 5, 6, 6, 7]
+  const added = partnerCounts.at(-1)! - partnerCounts[0]
+  return added > 0 ? `${added} new partner${added === 1 ? "" : "s"} since January` : "Stable since January"
+}
+
+export function getBrandsTrendContext() {
+  const brandCounts = [9, 10, 11, 11, 12, 13]
+  const added = brandCounts.at(-1)! - brandCounts[0]
+  return added > 0 ? `${added} brands added YTD` : "Stable YTD"
+}
+
 const PARTNER_A_BOOKINGS: PartnerBooking[] = [
   { id: "BK-10042", property: "Willowcroft House", brand: "Brand Alpha", checkIn: "12 Jul 2026", nights: 7, guests: 4, value: 1820, currency: "GBP", hasCal: true, status: "confirmed" },
   { id: "BK-10038", property: "The Old Mill", brand: "Brand Beta", checkIn: "5 Aug 2026", nights: 5, guests: 2, value: 1240, currency: "GBP", hasCal: true, status: "confirmed" },

@@ -11,7 +11,9 @@ type PasSummaryMetricCardProps = {
   value: string
   icon: LucideIcon
   trendLabel?: string
+  trendContext?: string
   footer?: string
+  chartCaption?: string
   chartValues?: number[]
   chartLabels?: string[]
   chartStyle?: "bars" | "sparkline"
@@ -103,7 +105,9 @@ export function PasSummaryMetricCard({
   value,
   icon: Icon,
   trendLabel,
+  trendContext,
   footer,
+  chartCaption,
   chartValues,
   chartLabels,
   chartStyle,
@@ -163,10 +167,30 @@ export function PasSummaryMetricCard({
         >
           {value}
         </p>
+        {trendContext ? (
+          <p
+            className={cn(
+              "leading-tight text-muted-foreground",
+              compact ? "mt-0.5 text-[9px]" : "mt-1 text-[10px]"
+            )}
+          >
+            {trendContext}
+          </p>
+        ) : null}
       </div>
 
       {usesSparkline ? (
         <div className={cn("flex min-h-0 flex-col", compact ? "mt-2 flex-1" : "mt-2")}>
+          {chartCaption ? (
+            <p
+              className={cn(
+                "mb-1.5 leading-tight text-muted-foreground",
+                compact ? "text-[9px]" : "text-[10px]"
+              )}
+            >
+              {chartCaption}
+            </p>
+          ) : null}
           <MiniSparkline values={chartValues} compact={compact} />
           {footer ? (
             <p
@@ -183,7 +207,19 @@ export function PasSummaryMetricCard({
         <div className={cn("mt-auto", compact ? "pt-1.5" : "pt-2")}>
           {detail ? detail : null}
           {!detail && chartValues?.length ? (
-            <MiniBarChart values={chartValues} labels={chartLabels} compact={compact} />
+            <>
+              {chartCaption ? (
+                <p
+                  className={cn(
+                    "mb-1.5 leading-tight text-muted-foreground",
+                    compact ? "text-[9px]" : "text-[10px]"
+                  )}
+                >
+                  {chartCaption}
+                </p>
+              ) : null}
+              <MiniBarChart values={chartValues} labels={chartLabels} compact={compact} />
+            </>
           ) : null}
           {footer ? (
             <p

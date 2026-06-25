@@ -1,24 +1,70 @@
 import { useState } from "react"
-import { ArrowLeft, MapPin } from "lucide-react"
+import { ArrowLeft, MapPin, ShoppingCart } from "lucide-react"
 
 import { PropertyBookingsTable } from "@/components/booking-engine/property-bookings-table"
 import { PropertyDetailsPanel } from "@/components/booking-engine/property-details"
 import { PropertyInsights } from "@/components/booking-engine/property-insights"
-import { DualDataWidget } from "@/components/dual-data-widget"
+import { PasSummaryMetricCard } from "@/components/booking-engine/pas-summary-metric-card"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { DataSnapshotWidget } from "@/components/widgets/data-snapshot-widget"
-import { HeadlineDataWidget } from "@/components/widgets/headline-data-widget"
-import { FIGURE_20PX_CLASS } from "@/lib/figure-styles"
+import { formatBrandLabel } from "@/lib/booking-engine-data"
 import { metricCardGridClass } from "@/lib/card-layout"
 import { type Property } from "@/lib/property-data"
 import { WILLOWCROFT_HOUSE_DETAILS } from "@/lib/property-details-data"
 import { cn } from "@/lib/utils"
 
+const PROPERTY_BOOKINGS_CHART_STUB = [8, 9, 9, 10, 11, 12]
+
 type PropertyPageProps = {
   property: Property
   onBack: () => void
+}
+
+type PropertyDualMetricItem = {
+  label: string
+  value: string
+  hint: string
+}
+
+function PropertyDualMetricCard({
+  title,
+  items,
+  className,
+}: {
+  title?: string
+  items: [PropertyDualMetricItem, PropertyDualMetricItem]
+  className?: string
+}) {
+  return (
+    <article
+      className={cn(
+        "flex h-full min-w-0 flex-col rounded-xl border border-border bg-card p-3 shadow-xs",
+        className
+      )}
+    >
+      {title ? (
+        <p className="mb-2 text-xs font-medium text-muted-foreground">{title}</p>
+      ) : null}
+      <div className="grid min-h-0 flex-1 grid-cols-2">
+        {items.map((item, index) => (
+          <div
+            key={item.label}
+            className={cn("min-w-0", index === 1 && "border-l border-border pl-3")}
+          >
+            <p className="text-[10px] font-medium text-muted-foreground">{item.label}</p>
+            <p className="mt-0.5 truncate text-sm font-semibold leading-tight tabular-nums text-foreground">
+              {item.value}
+            </p>
+            <p className="mt-0.5 truncate text-[10px] leading-tight text-muted-foreground">
+              {item.hint}
+            </p>
+          </div>
+        ))}
+      </div>
+    </article>
+  )
 }
 
 export function PropertyPage({ property, onBack }: PropertyPageProps) {
@@ -34,7 +80,7 @@ export function PropertyPage({ property, onBack }: PropertyPageProps) {
 
   return (
     <TooltipProvider>
-      <div className="space-y-8">
+      <div className="space-y-6">
         <div>
           <div className="mb-3 flex items-center justify-between gap-4">
             <nav className="text-xs text-muted-foreground">
@@ -50,7 +96,7 @@ export function PropertyPage({ property, onBack }: PropertyPageProps) {
               variant="outline"
               size="sm"
               onClick={onBack}
-              className="shrink-0 text-xs"
+              className="h-9 shrink-0 gap-2 text-xs"
             >
               <ArrowLeft className="size-3.5" />
               Back to properties
@@ -63,9 +109,9 @@ export function PropertyPage({ property, onBack }: PropertyPageProps) {
           </p>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-3">
           <div className={cn(metricCardGridClass, "grid-cols-1 lg:grid-cols-3")}>
-            <div className="relative aspect-[16/10] min-h-48 w-full overflow-hidden rounded-xl border border-border bg-muted/45 lg:aspect-auto lg:min-h-0 lg:h-full dark:bg-muted/20">
+            <div className="relative aspect-[16/10] min-h-44 w-full overflow-hidden rounded-xl border border-border bg-muted/30 lg:aspect-auto lg:h-full lg:min-h-0">
               <img
                 src={property.imageUrl}
                 alt={`${property.name} exterior`}
@@ -73,18 +119,16 @@ export function PropertyPage({ property, onBack }: PropertyPageProps) {
               />
             </div>
 
-            <div className="relative aspect-[16/10] min-h-48 w-full overflow-hidden rounded-xl border border-border bg-muted/45 lg:aspect-auto lg:min-h-0 lg:h-full dark:bg-muted/20">
+            <div className="relative aspect-[16/10] min-h-44 w-full overflow-hidden rounded-xl border border-border bg-muted/20 lg:aspect-auto lg:h-full lg:min-h-0">
               <div
                 aria-hidden
-                className="absolute inset-0 bg-[linear-gradient(to_right,rgb(0_0_0/0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgb(0_0_0/0.06)_1px,transparent_1px)] bg-size-[28px_28px] dark:bg-[linear-gradient(to_right,rgb(255_255_255/0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgb(255_255_255/0.06)_1px,transparent_1px)]"
+                className="absolute inset-0 bg-[linear-gradient(to_right,rgb(0_0_0/0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgb(0_0_0/0.05)_1px,transparent_1px)] bg-size-[24px_24px]"
               />
-              <div className="absolute inset-0 flex items-center justify-center p-6">
-                <div className="flex flex-col items-center gap-2 text-center text-muted-foreground">
-                  <div className="grid size-10 place-items-center rounded-full bg-background shadow-xs">
-                    <MapPin className="size-5 text-primary" />
-                  </div>
-                  <p className="text-sm font-medium text-foreground">{property.postcode}</p>
-                  <p className="text-xs">
+              <div className="absolute inset-0 flex items-center justify-center p-4">
+                <div className="flex flex-col items-center gap-1.5 text-center">
+                  <MapPin className="size-4 text-muted-foreground" strokeWidth={2} />
+                  <p className="text-xs font-semibold text-foreground">{property.postcode}</p>
+                  <p className="text-[10px] text-muted-foreground">
                     {property.county}, {property.country}
                   </p>
                 </div>
@@ -92,8 +136,10 @@ export function PropertyPage({ property, onBack }: PropertyPageProps) {
             </div>
 
             <DataSnapshotWidget
-              className="h-full"
+              className="h-full shadow-xs"
               title="Overview"
+              compact
+              valueClassName="text-sm font-semibold"
               rows={WILLOWCROFT_HOUSE_DETAILS.overview.map((field) => ({
                 label: field.label,
                 value: field.value,
@@ -102,64 +148,69 @@ export function PropertyPage({ property, onBack }: PropertyPageProps) {
           </div>
 
           <div className={cn(metricCardGridClass, "grid-cols-1 sm:grid-cols-2 xl:grid-cols-4")}>
-            <HeadlineDataWidget
+            <PasSummaryMetricCard
               title="Bookings"
               value={String(property.bookingCount)}
-              label="Total bookings"
-              valueClassName={FIGURE_20PX_CLASS}
+              icon={ShoppingCart}
+              chartValues={PROPERTY_BOOKINGS_CHART_STUB}
+              chartStyle="sparkline"
+              footer="Total bookings"
             />
-            <DualDataWidget
-              primaryTitle="Stay profile"
-              valueClassName={FIGURE_20PX_CLASS}
-              datasetA={{
-                title: "Avg nights",
-                value: avgNightsBooked,
-                clarification: "Per booking",
-              }}
-              datasetB={{
-                title: "Cancellations",
-                value: String(cancellationCount),
-                clarification: "All time",
-              }}
+            <PropertyDualMetricCard
+              title="Stay profile"
+              items={[
+                {
+                  label: "Avg nights",
+                  value: avgNightsBooked,
+                  hint: "Per booking",
+                },
+                {
+                  label: "Cancellations",
+                  value: String(cancellationCount),
+                  hint: "All time",
+                },
+              ]}
             />
-            <DualDataWidget
-              valueClassName={FIGURE_20PX_CLASS}
-              datasetA={{
-                title: "Partner",
-                value: property.partner,
-                clarification: "Booking partner",
-              }}
-              datasetB={{
-                title: "Brand",
-                value: property.brand,
-                clarification: "Property brand",
-              }}
+            <PropertyDualMetricCard
+              items={[
+                {
+                  label: "Partner",
+                  value: property.partner.replace(/^Partner /, ""),
+                  hint: "Booking partner",
+                },
+                {
+                  label: "Brand",
+                  value: formatBrandLabel(property.brand),
+                  hint: "Property brand",
+                },
+              ]}
             />
-            <DualDataWidget
-              valueClassName={FIGURE_20PX_CLASS}
-              datasetA={{
-                title: "Location",
-                value: property.postcode,
-                clarification: `${property.county}, ${property.country}`,
-              }}
-              datasetB={{
-                title: "Max occupancy",
-                value: property.maxOccupancy,
-                clarification: "Guests",
-              }}
+            <PropertyDualMetricCard
+              items={[
+                {
+                  label: "Location",
+                  value: property.postcode,
+                  hint: `${property.county}, ${property.country}`,
+                },
+                {
+                  label: "Max occupancy",
+                  value: property.maxOccupancy,
+                  hint: "Guests",
+                },
+              ]}
             />
           </div>
         </div>
 
         <div className="space-y-4">
-          <Tabs defaultValue="bookings" className="gap-5">
+          <Tabs defaultValue="bookings" className="gap-4">
             <TabsList className="bg-accent dark:bg-muted">
               <TabsTrigger value="bookings">Bookings ({property.bookingCount})</TabsTrigger>
               <TabsTrigger value="insights">Insights</TabsTrigger>
               <TabsTrigger value="details">Property details</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="bookings" className="space-y-5">
+            <TabsContent value="bookings" className="space-y-4">
               <div className="flex items-center gap-2">
                 <Button
                   variant={listView === "list" ? "default" : "ghost"}
