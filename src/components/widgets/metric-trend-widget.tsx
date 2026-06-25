@@ -153,17 +153,12 @@ export function MetricTrendWidget({
 
   return (
     <Card className={cn("@container flex h-full min-w-0 flex-col bg-card shadow-xs", className)}>
-      <CardHeader className="flex-row items-start justify-between space-y-0 pb-0">
+      <CardHeader className="flex-row items-start justify-between space-y-0 px-4 pb-2 pt-4">
         <h3 className="min-w-0 pr-2 text-sm font-semibold text-muted-foreground">{title}</h3>
         <WidgetHelpButton title={title} helpText={helpText} />
       </CardHeader>
 
-      <CardContent
-        className={cn(
-          "flex min-h-0 flex-1 flex-col px-4 pb-4 pt-2",
-          METRIC_WIDGET_STACK_GAP_CLASS
-        )}
-      >
+      <CardContent className="flex min-h-0 flex-1 flex-col gap-4 px-4 pb-4 pt-0">
         <div className={cn("flex flex-col", METRIC_WIDGET_STACK_GAP_CLASS)}>
           <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
             <p
@@ -179,10 +174,10 @@ export function MetricTrendWidget({
           <p className="text-xs text-muted-foreground @sm:text-sm">{comparisonLabel}</p>
         </div>
 
-        <div className={cn("flex min-h-0 flex-1 flex-col", METRIC_WIDGET_STACK_GAP_CLASS)}>
-          <div className="h-20 w-full min-h-0">
+        <div className="flex min-h-0 flex-1 flex-col pt-1">
+          <div className="h-[4.75rem] w-full min-h-0">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={chartData} margin={{ top: 4, right: 0, left: 0, bottom: 0 }}>
+              <AreaChart data={chartData} margin={{ top: 6, right: 0, left: 0, bottom: 0 }}>
                 <defs>
                   <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="var(--foreground)" stopOpacity={0.12} />
@@ -212,12 +207,7 @@ export function MetricTrendWidget({
           </div>
         </div>
 
-        <div
-          className={cn(
-            "flex shrink-0 items-center justify-between gap-2 border-t border-border pt-2",
-            METRIC_WIDGET_STACK_GAP_CLASS
-          )}
-        >
+        <div className="mt-1 flex shrink-0 items-center justify-between gap-2 border-t border-border pt-3">
           <div className="flex min-w-0 items-center gap-1.5 text-xs text-muted-foreground">
             <Users className="size-3.5 shrink-0" strokeWidth={2.25} />
             <span className="truncate">{scopeLabel}</span>

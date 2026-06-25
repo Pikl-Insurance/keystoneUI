@@ -714,7 +714,7 @@ export function LandingDashboardPage({
             onLinkClick={() => onNavigate({ section: "insights" })}
             dragHandleProps={dragHandleProps}
           >
-            <div className="@container flex min-h-0 flex-1 flex-col gap-4">
+            <div className="@container flex min-h-0 flex-1 flex-col gap-5 py-1">
               <div className={cn(metricCardGridClass, "min-w-0 grid-cols-2")}>
                 <MetricTrendWidget
                   className="min-w-0"
@@ -749,7 +749,7 @@ export function LandingDashboardPage({
                 />
               </div>
 
-              <p className="mt-auto border-t border-border/50 pt-3 text-xs text-muted-foreground">
+              <p className="mt-auto border-t border-border/50 pt-4 text-xs text-muted-foreground">
                 Explore timing, ABV, lead time and more in the{" "}
                 <button
                   type="button"
