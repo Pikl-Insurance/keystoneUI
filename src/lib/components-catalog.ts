@@ -117,6 +117,49 @@ import { FIGURE_24PX_CLASS } from "@/lib/figure-styles"
     ],
   },
   {
+    id: "metric-trend-widget",
+    name: "MetricTrendWidget",
+    category: "metric-widgets",
+    description:
+      "Headline metric with period trend badge, prior-period comparison, sparkline chart, and scope/rate footer.",
+    whenToUse:
+      "Use for primary volume metrics that need trend context — e.g. total bookings with daily rate and partner scope.",
+    importPath: '@/components/widgets/metric-trend-widget',
+    filePath: "src/components/widgets/metric-trend-widget.tsx",
+    props: [
+      { name: "title", type: "string", required: true, description: "Card heading." },
+      { name: "value", type: "string", required: true, description: "Primary formatted figure." },
+      { name: "trendLabel", type: "string", required: true, description: 'Period change badge, e.g. "+14.0%".' },
+      { name: "trend", type: '"up" | "down" | "neutral"', defaultValue: '"up"', description: "Arrow direction in the trend badge." },
+      { name: "comparisonLabel", type: "string", required: true, description: 'Prior period line, e.g. "vs 109,200 prior period".' },
+      { name: "chartData", type: "MetricTrendPoint[]", required: true, description: "Sparkline series: { label, value }." },
+      { name: "scopeLabel", type: "string", required: true, description: "Footer left — filter scope or audience." },
+      { name: "rateLabel", type: "string", required: true, description: 'Footer right — daily rate, e.g. "~4,150 /day".' },
+      { name: "helpText", type: "string", description: "Tooltip for the help button." },
+      { name: "className", type: "string", description: "Additional classes on the Card root." },
+    ],
+    usageExample: `import { MetricTrendWidget } from "@/components/widgets/metric-trend-widget"
+import { buildBookingTrendChart, deriveBookingTrendMeta } from "@/lib/chart-data"
+
+const trend = deriveBookingTrendMeta("124,500")
+
+<MetricTrendWidget
+  title="Total bookings"
+  value="124,500"
+  trendLabel={trend.trendLabel}
+  trend={trend.trend}
+  comparisonLabel={trend.comparisonLabel}
+  chartData={buildBookingTrendChart("124,500")}
+  scopeLabel="All selected partners and brands"
+  rateLabel={trend.dailyAverage}
+  helpText="Total bookings across selected partners and brands."
+/>`,
+    notes: [
+      "Chart and trend badge use neutral foreground tones.",
+      "Wrap in TooltipProvider when using helpText.",
+    ],
+  },
+  {
     id: "dual-data-widget",
     name: "DualDataWidget",
     category: "metric-widgets",
@@ -153,6 +196,119 @@ import { FIGURE_24PX_CLASS } from "@/lib/figure-styles"
     notes: [
       "Default value size is FIGURE_24PX_CLASS (24px). Pass FIGURE_20PX_CLASS for compact card layouts.",
       "DualDataDataset type is exported from the same module.",
+    ],
+  },
+  {
+    id: "product-split-widget",
+    name: "ProductSplitWidget",
+    category: "metric-widgets",
+    description:
+      "CAL/DDL product split with a stacked share bar, percentage labels, and per-product counts with take-up trend badges.",
+    whenToUse:
+      "Use when CAL and DDL volumes need a visual share breakdown plus take-up context — e.g. bookings product mix.",
+    importPath: '@/components/widgets/product-split-widget',
+    filePath: "src/components/widgets/product-split-widget.tsx",
+    props: [
+      { name: "title", type: "string", defaultValue: '"Product split"', description: "Card heading." },
+      { name: "totalLabel", type: "string", required: true, description: 'Total count badge, e.g. "3,258 total".' },
+      { name: "segmentA", type: "ProductSplitSegment", required: true, description: "Left segment — typically CAL: label, value, sharePercent, takeUpLabel, trend." },
+      { name: "segmentB", type: "ProductSplitSegment", required: true, description: "Right segment — typically DDL." },
+      { name: "helpText", type: "string", description: "Tooltip for the header help button." },
+      { name: "menuItems", type: "ProductSplitMenuItem[]", description: "Optional overflow menu actions." },
+      { name: "className", type: "string", description: "Additional classes on the Card root." },
+    ],
+    usageExample: `import { ProductSplitWidget } from "@/components/widgets/product-split-widget"
+
+<ProductSplitWidget
+  totalLabel="3,258 total"
+  segmentA={{
+    label: "CAL",
+    value: "3,210",
+    sharePercent: 98.5,
+    takeUpLabel: "3.8% take-up",
+    trend: "up",
+  }}
+  segmentB={{
+    label: "DDL",
+    value: "48",
+    sharePercent: 1.5,
+    takeUpLabel: "1.5% take-up",
+    trend: "down",
+  }}
+  helpText="Bookings with CAL or DDL attached across selected partners."
+  menuItems={[{ label: "Export data" }]}
+/>`,
+    notes: [
+      "sharePercent values should sum to 100 for an accurate bar.",
+      "Segments use neutral foreground tones — no product-specific colours.",
+      "Wrap in TooltipProvider when using helpText.",
+    ],
+  },
+  {
+    id: "metric-gauge-widget",
+    name: "MetricGaugeWidget",
+    category: "metric-widgets",
+    description:
+      "Headline percentage with a semi-circular gauge and supporting label — used for CAL customer price.",
+    whenToUse:
+      "Use when a single percentage needs light visual context, e.g. CAL price as a share of ABV inc. fee.",
+    importPath: '@/components/widgets/metric-gauge-widget',
+    filePath: "src/components/widgets/metric-gauge-widget.tsx",
+    props: [
+      { name: "title", type: "string", required: true, description: "Card heading." },
+      { name: "value", type: "string", required: true, description: 'Formatted figure, e.g. "8.4%".' },
+      { name: "gaugePercent", type: "number", required: true, description: "0–100 value driving the arc fill." },
+      { name: "label", type: "string", required: true, description: "Supporting text beside the gauge." },
+      { name: "helpText", type: "string", description: "Tooltip for the help button." },
+      { name: "className", type: "string", description: "Additional classes on the Card root." },
+    ],
+    usageExample: `import { MetricGaugeWidget } from "@/components/widgets/metric-gauge-widget"
+
+<MetricGaugeWidget
+  title="CAL customer price"
+  value="8.4%"
+  gaugePercent={8.4}
+  label="% of ABV inc. booking fee"
+  helpText="CAL customer price as a share of average booking value including fees."
+/>`,
+    notes: [
+      "Gauge uses neutral foreground on a muted track.",
+      "Wrap in TooltipProvider when using helpText.",
+    ],
+  },
+  {
+    id: "metric-benchmark-widget",
+    name: "MetricBenchmarkWidget",
+    category: "metric-widgets",
+    description:
+      "Headline currency value with CAL comparison, benchmark progress bar, and label — used for ABV metrics.",
+    whenToUse:
+      "Use when a value should be shown against a CAL benchmark, e.g. ABV excl. or inc. booking fee.",
+    importPath: '@/components/widgets/metric-benchmark-widget',
+    filePath: "src/components/widgets/metric-benchmark-widget.tsx",
+    props: [
+      { name: "title", type: "string", required: true, description: "Card heading." },
+      { name: "value", type: "string", required: true, description: 'Formatted figure, e.g. "£742".' },
+      { name: "comparisonLabel", type: "string", required: true, description: 'CAL reference, e.g. "CAL £890".' },
+      { name: "comparisonTrend", type: '"up" | "down" | "neutral"', description: "Arrow beside the comparison label. Auto-derived from value vs comparisonLabel when omitted." },
+      { name: "benchmarkPercent", type: "number", required: true, description: "0–100 fill for the benchmark bar." },
+      { name: "benchmarkLabel", type: "string", required: true, description: 'Bar caption, e.g. "83% of CAL benchmark".' },
+      { name: "helpText", type: "string", description: "Tooltip for the help button." },
+      { name: "className", type: "string", description: "Additional classes on the Card root." },
+    ],
+    usageExample: `import { MetricBenchmarkWidget } from "@/components/widgets/metric-benchmark-widget"
+
+<MetricBenchmarkWidget
+  title="ABV excl. booking fee"
+  value="£742"
+  comparisonLabel="CAL £890"
+  benchmarkPercent={83}
+  benchmarkLabel="83% of CAL benchmark"
+  helpText="Average booking value excluding the booking fee vs CAL benchmark."
+/>`,
+    notes: [
+      "Benchmark bar uses neutral foreground on a muted track.",
+      "Wrap in TooltipProvider when using helpText.",
     ],
   },
   {

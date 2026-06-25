@@ -75,6 +75,112 @@ export const componentCodeSnippets: Record<string, ComponentCodeSnippet[]> = {
       code: figureTokens,
     },
   ],
+  "product-split-widget": [
+    {
+      id: "tailwind",
+      label: "Tailwind",
+      code: `// Card root
+"@container flex h-full min-w-0 flex-col bg-card shadow-xs"
+
+// Total badge
+"rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground"
+
+// Share bar track
+"flex h-2 w-full overflow-hidden rounded-full bg-muted"
+
+// Segment detail panel
+"overflow-hidden rounded-lg border border-border"
+"grid min-w-0 grid-cols-2 divide-x divide-border"
+
+// Take-up badge
+"inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium"
+"bg-muted text-muted-foreground"`,
+    },
+    {
+      id: "tokens",
+      label: "Tokens",
+      code: `import { FIGURE_24PX_CLASS } from "@/lib/figure-styles"
+
+// Share bar: bg-foreground + bg-muted-foreground/50 on bg-muted track
+// Legend dots and take-up badges use muted-foreground tones
+// Segment values use FIGURE_24PX_CLASS`,
+    },
+  ],
+  "metric-trend-widget": [
+    {
+      id: "tailwind",
+      label: "Tailwind",
+      code: `// Value + trend badge row
+"flex flex-wrap items-baseline gap-x-2 gap-y-1"
+
+// Trend badge
+"inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground"
+
+// Sparkline area
+stroke="var(--foreground)" fill with foreground gradient at 12% opacity
+
+// Footer
+"flex items-center justify-between gap-2 border-t border-border pt-2"`,
+    },
+    {
+      id: "tokens",
+      label: "Tokens",
+      code: `import { FIGURE_24PX_CLASS, METRIC_WIDGET_STACK_GAP_CLASS } from "@/lib/figure-styles"
+import { buildBookingTrendChart, deriveBookingTrendMeta } from "@/lib/chart-data"`,
+    },
+  ],
+  "metric-benchmark-widget": [
+    {
+      id: "tailwind",
+      label: "Tailwind",
+      code: `// Value + CAL on one row
+"flex flex-wrap items-baseline gap-2"
+// Vertically centred in card body
+"flex min-h-0 flex-1 items-center"
+// + METRIC_WIDGET_STACK_GAP_CLASS → gap-2 (8px)
+"flex h-2 w-full overflow-hidden rounded-full bg-muted"
+
+// Benchmark bar fill
+"h-full bg-foreground transition-[width]"
+
+// Comparison row
+"flex items-center gap-1 text-xs text-muted-foreground"`,
+    },
+    {
+      id: "tokens",
+      label: "Tokens",
+      code: `import { FIGURE_24PX_CLASS, METRIC_WIDGET_STACK_GAP_CLASS } from "@/lib/figure-styles"
+
+// Values use FIGURE_24PX_CLASS
+// Value + CAL group uses METRIC_WIDGET_STACK_GAP_CLASS (8px)
+// Bar fill uses bg-foreground on bg-muted track`,
+    },
+  ],
+  "metric-gauge-widget": [
+    {
+      id: "tailwind",
+      label: "Tailwind",
+      code: `// Card root — same as HeadlineDataWidget
+"@container flex h-full min-w-0 flex-col bg-card shadow-xs"
+
+// Gauge track (SVG)
+"text-muted"
+
+// Gauge fill (SVG)
+"text-foreground"
+
+// Footer label
+"text-xs leading-snug text-muted-foreground"`,
+    },
+    {
+      id: "tokens",
+      label: "Tokens",
+      code: `import { FIGURE_24PX_CLASS } from "@/lib/figure-styles"
+
+// Values use FIGURE_24PX_CLASS
+// gaugePercent drives the semi-circular arc (0–100)`,
+    },
+  ],
   "dual-data-list-widget": [
     {
       id: "tailwind",
@@ -214,9 +320,9 @@ export const componentCodeSnippets: Record<string, ComponentCodeSnippet[]> = {
       label: "Layout",
       code: `<ReportSection title="Bookings" exportSlug="bookings" filters={filters}>
   <div className="@container flex min-h-0 min-w-0 flex-1 flex-col">
-    <div className={cn(metricCardGridClass, "grid-cols-1 @4xl:grid-cols-[minmax(0,220px)_minmax(0,1fr)]")}>
-      <HeadlineDataWidget title="Total bookings" ... />
-      <DualDataWidget primaryTitle="Product split" ... />
+    <div className={cn(metricCardGridClass, "grid-cols-1 @md:grid-cols-2")}>
+      <MetricTrendWidget title="Total bookings" ... />
+      <ProductSplitWidget totalLabel="3,258 total" ... />
     </div>
   </div>
 </ReportSection>`,
@@ -231,12 +337,10 @@ export const componentCodeSnippets: Record<string, ComponentCodeSnippet[]> = {
     {
       id: "layout",
       label: "Layout",
-      code: `<div className={cn(metricCardGridClass, "grid-cols-1 @4xl:grid-cols-[minmax(0,220px)_minmax(0,1fr)]")}>
-  <HeadlineDataWidget title="CAL customer price" ... />
-  <div className={cn(metricCardGridClass, "grid-cols-1 @md:grid-cols-2")}>
-    <DualDataWidget primaryTitle="ABV (excl. booking fee)" ... />
-    <DualDataWidget primaryTitle="ABV inc. booking fee" ... />
-  </div>
+      code: `<div className={cn(metricCardGridClass, "grid-cols-1 @md:grid-cols-2 @4xl:grid-cols-3")}>
+  <MetricGaugeWidget title="CAL customer price" ... />
+  <MetricBenchmarkWidget title="ABV excl. booking fee" ... />
+  <MetricBenchmarkWidget title="ABV inc. booking fee" ... />
 </div>`,
     },
   ],

@@ -68,6 +68,10 @@ import { DataSnapshotWidget } from "@/components/widgets/data-snapshot-widget"
 import { DualDataListWidget } from "@/components/widgets/dual-data-list-widget"
 import { GraphWidget } from "@/components/widgets/graph-widget"
 import { HeadlineDataWidget } from "@/components/widgets/headline-data-widget"
+import { MetricBenchmarkWidget } from "@/components/widgets/metric-benchmark-widget"
+import { MetricGaugeWidget } from "@/components/widgets/metric-gauge-widget"
+import { MetricTrendWidget } from "@/components/widgets/metric-trend-widget"
+import { ProductSplitWidget } from "@/components/widgets/product-split-widget"
 import { WidgetHelpButton } from "@/components/widgets/widget-help-button"
 import { BOOKING_ENGINE_PARTNERS } from "@/lib/booking-engine-data"
 import { DEFAULT_FILTERS } from "@/lib/chart-data"
@@ -184,6 +188,27 @@ export function ComponentPreview({ id }: { id: string }) {
           valueClassName={FIGURE_24PX_CLASS}
         />
       )
+    case "metric-trend-widget":
+      return (
+        <MetricTrendWidget
+          title="Total bookings"
+          value="124,500"
+          trendLabel="+14.0%"
+          trend="up"
+          comparisonLabel="vs 109,200 prior period"
+          chartData={[
+            { label: "Jul", value: 15800 },
+            { label: "Sep", value: 16600 },
+            { label: "Nov", value: 17400 },
+            { label: "Jan", value: 18300 },
+            { label: "Mar", value: 19500 },
+            { label: "May", value: 20750 },
+          ]}
+          scopeLabel="All selected partners and brands"
+          rateLabel="~4,150 /day"
+          helpText="Total bookings across selected partners and brands."
+        />
+      )
     case "dual-data-widget":
       return (
         <DualDataWidget
@@ -191,6 +216,49 @@ export function ComponentPreview({ id }: { id: string }) {
           datasetA={{ title: "CAL", value: "23,304", clarification: "3% take-up" }}
           datasetB={{ title: "DDL", value: "18,422", clarification: "2% take-up" }}
           helpText="Supporting context for this headline metric."
+        />
+      )
+    case "product-split-widget":
+      return (
+        <ProductSplitWidget
+          totalLabel="3,258 total"
+          segmentA={{
+            label: "CAL",
+            value: "3,210",
+            sharePercent: 98.5,
+            takeUpLabel: "3.8% take-up",
+            trend: "up",
+          }}
+          segmentB={{
+            label: "DDL",
+            value: "48",
+            sharePercent: 1.5,
+            takeUpLabel: "1.5% take-up",
+            trend: "down",
+          }}
+          helpText="Bookings with CAL or DDL attached across selected partners."
+          menuItems={[{ label: "Export data" }]}
+        />
+      )
+    case "metric-gauge-widget":
+      return (
+        <MetricGaugeWidget
+          title="CAL customer price"
+          value="8.4%"
+          gaugePercent={8.4}
+          label="% of ABV inc. booking fee"
+          helpText="CAL customer price as a share of average booking value including fees."
+        />
+      )
+    case "metric-benchmark-widget":
+      return (
+        <MetricBenchmarkWidget
+          title="ABV excl. booking fee"
+          value="£742"
+          comparisonLabel="CAL £890"
+          benchmarkPercent={83}
+          benchmarkLabel="83% of CAL benchmark"
+          helpText="Average booking value excluding the booking fee vs CAL benchmark."
         />
       )
     case "dual-data-list-widget":
@@ -497,7 +565,11 @@ export function getPreviewLayout(id: string) {
 
   const inset = [
     "headline-data-widget",
+    "metric-trend-widget",
     "dual-data-widget",
+    "product-split-widget",
+    "metric-gauge-widget",
+    "metric-benchmark-widget",
     "breakdown-data-widget",
     "data-snapshot-widget",
     "dual-data-list-widget",

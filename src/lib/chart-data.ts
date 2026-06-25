@@ -135,6 +135,41 @@ export function buildCalDdlTakeupData(filters: ActiveFilters, days = 174) {
 }
 
 // Snapshot metric profiles keyed by partner:brand
+export type BookingTrendPoint = {
+  label: string
+  value: number
+}
+
+const BOOKING_TREND_MONTHS = ["Jul", "Sep", "Nov", "Jan", "Mar", "May"] as const
+const BOOKING_TREND_SHAPE = [0.76, 0.8, 0.84, 0.88, 0.94, 1.0]
+
+export function buildBookingTrendChart(total: string): BookingTrendPoint[] {
+  const totalValue = Number.parseInt(total.replace(/,/g, ""), 10) || 0
+  const monthlyBase = totalValue / BOOKING_TREND_MONTHS.length
+
+  return BOOKING_TREND_MONTHS.map((label, index) => ({
+    label,
+    value: Math.round(monthlyBase * BOOKING_TREND_SHAPE[index]),
+  }))
+}
+
+export function deriveBookingTrendMeta(total: string) {
+  const totalValue = Number.parseInt(total.replace(/,/g, ""), 10) || 0
+  const priorValue = Math.round(totalValue / 1.14)
+  const changePct = priorValue > 0 ? ((totalValue - priorValue) / priorValue) * 100 : 0
+  const priorTotal = priorValue.toLocaleString("en-GB")
+  const sign = changePct >= 0 ? "+" : ""
+  const dailyAverage = Math.round(totalValue / 30)
+
+  return {
+    priorTotal,
+    trendLabel: `${sign}${changePct.toFixed(1)}%`,
+    trend: changePct >= 0 ? ("up" as const) : ("down" as const),
+    comparisonLabel: `vs ${priorTotal} prior period`,
+    dailyAverage: `~${dailyAverage.toLocaleString("en-GB")} /day`,
+  }
+}
+
 const BOOKING_PROFILES: Record<string, {
   total: string; calSales: string; calPct: string; ddlSales: string; ddlPct: string
 }> = {
