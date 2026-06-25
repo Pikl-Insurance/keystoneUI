@@ -2,8 +2,8 @@ import { useState } from "react"
 import { LayoutList } from "lucide-react"
 
 import { ReportSection } from "@/components/report-section"
-import { DualDataWidget } from "@/components/dual-data-widget"
-import { HeadlineDataWidget } from "@/components/widgets/headline-data-widget"
+import { MetricTrendWidget } from "@/components/widgets/metric-trend-widget"
+import { ProductSplitWidget } from "@/components/widgets/product-split-widget"
 import {
   Table,
   TableBody,
@@ -19,21 +19,24 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { metricCardGridClass } from "@/lib/card-layout"
-import { type ActiveFilters, getBookingProfile } from "@/lib/chart-data"
 import {
-  INSIGHTS_WIDGET_HELP_TEXT,
-} from "@/lib/insights-widget-labels"
+  buildBookingTrendChart,
+  deriveBookingTrendMeta,
+  type ActiveFilters,
+  getBookingProfile,
+} from "@/lib/chart-data"
+import { INSIGHTS_WIDGET_HELP_TEXT } from "@/lib/insights-widget-labels"
 import { cn } from "@/lib/utils"
 
 const BASE_PARTNER_ROWS = [
-  { brand: "Partner Alpha", ccy: "GBP", color: "bg-blue-500" },
-  { brand: "Partner Beta", ccy: "GBP", color: "bg-cyan-500" },
-  { brand: "Partner Gamma (DK)", ccy: "EUR", color: "bg-amber-500" },
-  { brand: "Partner Gamma (EUR)", ccy: "EUR", color: "bg-violet-500" },
-  { brand: "Partner Delta (EUR)", ccy: "EUR", color: "bg-rose-500" },
-  { brand: "Partner Epsilon", ccy: "GBP", color: "bg-lime-500" },
-  { brand: "Partner Zeta (DK)", ccy: "EUR", color: "bg-pink-500" },
-  { brand: "Partner Zeta (EUR)", ccy: "EUR", color: "bg-orange-500" },
+  { brand: "Partner Alpha", ccy: "GBP", color: "bg-muted-foreground" },
+  { brand: "Partner Beta", ccy: "GBP", color: "bg-muted-foreground/70" },
+  { brand: "Partner Gamma (DK)", ccy: "EUR", color: "bg-muted-foreground/50" },
+  { brand: "Partner Gamma (EUR)", ccy: "EUR", color: "bg-muted-foreground/40" },
+  { brand: "Partner Delta (EUR)", ccy: "EUR", color: "bg-muted-foreground/30" },
+  { brand: "Partner Epsilon", ccy: "GBP", color: "bg-muted-foreground/20" },
+  { brand: "Partner Zeta (DK)", ccy: "EUR", color: "bg-muted-foreground/15" },
+  { brand: "Partner Zeta (EUR)", ccy: "EUR", color: "bg-muted-foreground/10" },
 ]
 
 const ROW_DATA: Record<string, Array<{ bookings: string; cal: string; ddl: string }>> = {
@@ -79,6 +82,29 @@ const ROW_DATA: Record<string, Array<{ bookings: string; cal: string; ddl: strin
   ],
 }
 
+function parseCount(value: string) {
+  return Number.parseInt(value.replace(/,/g, ""), 10) || 0
+}
+
+function parsePercent(value: string) {
+  const match = value.match(/[\d.]+/)
+  return match ? Number.parseFloat(match[0]) : 0
+}
+
+export function getProductSplit(profile: ReturnType<typeof getBookingProfile>) {
+  const calCount = parseCount(profile.calSales)
+  const ddlCount = parseCount(profile.ddlSales)
+  const splitTotal = calCount + ddlCount
+
+  return {
+    totalLabel: `${splitTotal.toLocaleString("en-GB")} total`,
+    calSharePercent: splitTotal > 0 ? Number(((calCount / splitTotal) * 100).toFixed(1)) : 0,
+    ddlSharePercent: splitTotal > 0 ? Number(((ddlCount / splitTotal) * 100).toFixed(1)) : 0,
+    calTrend: parsePercent(profile.calPct) >= parsePercent(profile.ddlPct) ? "up" as const : "down" as const,
+    ddlTrend: parsePercent(profile.ddlPct) >= parsePercent(profile.calPct) ? "up" as const : "down" as const,
+  }
+}
+
 export function getPartnerRows(filters: ActiveFilters) {
   const key = `${filters.partner}:${filters.brand}`
   const rowData = ROW_DATA[key] ?? ROW_DATA["all-partners:all-brands"]
@@ -88,6 +114,9 @@ export function getPartnerRows(filters: ActiveFilters) {
 export function BookingsSnapshot({ filters }: { filters: ActiveFilters }) {
   const profile = getBookingProfile(filters)
   const partnerRows = getPartnerRows(filters)
+  const productSplit = getProductSplit(profile)
+  const trendMeta = deriveBookingTrendMeta(profile.total)
+  const trendChart = buildBookingTrendChart(profile.total)
   const [showBreakdown, setShowBreakdown] = useState(false)
 
   return (
@@ -108,7 +137,7 @@ export function BookingsSnapshot({ filters }: { filters: ActiveFilters }) {
                 <LayoutList className="size-4" />
               </button>
             </TooltipTrigger>
-            <TooltipContent>
+            <TooltipContent variant="plain">
               {showBreakdown
                 ? "Hide partner breakdown"
                 : "View bookings broken down by partner — includes CAL and DDL figures per brand"}
@@ -116,30 +145,39 @@ export function BookingsSnapshot({ filters }: { filters: ActiveFilters }) {
           </Tooltip>
         }
       >
-      <div className="@container flex min-h-0 min-w-0 flex-1 flex-col">
-        <div className={cn(metricCardGridClass, "grid-cols-1 @4xl:grid-cols-[minmax(0,220px)_minmax(0,1fr)]")}>
-          <HeadlineDataWidget
-            title="Total bookings"
-            value={profile.total}
-            label="All selected partners and brands"
-            helpText={INSIGHTS_WIDGET_HELP_TEXT}
-          />
-          <DualDataWidget
-            primaryTitle="Product split"
-            datasetA={{
-              title: "CAL",
-              value: profile.calSales,
-              clarification: `${profile.calPct} take-up`,
-            }}
-            datasetB={{
-              title: "DDL",
-              value: profile.ddlSales,
-              clarification: `${profile.ddlPct} take-up`,
-            }}
-            helpText={INSIGHTS_WIDGET_HELP_TEXT}
-          />
+        <div className="@container flex min-h-0 min-w-0 flex-1 flex-col">
+          <div className={cn(metricCardGridClass, "grid-cols-1 @md:grid-cols-2")}>
+            <MetricTrendWidget
+              title="Total bookings"
+              value={profile.total}
+              trendLabel={trendMeta.trendLabel}
+              trend={trendMeta.trend}
+              comparisonLabel={trendMeta.comparisonLabel}
+              chartData={trendChart}
+              scopeLabel="All selected partners and brands"
+              rateLabel={trendMeta.dailyAverage}
+              helpText={INSIGHTS_WIDGET_HELP_TEXT}
+            />
+            <ProductSplitWidget
+              totalLabel={productSplit.totalLabel}
+              segmentA={{
+                label: "CAL",
+                value: profile.calSales,
+                sharePercent: productSplit.calSharePercent,
+                takeUpLabel: `${profile.calPct} take-up`,
+                trend: productSplit.calTrend,
+              }}
+              segmentB={{
+                label: "DDL",
+                value: profile.ddlSales,
+                sharePercent: productSplit.ddlSharePercent,
+                takeUpLabel: `${profile.ddlPct} take-up`,
+                trend: productSplit.ddlTrend,
+              }}
+              helpText={INSIGHTS_WIDGET_HELP_TEXT}
+            />
+          </div>
         </div>
-      </div>
 
         {showBreakdown && (
           <div className="mt-4 overflow-hidden rounded-xl border border-border bg-card shadow-xs">
@@ -164,10 +202,10 @@ export function BookingsSnapshot({ filters }: { filters: ActiveFilters }) {
                     </TableCell>
                     <TableCell className="text-muted-foreground">{row.ccy}</TableCell>
                     <TableCell className="text-right tabular-nums">{row.bookings}</TableCell>
-                    <TableCell className="text-right tabular-nums text-primary">
+                    <TableCell className="text-right tabular-nums text-muted-foreground">
                       {row.cal}
                     </TableCell>
-                    <TableCell className="text-right tabular-nums text-amber-600 dark:text-muted-foreground">
+                    <TableCell className="text-right tabular-nums text-muted-foreground">
                       {row.ddl}
                     </TableCell>
                   </TableRow>

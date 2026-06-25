@@ -135,6 +135,41 @@ export function buildCalDdlTakeupData(filters: ActiveFilters, days = 174) {
 }
 
 // Snapshot metric profiles keyed by partner:brand
+export type BookingTrendPoint = {
+  label: string
+  value: number
+}
+
+const BOOKING_TREND_MONTHS = ["Jul", "Sep", "Nov", "Jan", "Mar", "May"] as const
+const BOOKING_TREND_SHAPE = [0.76, 0.8, 0.84, 0.88, 0.94, 1.0]
+
+export function buildBookingTrendChart(total: string): BookingTrendPoint[] {
+  const totalValue = Number.parseInt(total.replace(/,/g, ""), 10) || 0
+  const monthlyBase = totalValue / BOOKING_TREND_MONTHS.length
+
+  return BOOKING_TREND_MONTHS.map((label, index) => ({
+    label,
+    value: Math.round(monthlyBase * BOOKING_TREND_SHAPE[index]),
+  }))
+}
+
+export function deriveBookingTrendMeta(total: string) {
+  const totalValue = Number.parseInt(total.replace(/,/g, ""), 10) || 0
+  const priorValue = Math.round(totalValue / 1.14)
+  const changePct = priorValue > 0 ? ((totalValue - priorValue) / priorValue) * 100 : 0
+  const priorTotal = priorValue.toLocaleString("en-GB")
+  const sign = changePct >= 0 ? "+" : ""
+  const dailyAverage = Math.round(totalValue / 30)
+
+  return {
+    priorTotal,
+    trendLabel: `${sign}${changePct.toFixed(1)}%`,
+    trend: changePct >= 0 ? ("up" as const) : ("down" as const),
+    comparisonLabel: `vs ${priorTotal} prior period`,
+    dailyAverage: `~${dailyAverage.toLocaleString("en-GB")} /day`,
+  }
+}
+
 const BOOKING_PROFILES: Record<string, {
   total: string; calSales: string; calPct: string; ddlSales: string; ddlPct: string
 }> = {
@@ -196,6 +231,61 @@ const CAL_FIN_PROFILES: Record<string, {
 export function getCalFinProfile(filters: ActiveFilters) {
   const key = `${filters.partner}:${filters.brand}`
   return CAL_FIN_PROFILES[key] ?? CAL_FIN_PROFILES["all-partners:all-brands"]
+}
+
+const FINANCIAL_TREND_MONTHS = ["Jul", "Sep", "Nov", "Jan", "Mar", "May"] as const
+const FINANCIAL_TREND_SHAPE = [0.76, 0.8, 0.84, 0.88, 0.94, 1.0]
+const FINANCIAL_PRIOR_PERIOD_FACTOR = 1.075
+
+function parseCurrencyValue(value: string) {
+  const match = value.replace(/,/g, "").match(/[\d.]+/)
+  return match ? Number.parseFloat(match[0]) : 0
+}
+
+export function deriveFinancialTrendMeta(totalPayable: string) {
+  const totalValue = parseCurrencyValue(totalPayable)
+  const priorValue = Math.round(totalValue / FINANCIAL_PRIOR_PERIOD_FACTOR)
+  const changePct = priorValue > 0 ? ((totalValue - priorValue) / priorValue) * 100 : 0
+  const priorTotal = `£${priorValue.toLocaleString("en-GB")}`
+  const sign = changePct >= 0 ? "+" : ""
+
+  return {
+    priorTotal,
+    trendLabel: `${sign}${changePct.toFixed(1)}%`,
+    trend: changePct >= 0 ? ("up" as const) : ("down" as const),
+    comparisonLabel: `vs ${priorTotal} prior period`,
+  }
+}
+
+export function buildFinancialTrendChart(totalPayable: string): BookingTrendPoint[] {
+  const totalValue = parseCurrencyValue(totalPayable)
+  const monthlyBase = totalValue / FINANCIAL_TREND_MONTHS.length
+
+  return FINANCIAL_TREND_MONTHS.map((label, index) => ({
+    label,
+    value: Math.round(monthlyBase * FINANCIAL_TREND_SHAPE[index]),
+  }))
+}
+
+export function buildCalFinBreakdown(
+  rows: Array<{ label: string; value: string }>,
+  count = 3
+): Array<{ label: string; value: string; sharePercent: number }> {
+  const topRows = rows
+    .map((row) => ({
+      ...row,
+      amount: parseCurrencyValue(row.value),
+    }))
+    .sort((a, b) => b.amount - a.amount)
+    .slice(0, count)
+
+  const total = topRows.reduce((sum, row) => sum + row.amount, 0)
+
+  return topRows.map((row) => ({
+    label: row.label.replace(/ \(GBP\)$/, ""),
+    value: row.value,
+    sharePercent: total > 0 ? Math.round((row.amount / total) * 100) : 0,
+  }))
 }
 
 const TIMING_PROFILES: Record<string, {

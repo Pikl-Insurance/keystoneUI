@@ -86,7 +86,7 @@ function DashboardKpiCard({ label, value, subtext, icon: Icon, description }: Kp
               <Info className="size-3.5" />
             </button>
           </TooltipTrigger>
-          <TooltipContent>{description}</TooltipContent>
+          <TooltipContent variant="plain">{description}</TooltipContent>
         </Tooltip>
         <div className="grid size-7 place-items-center rounded-md bg-muted text-muted-foreground">
           <Icon className="size-3.5" />

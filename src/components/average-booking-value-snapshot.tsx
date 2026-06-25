@@ -2,7 +2,8 @@ import { useState } from "react"
 import { LayoutList } from "lucide-react"
 
 import { ReportSection } from "@/components/report-section"
-import { HeadlineDataWidget } from "@/components/widgets/headline-data-widget"
+import { MetricBenchmarkWidget, getBenchmarkPercent } from "@/components/widgets/metric-benchmark-widget"
+import { MetricGaugeWidget } from "@/components/widgets/metric-gauge-widget"
 import {
   Table,
   TableBody,
@@ -25,14 +26,14 @@ import {
 import { cn } from "@/lib/utils"
 
 const BASE_ABV_ROWS = [
-  { brand: "Partner Alpha",       ccy: "GBP", color: "bg-blue-500"   },
-  { brand: "Partner Beta",        ccy: "GBP", color: "bg-cyan-500"   },
-  { brand: "Partner Gamma (DK)",  ccy: "EUR", color: "bg-amber-500"  },
-  { brand: "Partner Gamma (EUR)", ccy: "EUR", color: "bg-violet-500" },
-  { brand: "Partner Delta (EUR)", ccy: "EUR", color: "bg-rose-500"   },
-  { brand: "Partner Epsilon",     ccy: "GBP", color: "bg-lime-500"   },
-  { brand: "Partner Zeta (DK)",   ccy: "EUR", color: "bg-pink-500"   },
-  { brand: "Partner Zeta (EUR)",  ccy: "EUR", color: "bg-orange-500" },
+  { brand: "Partner Alpha",       ccy: "GBP", color: "bg-muted-foreground"   },
+  { brand: "Partner Beta",        ccy: "GBP", color: "bg-muted-foreground/70"   },
+  { brand: "Partner Gamma (DK)",  ccy: "EUR", color: "bg-muted-foreground/50"  },
+  { brand: "Partner Gamma (EUR)", ccy: "EUR", color: "bg-muted-foreground/40" },
+  { brand: "Partner Delta (EUR)", ccy: "EUR", color: "bg-muted-foreground/30"   },
+  { brand: "Partner Epsilon",     ccy: "GBP", color: "bg-muted-foreground/20"   },
+  { brand: "Partner Zeta (DK)",   ccy: "EUR", color: "bg-muted-foreground/15"   },
+  { brand: "Partner Zeta (EUR)",  ccy: "EUR", color: "bg-muted-foreground/10" },
 ]
 
 const ABV_ROW_DATA: Record<string, Array<{ abv: string; calAbv: string; abvIncFee: string; calPricePct: string }>> = {
@@ -84,10 +85,17 @@ function getAbvRows(filters: ActiveFilters) {
   return BASE_ABV_ROWS.map((base, i) => ({ ...base, ...rowData[i] }))
 }
 
+function getGaugePercent(value: string) {
+  const match = value.replace(/,/g, "").match(/[\d.]+/)
+  return match ? Number.parseFloat(match[0]) : 0
+}
+
 export function AverageBookingValueSnapshot({ filters }: { filters: ActiveFilters }) {
   const [showBreakdown, setShowBreakdown] = useState(false)
   const profile = getAbvProfile(filters)
   const abvRows = getAbvRows(filters)
+  const abvExBenchmark = getBenchmarkPercent(profile.gbpAbv, profile.gbpCal)
+  const abvIncBenchmark = getBenchmarkPercent(profile.gbpAbvFee, profile.gbpCalFee)
 
   return (
     <TooltipProvider>
@@ -107,7 +115,7 @@ export function AverageBookingValueSnapshot({ filters }: { filters: ActiveFilter
                 <LayoutList className="size-4" />
               </button>
             </TooltipTrigger>
-            <TooltipContent>
+            <TooltipContent variant="plain">
               {showBreakdown
                 ? "Hide partner breakdown"
                 : "View ABV per partner — shows ABV, CAL ABV, ABV inc. fee and CAL price % by brand"}
@@ -116,27 +124,35 @@ export function AverageBookingValueSnapshot({ filters }: { filters: ActiveFilter
         }
       >
         <div className="@container flex min-h-0 min-w-0 flex-1 flex-col">
-          <div className={cn(metricCardGridClass, "grid-cols-1 @4xl:grid-cols-[minmax(0,220px)_minmax(0,1fr)]")}>
-            <HeadlineDataWidget
+          <div
+            className={cn(
+              metricCardGridClass,
+              "grid-cols-1 @md:grid-cols-2 @4xl:grid-cols-3"
+            )}
+          >
+            <MetricGaugeWidget
               title="CAL customer price"
               value={profile.calPct}
+              gaugePercent={getGaugePercent(profile.calPct)}
               label="% of ABV inc. booking fee"
               helpText={INSIGHTS_WIDGET_HELP_TEXT}
             />
-            <div className={cn(metricCardGridClass, "h-full min-h-0 grid-cols-1 @md:grid-cols-2")}>
-              <HeadlineDataWidget
-                title="ABV (excl. booking fee)"
-                value={profile.gbpAbv}
-                label={profile.gbpCal}
-                helpText={INSIGHTS_WIDGET_HELP_TEXT}
-              />
-              <HeadlineDataWidget
-                title="ABV inc. booking fee"
-                value={profile.gbpAbvFee}
-                label={profile.gbpCalFee}
-                helpText={INSIGHTS_WIDGET_HELP_TEXT}
-              />
-            </div>
+            <MetricBenchmarkWidget
+              title="ABV excl. booking fee"
+              value={profile.gbpAbv}
+              comparisonLabel={profile.gbpCal}
+              benchmarkPercent={abvExBenchmark}
+              benchmarkLabel={`${abvExBenchmark}% of CAL benchmark`}
+              helpText={INSIGHTS_WIDGET_HELP_TEXT}
+            />
+            <MetricBenchmarkWidget
+              title="ABV inc. booking fee"
+              value={profile.gbpAbvFee}
+              comparisonLabel={profile.gbpCalFee}
+              benchmarkPercent={abvIncBenchmark}
+              benchmarkLabel={`${abvIncBenchmark}% of CAL benchmark`}
+              helpText={INSIGHTS_WIDGET_HELP_TEXT}
+            />
           </div>
         </div>
 
@@ -164,9 +180,9 @@ export function AverageBookingValueSnapshot({ filters }: { filters: ActiveFilter
                     </TableCell>
                     <TableCell className="text-muted-foreground">{row.ccy}</TableCell>
                     <TableCell className="text-right tabular-nums">{row.abv}</TableCell>
-                    <TableCell className="text-right tabular-nums text-primary">{row.calAbv}</TableCell>
+                    <TableCell className="text-right tabular-nums text-muted-foreground">{row.calAbv}</TableCell>
                     <TableCell className="text-right tabular-nums">{row.abvIncFee}</TableCell>
-                    <TableCell className="text-right tabular-nums text-primary">{row.calPricePct}</TableCell>
+                    <TableCell className="text-right tabular-nums text-muted-foreground">{row.calPricePct}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
