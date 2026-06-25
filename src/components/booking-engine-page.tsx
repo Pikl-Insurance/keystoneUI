@@ -22,6 +22,7 @@ import {
   PartnerDetailPanel,
   type PartnerDetailTab,
 } from "@/components/booking-engine/partner-detail-panel"
+import { AddPartnerPage } from "@/components/booking-engine/add-partner-page"
 import { PartnerListItem } from "@/components/booking-engine/partner-list-item"
 import { PropertyPage } from "@/components/booking-engine/property-page"
 import type { BookingEngineView } from "@/components/landing-dashboard-page"
@@ -100,6 +101,7 @@ export function BookingEnginePage({ initialView = "partners" }: BookingEnginePag
   const [selectedPropertyId, setSelectedPropertyId] = useState<string | null>(null)
   const [editorMode] = useState(initialState.editorMode)
   const [partnerSearch, setPartnerSearch] = useState("")
+  const [showAddPartner, setShowAddPartner] = useState(false)
 
   const filteredPartners = useMemo(
     () => BOOKING_ENGINE_PARTNERS.filter((partner) => partnerMatchesSearch(partner, partnerSearch)),
@@ -115,6 +117,10 @@ export function BookingEnginePage({ initialView = "partners" }: BookingEnginePag
     () => Math.max(...BOOKING_ENGINE_PARTNERS.map((partner) => partner.activity.bookings)),
     []
   )
+
+  if (showAddPartner) {
+    return <AddPartnerPage onBack={() => setShowAddPartner(false)} />
+  }
 
   if (selectedPropertyId) {
     return (
@@ -140,7 +146,10 @@ export function BookingEnginePage({ initialView = "partners" }: BookingEnginePag
                 <Download className="size-3.5" />
                 Export
               </Button>
-              <Button className="h-9 gap-2 text-xs">
+              <Button
+                className="h-9 gap-2 text-xs"
+                onClick={() => setShowAddPartner(true)}
+              >
                 <Plus className="size-3.5" />
                 Add partner
               </Button>

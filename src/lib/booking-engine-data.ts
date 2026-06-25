@@ -35,13 +35,45 @@ export type PartnerBooking = {
   status: PartnerBookingStatus
 }
 
+export type PartnerConnectionType = "API" | "S3" | "FTP"
+export type PartnerProduct = "CAL" | "DDL"
+export type PartnerCurrency = "GBP" | "EUR"
+
+export type AddPartnerFormValues = {
+  name: string
+  initials: string
+  connectionType: PartnerConnectionType
+  currencies: PartnerCurrency[]
+  products: PartnerProduct[]
+  contactName: string
+  contactEmail: string
+  accountManager: string
+  goLiveDate: string
+  notes: string
+  status: "draft" | "active"
+}
+
+export const PARTNER_CONNECTION_TYPES: PartnerConnectionType[] = ["API", "S3", "FTP"]
+
+export const PARTNER_CONNECTION_LABELS: Record<PartnerConnectionType, string> = {
+  API: "API feed",
+  S3: "S3 bucket",
+  FTP: "FTP transfer",
+}
+
+export const PARTNER_CONNECTION_DESCRIPTIONS: Record<PartnerConnectionType, string> = {
+  API: "Real-time booking data via REST endpoints",
+  S3: "Scheduled file drops to a shared bucket",
+  FTP: "Batch uploads to a secure FTP endpoint",
+}
+
 export type Partner = {
   id: string
   name: string
   initials: string
   dataRoute: string
-  connectionType: string
-  products: ("CAL" | "DDL")[]
+  connectionType: PartnerConnectionType
+  products: PartnerProduct[]
   activity: {
     bookings: number
     properties: number

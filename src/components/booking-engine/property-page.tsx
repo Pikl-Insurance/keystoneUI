@@ -105,6 +105,7 @@ function PropertyStatCard({
   trendTone = "neutral",
   icon: Icon,
   className,
+  embedded = false,
 }: {
   title: string
   value: string
@@ -113,11 +114,15 @@ function PropertyStatCard({
   trendTone?: "positive" | "negative" | "neutral"
   icon: LucideIcon
   className?: string
+  embedded?: boolean
 }) {
   return (
     <article
       className={cn(
-        "flex min-w-0 flex-col rounded-xl border border-border bg-card p-4 shadow-xs",
+        "flex min-w-0 flex-col",
+        embedded
+          ? "p-4"
+          : "rounded-xl border border-border bg-card p-4 shadow-xs",
         className
       )}
     >
@@ -201,99 +206,111 @@ function PropertyOverviewTab({
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-col gap-4 xl:grid xl:grid-cols-[minmax(220px,280px)_minmax(300px,380px)_minmax(0,1fr)_minmax(0,1fr)] xl:items-stretch">
-        <div className="relative aspect-[5/4] overflow-hidden rounded-xl border border-border bg-muted/30 sm:aspect-auto sm:min-h-[200px] xl:col-start-1 xl:row-span-2 xl:min-h-0">
-          <img
-            src={property.imageUrl}
-            alt={`${property.name} exterior`}
-            className="absolute inset-0 h-full w-full object-cover object-[center_62%]"
-          />
-          <ul className="absolute right-3 top-3 flex items-center gap-2.5 rounded-lg border border-white/25 bg-black/35 px-2.5 py-1.5 shadow-sm backdrop-blur-md">
-            {capacityRows.map((item) => (
-              <li
-                key={item.label}
-                className="flex items-center gap-1"
-                aria-label={`${item.value} ${item.label.toLowerCase()}`}
+      <section className="overflow-hidden rounded-xl border border-border bg-card shadow-xs">
+        <div className="grid grid-cols-1 xl:grid-cols-[minmax(220px,280px)_minmax(280px,340px)_minmax(0,1fr)] xl:items-stretch">
+          <div className="relative aspect-[5/4] min-h-[200px] overflow-hidden border-b border-border bg-muted/30 sm:aspect-auto xl:aspect-auto xl:min-h-0 xl:border-r xl:border-b-0">
+            <img
+              src={property.imageUrl}
+              alt={`${property.name} exterior`}
+              className="absolute inset-0 h-full w-full object-cover object-[center_62%]"
+            />
+            <ul className="absolute right-3 top-3 flex items-center gap-2.5 rounded-lg border border-white/25 bg-black/35 px-2.5 py-1.5 shadow-sm backdrop-blur-md">
+              {capacityRows.map((item) => (
+                <li
+                  key={item.label}
+                  className="flex items-center gap-1"
+                  aria-label={`${item.value} ${item.label.toLowerCase()}`}
+                >
+                  <item.icon className="size-3.5 shrink-0 text-white/90" strokeWidth={2} />
+                  <span className="text-xs font-semibold tabular-nums leading-none text-white">
+                    {item.value}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <div className="absolute inset-x-0 bottom-0 flex justify-end bg-gradient-to-t from-black/55 to-transparent p-3 pt-12">
+              <button
+                type="button"
+                className="rounded-full bg-black/70 px-2.5 py-0.5 text-[10px] font-medium text-white backdrop-blur-sm"
               >
-                <item.icon className="size-3.5 shrink-0 text-white/90" strokeWidth={2} />
-                <span className="text-xs font-semibold tabular-nums leading-none text-white">
-                  {item.value}
-                </span>
-              </li>
-            ))}
-          </ul>
-          <div className="absolute inset-x-0 bottom-0 flex justify-end bg-gradient-to-t from-black/55 to-transparent p-3 pt-12">
-            <button
-              type="button"
-              className="rounded-full bg-black/70 px-2.5 py-0.5 text-[10px] font-medium text-white backdrop-blur-sm"
-            >
-              12 photos
-            </button>
+                12 photos
+              </button>
+            </div>
+          </div>
+
+          <div className="flex min-h-0 flex-col border-b border-border p-4 xl:border-r xl:border-b-0">
+            <h2 className="mb-3 text-[10px] font-bold tracking-widest text-muted-foreground uppercase">
+              Specification
+            </h2>
+            <dl className="flex min-h-0 flex-1 flex-col">
+              {specificationRows.map((row) => (
+                <div
+                  key={row.label}
+                  className="flex items-center justify-between gap-3 border-b border-border py-2 last:border-0 xl:py-2.5"
+                >
+                  <dt className="text-xs text-muted-foreground">{row.label}</dt>
+                  <dd className="text-right text-xs font-semibold text-foreground">
+                    {"highlight" in row && row.highlight ? (
+                      <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-emerald-700 dark:text-emerald-400">
+                        {row.value}
+                      </span>
+                    ) : (
+                      row.value
+                    )}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          <div className="grid grid-cols-2">
+            <PropertyStatCard
+              title="Total bookings"
+              value={String(property.bookingCount)}
+              subtitle="All time"
+              trend="+2 this month"
+              trendTone="positive"
+              icon={Calendar}
+              embedded
+              className="border-r border-b border-border"
+            />
+            <PropertyStatCard
+              title="Avg. stay length"
+              value={avgNightsBooked}
+              subtitle="Nights per booking"
+              trend="Above average"
+              trendTone="positive"
+              icon={BedDouble}
+              embedded
+              className="border-b border-border"
+            />
+            <PropertyStatCard
+              title="Cancellations"
+              value={String(cancellationCount)}
+              subtitle="All time"
+              trend={`${cancellationRate}% rate`}
+              trendTone="negative"
+              icon={XCircle}
+              embedded
+              className="border-r border-border"
+            />
+            <PropertyStatCard
+              title="Max occupancy"
+              value={property.maxOccupancy}
+              subtitle="Guests capacity"
+              trend={`${bedrooms} bedrooms`}
+              trendTone="neutral"
+              icon={Users}
+              embedded
+            />
           </div>
         </div>
+      </section>
 
-        <PropertyPanel title="Specification" className="xl:col-start-2 xl:row-span-2">
-          <dl className="space-y-0">
-            {specificationRows.map((row) => (
-              <div
-                key={row.label}
-                className="flex items-center justify-between gap-3 border-b border-border py-2 last:border-0 xl:py-2.5"
-              >
-                <dt className="text-xs text-muted-foreground">{row.label}</dt>
-                <dd className="text-right text-xs font-semibold text-foreground">
-                  {"highlight" in row && row.highlight ? (
-                    <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-emerald-700 dark:text-emerald-400">
-                      {row.value}
-                    </span>
-                  ) : (
-                    row.value
-                  )}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </PropertyPanel>
-
-        <PropertyStatCard
-          title="Total bookings"
-          value={String(property.bookingCount)}
-          subtitle="All time"
-          trend="+2 this month"
-          trendTone="positive"
-          icon={Calendar}
-          className="xl:col-start-3 xl:row-start-1"
-        />
-        <PropertyStatCard
-          title="Avg. stay length"
-          value={avgNightsBooked}
-          subtitle="Nights per booking"
-          trend="Above average"
-          trendTone="positive"
-          icon={BedDouble}
-          className="xl:col-start-4 xl:row-start-1"
-        />
-        <PropertyStatCard
-          title="Cancellations"
-          value={String(cancellationCount)}
-          subtitle="All time"
-          trend={`${cancellationRate}% rate`}
-          trendTone="negative"
-          icon={XCircle}
-          className="xl:col-start-3 xl:row-start-2"
-        />
-        <PropertyStatCard
-          title="Max occupancy"
-          value={property.maxOccupancy}
-          subtitle="Guests capacity"
-          trend={`${bedrooms} bedrooms`}
-          trendTone="neutral"
-          icon={Users}
-          className="xl:col-start-4 xl:row-start-2"
-        />
-
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] xl:items-stretch">
         <PropertyPanel
           title="Location"
-          className="xl:col-span-2 xl:col-start-1 xl:row-start-3"
+          className="xl:col-span-2"
           action={
             <button
               type="button"
@@ -319,7 +336,7 @@ function PropertyOverviewTab({
           </div>
         </PropertyPanel>
 
-        <PropertyPanel title="Relationships" className="min-w-0 xl:col-start-3 xl:row-start-3">
+        <PropertyPanel title="Relationships" className="min-w-0">
           <div className="flex min-w-0 items-stretch pt-3">
             <div className="min-w-0 flex-1 pr-3">
               <RelationshipLogo
@@ -347,7 +364,7 @@ function PropertyOverviewTab({
           </div>
         </PropertyPanel>
 
-        <PropertyPanel title="Quick actions" className="min-w-0 xl:col-start-4 xl:row-start-3">
+        <PropertyPanel title="Quick actions" className="min-w-0">
           <ul className="space-y-0.5">
             {["Block dates", "Update pricing", "Message partner", "Generate report"].map(
               (action) => (
@@ -429,7 +446,7 @@ export function PropertyPage({ property, onBack }: PropertyPageProps) {
   return (
     <TooltipProvider>
       <div className="space-y-5">
-        <div className="flex flex-wrap items-start justify-between gap-4 border-b border-border pb-5">
+        <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="min-w-0">
             <div className="mb-2 flex flex-wrap items-center gap-2">
               <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-amber-800 uppercase dark:text-amber-300">
