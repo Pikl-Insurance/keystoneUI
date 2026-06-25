@@ -115,7 +115,7 @@ export function AverageBookingValueSnapshot({ filters }: { filters: ActiveFilter
                 <LayoutList className="size-4" />
               </button>
             </TooltipTrigger>
-            <TooltipContent>
+            <TooltipContent variant="plain">
               {showBreakdown
                 ? "Hide partner breakdown"
                 : "View ABV per partner — shows ABV, CAL ABV, ABV inc. fee and CAL price % by brand"}

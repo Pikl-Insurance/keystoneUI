@@ -176,7 +176,7 @@ const trend = deriveBookingTrendMeta("124,500")
       { name: "trend", type: '"up" | "down" | "neutral"', defaultValue: '"up"', description: "Arrow direction in the trend badge." },
       { name: "comparisonLabel", type: "string", required: true, description: "Prior period comparison line." },
       { name: "chartData", type: "MetricTrendPoint[]", required: true, description: "Sparkline series." },
-      { name: "breakdownRows", type: "FinancialBreakdownRow[]", required: true, description: "Top components — drives bar segments and list rows." },
+      { name: "breakdownRows", type: "FinancialBreakdownRow[]", required: true, description: "Top breakdown segments — typically the 3 highest values from the companion table." },
       { name: "footerLabel", type: "string", required: true, description: "Footer caption, e.g. currency and liability context." },
       { name: "helpText", type: "string", description: "Tooltip for the help button." },
       { name: "className", type: "string", description: "Additional classes on the Card root." },
@@ -186,6 +186,11 @@ import { buildCalFinBreakdown, buildFinancialTrendChart, deriveFinancialTrendMet
 
 const profile = getCalFinProfile(filters)
 const trend = deriveFinancialTrendMeta(profile.totalPayable)
+const breakdownRows = [
+  { label: "IPT (GBP)", value: profile.ipt },
+  { label: "PISL comm (GBP)", value: profile.pislComm },
+  // ...remaining table rows
+]
 
 <MetricFinancialTrendWidget
   title="Total payable"
@@ -194,7 +199,7 @@ const trend = deriveFinancialTrendMeta(profile.totalPayable)
   trend={trend.trend}
   comparisonLabel={trend.comparisonLabel}
   chartData={buildFinancialTrendChart(profile.totalPayable)}
-  breakdownRows={buildCalFinBreakdown(profile)}
+  breakdownRows={buildCalFinBreakdown(breakdownRows)}
   footerLabel="GBP · primary liability"
 />`,
     notes: [

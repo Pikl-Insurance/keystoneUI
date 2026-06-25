@@ -114,9 +114,8 @@ export const componentCodeSnippets: Record<string, ComponentCodeSnippet[]> = {
 "flex h-2 w-full overflow-hidden rounded-full bg-muted"
 // Segments: bg-foreground, bg-muted-foreground/60, bg-muted-foreground/30
 
-// Breakdown row
+// Breakdown row (top 3 table values)
 "flex items-center justify-between gap-3"
-// Dot + label / value
 
 // Footer
 "flex items-center gap-1.5 border-t border-border pt-2 text-xs text-muted-foreground"`,

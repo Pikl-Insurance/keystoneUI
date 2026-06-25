@@ -37,8 +37,11 @@ function TooltipContent({
   sideOffset = 8,
   collisionPadding = 12,
   avoidCollisions = true,
+  variant = "default",
   ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Content>) {
+}: React.ComponentProps<typeof TooltipPrimitive.Content> & {
+  variant?: "default" | "plain"
+}) {
   const contentRef = React.useRef<HTMLDivElement>(null)
   const [autoSide, setAutoSide] = React.useState<"left" | "right">("right")
 
@@ -68,7 +71,10 @@ function TooltipContent({
         collisionPadding={collisionPadding}
         avoidCollisions={avoidCollisions}
         className={cn(
-          "z-50 max-w-56 rounded-md bg-[var(--tooltip)] px-3 py-1.5 text-xs text-[var(--tooltip-foreground)] animate-in fade-in-0 zoom-in-95",
+          "z-50 max-w-56 text-xs animate-in fade-in-0 zoom-in-95",
+          variant === "plain"
+            ? "bg-transparent p-0 text-muted-foreground shadow-none"
+            : "rounded-md bg-[var(--tooltip)] px-3 py-1.5 text-[var(--tooltip-foreground)]",
           className
         )}
         {...props}

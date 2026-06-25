@@ -268,19 +268,23 @@ export function buildFinancialTrendChart(totalPayable: string): BookingTrendPoin
 }
 
 export function buildCalFinBreakdown(
-  profile: ReturnType<typeof getCalFinProfile>
+  rows: Array<{ label: string; value: string }>,
+  count = 3
 ): Array<{ label: string; value: string; sharePercent: number }> {
-  const rows = [
-    { label: "Capacity net", value: profile.capacityNet },
-    { label: "PISL comm", value: profile.pislComm },
-    { label: "IPT", value: profile.ipt },
-  ]
-  const amounts = rows.map((row) => parseCurrencyValue(row.value))
-  const total = amounts.reduce((sum, amount) => sum + amount, 0)
+  const topRows = rows
+    .map((row) => ({
+      ...row,
+      amount: parseCurrencyValue(row.value),
+    }))
+    .sort((a, b) => b.amount - a.amount)
+    .slice(0, count)
 
-  return rows.map((row, index) => ({
-    ...row,
-    sharePercent: total > 0 ? Math.round((amounts[index] / total) * 100) : 0,
+  const total = topRows.reduce((sum, row) => sum + row.amount, 0)
+
+  return topRows.map((row) => ({
+    label: row.label.replace(/ \(GBP\)$/, ""),
+    value: row.value,
+    sharePercent: total > 0 ? Math.round((row.amount / total) * 100) : 0,
   }))
 }
 

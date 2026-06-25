@@ -17,7 +17,6 @@ export function CalFinancials({ filters }: { filters: ActiveFilters }) {
   const profile = getCalFinProfile(filters)
   const trendMeta = deriveFinancialTrendMeta(profile.totalPayable)
   const trendChart = buildFinancialTrendChart(profile.totalPayable)
-  const breakdownHighlight = buildCalFinBreakdown(profile)
 
   const breakdownRows = [
     { label: "IPT (GBP)", value: profile.ipt },
@@ -27,6 +26,7 @@ export function CalFinancials({ filters }: { filters: ActiveFilters }) {
     { label: "Premium inc. IPT (GBP)", value: profile.premiumInc },
     { label: "GWP (GBP)", value: profile.gwp },
   ]
+  const breakdownHighlight = buildCalFinBreakdown(breakdownRows)
 
   return (
     <TooltipProvider>

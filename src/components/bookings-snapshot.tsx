@@ -137,7 +137,7 @@ export function BookingsSnapshot({ filters }: { filters: ActiveFilters }) {
                 <LayoutList className="size-4" />
               </button>
             </TooltipTrigger>
-            <TooltipContent>
+            <TooltipContent variant="plain">
               {showBreakdown
                 ? "Hide partner breakdown"
                 : "View bookings broken down by partner — includes CAL and DDL figures per brand"}

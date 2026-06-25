@@ -49,7 +49,7 @@ export function ExportSnapshotButton({
             <Camera className="size-4" />
           </button>
         </TooltipTrigger>
-        <TooltipContent>Export snapshot for report</TooltipContent>
+        <TooltipContent variant="plain">Export snapshot for report</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   )

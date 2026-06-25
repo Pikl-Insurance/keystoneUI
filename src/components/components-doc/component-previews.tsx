@@ -227,9 +227,9 @@ export function ComponentPreview({ id }: { id: string }) {
             { label: "May", value: 35750 },
           ]}
           breakdownRows={[
-            { label: "Capacity net", value: "£130,200", sharePercent: 61 },
-            { label: "PISL comm", value: "£61,800", sharePercent: 29 },
-            { label: "IPT", value: "£22,400", sharePercent: 10 },
+            { label: "Premium inc. IPT", value: "£328,400", sharePercent: 42 },
+            { label: "GWP", value: "£306,000", sharePercent: 39 },
+            { label: "PISL amount payable", value: "£154,600", sharePercent: 19 },
           ]}
           footerLabel="GBP · primary liability"
           helpText="Total CAL financial liability across selected partners."

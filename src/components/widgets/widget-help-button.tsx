@@ -13,9 +13,7 @@ type WidgetHelpButtonProps = {
 
 export function WidgetHelpButton({ title, helpText }: WidgetHelpButtonProps) {
   const icon = (
-    <span className="grid size-5 shrink-0 place-items-center rounded-full bg-muted text-muted-foreground">
-      <CircleHelp className="size-3" strokeWidth={2.25} />
-    </span>
+    <CircleHelp className="size-3.5 shrink-0 text-muted-foreground" strokeWidth={2.25} />
   )
 
   if (!helpText) {
@@ -27,13 +25,13 @@ export function WidgetHelpButton({ title, helpText }: WidgetHelpButtonProps) {
       <TooltipTrigger asChild>
         <button
           type="button"
-          className="transition-colors hover:text-foreground"
+          className="shrink-0 transition-colors hover:text-foreground"
           aria-label={`More information about ${title}`}
         >
           {icon}
         </button>
       </TooltipTrigger>
-      <TooltipContent>{helpText}</TooltipContent>
+      <TooltipContent variant="plain">{helpText}</TooltipContent>
     </Tooltip>
   )
 }

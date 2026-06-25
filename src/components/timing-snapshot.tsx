@@ -109,7 +109,7 @@ export function TimingSnapshot({ filters }: { filters: ActiveFilters }) {
                 <LayoutList className="size-4" />
               </button>
             </TooltipTrigger>
-            <TooltipContent>
+            <TooltipContent variant="plain">
               {showBreakdown
                 ? "Hide partner breakdown"
                 : "View avg booking lead time per partner — includes CAL avg lead days by brand"}
