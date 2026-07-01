@@ -393,7 +393,7 @@ function PropertyHeroRow({
 
   return (
     <section className="rounded-xl border border-border bg-card p-4 shadow-xs">
-      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(240px,288px)_minmax(200px,240px)_minmax(0,1fr)] xl:items-stretch">
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[repeat(2,minmax(240px,288px))_minmax(0,1fr)] xl:items-stretch">
         <div className="relative aspect-[21/9] min-h-[180px] overflow-hidden rounded-lg border border-border bg-muted/30 sm:aspect-[2.2/1] xl:aspect-auto xl:min-h-[220px]">
           <img
             src={property.imageUrl}
